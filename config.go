@@ -11,6 +11,5 @@ type Conf struct {
 }
 
 func (c *Conf) NewRawDataLib(clt *http.Client) rawdata.RawdataLib {
-	util.NewRequest(aa)
 	return rawdata.NewLib(clt, c.Url)
 }
