@@ -11,6 +11,7 @@ type Request interface {
 	Url(u string) Request
 	AddHeader(key, value string) Request
 	Body(b io.Reader) Request
+	AddQuery(key, value string) Request 
 
 	Get() (*response, error)
 	Post() (*response, error)
@@ -19,6 +20,7 @@ type Request interface {
 func NewRequest(clt *http.Client) Request {
 	return &myRequest{
 		clt: clt,
+		query: map[string]string{},
 	}
 }
 
@@ -27,6 +29,7 @@ type myRequest struct {
 	url    string
 	header http.Header
 	body   io.Reader
+	query  map[string]string
 }
 
 func (r *myRequest) Url(u string) Request {
@@ -51,6 +54,11 @@ func (r *myRequest) AddHeader(key, value string) Request {
 	return r
 }
 
+func (r *myRequest) AddQuery(key, value string) Request {
+	r.query[key] = value
+	return r
+}
+
 type response struct {
 	Status int
 	Header http.Header
@@ -68,6 +76,15 @@ func (r *myRequest) Get() (*response, error) {
 	if r.header != nil {
 		req.Header = r.header
 	}
+	
+	if len(r.query) != 0 {
+		q := req.URL.Query()
+		for k, v := range r.query {
+			q.Add(k, v)
+		}
+		req.URL.RawQuery = q.Encode()
+	}
+
 	res, err := r.clt.Do(req)
 	if err != nil {
 		return nil, err
