@@ -15,7 +15,8 @@ func NewLib(clt *http.Client, url string) DeviceLib {
 }
 
 type DeviceLib interface {
-	GetService(mac, gwid string) (string, error)
+	CreateDevice()
+	GetChannel(mac, gwid string) (string, error)
 }
 
 type deviceImpl struct {
@@ -23,7 +24,11 @@ type deviceImpl struct {
 	url string
 }
 
-func (dv *deviceImpl) GetService(mac, gwid string) (string, error) {
+func (dv *deviceImpl) CreateDevice() {
+	
+}
+
+func (dv *deviceImpl) GetChannel(mac, gwid string) (string, error) {
 	const path = "/internal/v1/device/service"
 
 	req := util.NewRequest(dv.clt).Url(dv.url+path).

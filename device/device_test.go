@@ -9,7 +9,7 @@ import (
 
 func Test_GetService(t *testing.T) {
 	lib := NewLib(&http.Client{}, "http://127.0.0.1:9080")
-	res, err := lib.GetService("00:00:00:00:00:aa", "")
+	res, err := lib.GetChannel("00:00:00:00:00:aa", "")
 	assert.Nil(t, err)
 	assert.Equal(t, "", res)
 }
