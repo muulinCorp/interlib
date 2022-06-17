@@ -25,7 +25,7 @@ type rawdataImpl struct {
 	url string
 }
 
-func (rd *rawdataImpl) CreateRawData(serviceID string, data map[string]interface{}) error {
+func (rd *rawdataImpl) CreateRawData(channelID string, data map[string]interface{}) error {
 	const path = "/internal/v1/rawdata"
 	var buf bytes.Buffer
 	err := json.NewEncoder(&buf).Encode(data)
@@ -33,7 +33,7 @@ func (rd *rawdataImpl) CreateRawData(serviceID string, data map[string]interface
 		return err
 	}
 	rep, err := util.NewRequest(rd.clt).
-		AddHeader("X-Service", serviceID).
+		AddHeader("X-Channel", channelID).
 		Body(&buf).Url(rd.url + path).Post()
 	if err != nil {
 		return err
