@@ -2,11 +2,10 @@ package util
 
 import (
 	"encoding/json"
-	"strconv"
 )
 
 type ErrorResp struct {
-	Status   string
+	Status   int
 	Title    string
 	ErrorKey string `json:"errorKey"`
 }
@@ -14,7 +13,7 @@ type ErrorResp struct {
 func ParserErrorResp(res *response) *ErrorResp {
 	// 錯誤處理
 	errRes := &ErrorResp{
-		Status: strconv.Itoa(res.Status),
+		Status: res.Status,
 	}
 	switch res.Header.Get("Content-Type") {
 	case "application/json":
