@@ -22,6 +22,10 @@ var (
 	ErrNoPermission    = api.NewApiErrorWithKey(http.StatusUnauthorized, "you do not have permission", "401006")
 )
 
+// error key for device: XXX100~XXX159
+// error key for controller: XXX160~179
+// error key for sensor: XXX180~199
+
 func NewErrorWaper(err api.ApiError, detail string) api.ApiError {
 	return api.NewApiErrorWithKey(err.GetStatus(), fmt.Sprintf(err.GetErrorMsg(), detail), err.GetErrorKey())
 }

@@ -3,10 +3,11 @@ package device
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+	"fmt"
 	"net/http"
 
 	"bitbucket.org/muulin/interlib/util"
+	"github.com/94peter/sterna/api"
 )
 
 func NewLib(clt *http.Client, url string) DeviceLib {
@@ -41,14 +42,15 @@ func (dv *deviceImpl) CreateDevice(channel string, inputDevice *NewDevice) error
 	}
 
 	resp, err := util.NewRequest(dv.clt).
-		AddHeader("X-Service", channel).
+		AddHeader("X-Channel", channel).
 		Body(&buf).Url(dv.url + path).Post()
 	if err != nil {
 		return err
 	}
 	if resp.Status != http.StatusOK {
 		repErr := util.ParserErrorResp(resp)
-		return errors.New(repErr.Title+"("+repErr.Status+")")
+		key := fmt.Sprintf("%v100", repErr.Status)
+		return api.NewApiErrorWithKey(repErr.Status, repErr.Title, key)
 	}
 
 	return nil	
@@ -68,7 +70,8 @@ func (dv *deviceImpl) GetChannel(mac, gwid string) (string, error) {
 
 	if resp.Status != http.StatusOK {
 		repErr := util.ParserErrorResp(resp)
-		return "", errors.New(repErr.Title)
+		key := fmt.Sprintf("%v101", repErr.Status)
+		return "", api.NewApiErrorWithKey(repErr.Status, repErr.Title, key)
 	}
 
 	return string(resp.Body), nil

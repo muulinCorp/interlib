@@ -3,10 +3,11 @@ package controller
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+	"fmt"
 	"net/http"
 
 	"bitbucket.org/muulin/interlib/util"
+	"github.com/94peter/sterna/api"
 )
 
 func NewLib(clt *http.Client, url string) ControllerLib {
@@ -42,7 +43,8 @@ func (ct *controllerImpl) Upsert(channelID string, inputData *UpsertData) error 
 	}
 	if resp.Status != http.StatusOK {
 		repErr := util.ParserErrorResp(resp)
-		return errors.New(repErr.Title+"("+repErr.Status+")")
+		key := fmt.Sprintf("%v100", repErr.Status)
+		return api.NewApiErrorWithKey(repErr.Status, repErr.Title, key)
 	}
 
 	return nil
