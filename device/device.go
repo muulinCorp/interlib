@@ -20,6 +20,8 @@ func NewLib(clt *http.Client, url string) DeviceLib {
 type DeviceLib interface {
 	CreateDevice(channel string, inputDevice *NewDevice) error
 	GetChannel(mac, gwid string) (string, error)
+	UpsertSenValue(channelID string, inputData *UpsertData) api.ApiError
+	UpsertConValue(channelID string, inputData *UpsertData) api.ApiError
 }
 
 type deviceImpl struct {
@@ -33,7 +35,7 @@ func (dv *deviceImpl) CreateDevice(channel string, inputDevice *NewDevice) error
 	err := inputDevice.Valid()
 	if err != nil {
 		return err
-	} 
+	}
 
 	var buf bytes.Buffer
 	err = json.NewEncoder(&buf).Encode(inputDevice)
@@ -53,15 +55,15 @@ func (dv *deviceImpl) CreateDevice(channel string, inputDevice *NewDevice) error
 		return api.NewApiErrorWithKey(repErr.Status, repErr.Title, key)
 	}
 
-	return nil	
+	return nil
 }
 
 func (dv *deviceImpl) GetChannel(mac, gwid string) (string, error) {
 	const path = "/internal/v1/device/service"
 
 	req := util.NewRequest(dv.clt).Url(dv.url+path).
-			AddQuery("macAddress", mac).
-			AddQuery("gwID", gwid)
+		AddQuery("macAddress", mac).
+		AddQuery("gwID", gwid)
 
 	resp, err := req.Get()
 	if err != nil {
@@ -75,4 +77,62 @@ func (dv *deviceImpl) GetChannel(mac, gwid string) (string, error) {
 	}
 
 	return string(resp.Body), nil
+}
+
+func (ct *deviceImpl) UpsertSenValue(channelID string, inputData *UpsertData) api.ApiError {
+	const (
+		path   = "/internal/v1/sensor"
+		errKey = "%v180"
+	)
+
+	var buf bytes.Buffer
+	err := json.NewEncoder(&buf).Encode(inputData)
+	if err != nil {
+		key := fmt.Sprintf(errKey, http.StatusBadRequest)
+		return api.NewApiErrorWithKey(http.StatusBadRequest, err.Error(), key)
+	}
+
+	resp, err := util.NewRequest(ct.clt).
+		AddHeader("X-Service", channelID).
+		Body(&buf).Url(ct.url + path).Post()
+	if err != nil {
+		key := fmt.Sprintf(errKey, http.StatusInternalServerError)
+		return api.NewApiErrorWithKey(http.StatusInternalServerError, err.Error(), key)
+	}
+	if resp.Status != http.StatusOK {
+		repErr := util.ParserErrorResp(resp)
+		key := fmt.Sprintf(errKey, repErr.Status)
+		return api.NewApiErrorWithKey(repErr.Status, repErr.Title, key)
+	}
+
+	return nil
+}
+
+func (ct *deviceImpl) UpsertConValue(channelID string, inputData *UpsertData) api.ApiError {
+	const (
+		path   = "/internal/v1/controller"
+		errKey = "%v160"
+	)
+
+	var buf bytes.Buffer
+	err := json.NewEncoder(&buf).Encode(inputData)
+	if err != nil {
+		key := fmt.Sprintf(errKey, http.StatusBadRequest)
+		return api.NewApiErrorWithKey(http.StatusBadRequest, err.Error(), key)
+	}
+
+	resp, err := util.NewRequest(ct.clt).
+		AddHeader("X-Service", channelID).
+		Body(&buf).Url(ct.url + path).Post()
+	if err != nil {
+		key := fmt.Sprintf(errKey, http.StatusInternalServerError)
+		return api.NewApiErrorWithKey(http.StatusInternalServerError, err.Error(), key)
+	}
+	if resp.Status != http.StatusOK {
+		repErr := util.ParserErrorResp(resp)
+		key := fmt.Sprintf(errKey, repErr.Status)
+		return api.NewApiErrorWithKey(repErr.Status, repErr.Title, key)
+	}
+
+	return nil
 }
