@@ -4,19 +4,19 @@ import (
 	pb "bitbucket.org/muulin/interlib/device/core/service"
 )
 
-type UpdateRawdataType string
+type RawdataType string
 
 const (
-	RawdataType_Controller = UpdateRawdataType("controller")
-	RawdataType_Sensor     = UpdateRawdataType("sensor")
+	RawdataType_Controller = RawdataType("controller")
+	RawdataType_Sensor     = RawdataType("sensor")
 )
 
-func (rt *UpdateRawdataType) getRawdataRequestType() pb.UpdateRawdataRequest_DataType {
+func (rt *RawdataType) getRawdataRequestType() pb.DataType {
 	switch *rt {
 	case RawdataType_Controller:
-		return pb.UpdateRawdataRequest_Controller
+		return pb.DataType_Controller
 	default:
-		return pb.UpdateRawdataRequest_Sensor
+		return pb.DataType_Sensor
 	}
 }
 

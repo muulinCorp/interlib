@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type CoreDeviceServiceClient interface {
 	UpdateRawdata(ctx context.Context, opts ...grpc.CallOption) (CoreDeviceService_UpdateRawdataClient, error)
 	GetStateMap(ctx context.Context, in *GetStateMapRequest, opts ...grpc.CallOption) (*GetStateMapResponse, error)
+	GetValueMap(ctx context.Context, in *GetValueMapRequest, opts ...grpc.CallOption) (CoreDeviceService_GetValueMapClient, error)
+	Remote(ctx context.Context, in *RemoteRequest, opts ...grpc.CallOption) (*RemoteResponse, error)
 }
 
 type coreDeviceServiceClient struct {
@@ -74,12 +76,55 @@ func (c *coreDeviceServiceClient) GetStateMap(ctx context.Context, in *GetStateM
 	return out, nil
 }
 
+func (c *coreDeviceServiceClient) GetValueMap(ctx context.Context, in *GetValueMapRequest, opts ...grpc.CallOption) (CoreDeviceService_GetValueMapClient, error) {
+	stream, err := c.cc.NewStream(ctx, &CoreDeviceService_ServiceDesc.Streams[1], "/service.CoreDeviceService/GetValueMap", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &coreDeviceServiceGetValueMapClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type CoreDeviceService_GetValueMapClient interface {
+	Recv() (*GetValueMapResponse, error)
+	grpc.ClientStream
+}
+
+type coreDeviceServiceGetValueMapClient struct {
+	grpc.ClientStream
+}
+
+func (x *coreDeviceServiceGetValueMapClient) Recv() (*GetValueMapResponse, error) {
+	m := new(GetValueMapResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *coreDeviceServiceClient) Remote(ctx context.Context, in *RemoteRequest, opts ...grpc.CallOption) (*RemoteResponse, error) {
+	out := new(RemoteResponse)
+	err := c.cc.Invoke(ctx, "/service.CoreDeviceService/Remote", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CoreDeviceServiceServer is the server API for CoreDeviceService service.
 // All implementations must embed UnimplementedCoreDeviceServiceServer
 // for forward compatibility
 type CoreDeviceServiceServer interface {
 	UpdateRawdata(CoreDeviceService_UpdateRawdataServer) error
 	GetStateMap(context.Context, *GetStateMapRequest) (*GetStateMapResponse, error)
+	GetValueMap(*GetValueMapRequest, CoreDeviceService_GetValueMapServer) error
+	Remote(context.Context, *RemoteRequest) (*RemoteResponse, error)
 	mustEmbedUnimplementedCoreDeviceServiceServer()
 }
 
@@ -92,6 +137,12 @@ func (UnimplementedCoreDeviceServiceServer) UpdateRawdata(CoreDeviceService_Upda
 }
 func (UnimplementedCoreDeviceServiceServer) GetStateMap(context.Context, *GetStateMapRequest) (*GetStateMapResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetStateMap not implemented")
+}
+func (UnimplementedCoreDeviceServiceServer) GetValueMap(*GetValueMapRequest, CoreDeviceService_GetValueMapServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetValueMap not implemented")
+}
+func (UnimplementedCoreDeviceServiceServer) Remote(context.Context, *RemoteRequest) (*RemoteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Remote not implemented")
 }
 func (UnimplementedCoreDeviceServiceServer) mustEmbedUnimplementedCoreDeviceServiceServer() {}
 
@@ -150,6 +201,45 @@ func _CoreDeviceService_GetStateMap_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CoreDeviceService_GetValueMap_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetValueMapRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(CoreDeviceServiceServer).GetValueMap(m, &coreDeviceServiceGetValueMapServer{stream})
+}
+
+type CoreDeviceService_GetValueMapServer interface {
+	Send(*GetValueMapResponse) error
+	grpc.ServerStream
+}
+
+type coreDeviceServiceGetValueMapServer struct {
+	grpc.ServerStream
+}
+
+func (x *coreDeviceServiceGetValueMapServer) Send(m *GetValueMapResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _CoreDeviceService_Remote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoreDeviceServiceServer).Remote(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.CoreDeviceService/Remote",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoreDeviceServiceServer).Remote(ctx, req.(*RemoteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CoreDeviceService_ServiceDesc is the grpc.ServiceDesc for CoreDeviceService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -161,6 +251,10 @@ var CoreDeviceService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "GetStateMap",
 			Handler:    _CoreDeviceService_GetStateMap_Handler,
 		},
+		{
+			MethodName: "Remote",
+			Handler:    _CoreDeviceService_Remote_Handler,
+		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
@@ -168,6 +262,11 @@ var CoreDeviceService_ServiceDesc = grpc.ServiceDesc{
 			Handler:       _CoreDeviceService_UpdateRawdata_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
+		},
+		{
+			StreamName:    "GetValueMap",
+			Handler:       _CoreDeviceService_GetValueMap_Handler,
+			ServerStreams: true,
 		},
 	},
 	Metadata: "device/core/proto/device.proto",
