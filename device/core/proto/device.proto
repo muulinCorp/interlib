@@ -1,0 +1,43 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "device/core/service";
+package service;
+
+message UpdateRawdataRequest {
+  enum DataType {
+    Sensor = 0;
+    Controller = 1;
+  }
+  DataType type = 1;
+  Rawdata data = 2;
+}
+
+message Rawdata {
+  string mac = 1;
+  string time = 2;
+  map<uint32, SensorValue> values = 3;
+}
+
+message SensorValue {
+  double value = 1;
+  uint32 dp = 2;
+}
+
+message UpdateRawdataResponse {
+  bool success = 1;
+  string mac = 2;
+  string error = 3;
+}
+
+message GetStateMapRequest {
+  repeated string deviceID = 1;
+}
+
+message GetStateMapResponse {
+  map<string, string> stateMap = 1;
+}
+
+service CoreDeviceService {
+  rpc UpdateRawdata(stream UpdateRawdataRequest) returns (stream UpdateRawdataResponse) {};
+  rpc GetStateMap(GetStateMapRequest) returns (GetStateMapResponse) {};
+}

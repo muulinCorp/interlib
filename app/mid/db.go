@@ -100,9 +100,9 @@ func (m *dbMiddle) Handler() gin.HandlerFunc {
 				return
 			}
 			defer dbclt.Close()
-
-			c.Set(string(db.CtxMongoKey), dbclt)
-
+			// c.Set(string(db.CtxMongoKey), dbclt)
+			c.Request = util.SetCtxKeyVal(c.Request, db.CtxMongoKey, dbclt)
+			c.Request = util.SetCtxKeyVal(c.Request, log.CtxLogKey, l)
 			c.Next()
 			runtime.GC()
 		} else {
