@@ -8,6 +8,7 @@ import (
 
 	"bitbucket.org/muulin/interlib/util"
 	"github.com/94peter/sterna/api"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func NewLib(clt *http.Client, url string) DeviceLib {
@@ -18,6 +19,7 @@ func NewLib(clt *http.Client, url string) DeviceLib {
 }
 
 type DeviceLib interface {
+	CheckDvExist(oID primitive.ObjectID, channel string) (bool, error)
 	CreateDevice(channel string, inputDevice *NewDevice) error
 	GetChannel(mac, gwid string) (string, error)
 	UpsertSenValue(channelID string, inputData *UpsertData) api.ApiError
@@ -29,8 +31,37 @@ type deviceImpl struct {
 	url string
 }
 
+func (dv *deviceImpl) CheckDvExist(oID primitive.ObjectID, channel string) (bool, error) {
+	const (
+		errKey = "%v102"
+		path = "internal/v1/device/exist"
+	)
+
+	resp, err := util.NewRequest(dv.clt).
+		AddHeader("X-Channel", channel).Url(dv.url + path).Get()
+	if err != nil {
+		return false, err
+	}
+	if resp.Status != http.StatusOK {
+		repErr := util.ParserErrorResp(resp)
+		key := fmt.Sprintf(errKey, repErr.Status)
+		return false, api.NewApiErrorWithKey(repErr.Status, repErr.Title, key)
+	}
+
+	var res bool
+	err = json.Unmarshal(resp.Body, &res)
+	if err != nil{
+		return false, err
+	}
+
+	return res, nil
+}
+
 func (dv *deviceImpl) CreateDevice(channel string, inputDevice *NewDevice) error {
-	const path = "/internal/v1/device"
+	const (
+		errKey = "%v100"
+		path = "/internal/v1/device"
+	)
 
 	err := inputDevice.Valid()
 	if err != nil {
@@ -51,7 +82,7 @@ func (dv *deviceImpl) CreateDevice(channel string, inputDevice *NewDevice) error
 	}
 	if resp.Status != http.StatusOK {
 		repErr := util.ParserErrorResp(resp)
-		key := fmt.Sprintf("%v100", repErr.Status)
+		key := fmt.Sprintf(errKey, repErr.Status)
 		return api.NewApiErrorWithKey(repErr.Status, repErr.Title, key)
 	}
 
