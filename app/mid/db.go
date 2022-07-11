@@ -88,11 +88,10 @@ func (m *dbMiddle) Handler() gin.HandlerFunc {
 			api.GinOutputErr(c, api.NewApiError(http.StatusInternalServerError, "can not get di"))
 			return
 		}
-
 		if dbdi, ok := servDi.(DBMidDI); ok {
 			uuid := uuid.New().String()
 			l := dbdi.NewLogger(uuid)
-			c.Set(string(log.CtxLogKey), l)
+			//c.Set(string(log.CtxLogKey), l)
 
 			dbclt, err := dbdi.NewMongoDBClient(c.Request.Context(), "")
 			if err != nil {
@@ -100,8 +99,9 @@ func (m *dbMiddle) Handler() gin.HandlerFunc {
 				return
 			}
 			defer dbclt.Close()
-
-			c.Set(string(db.CtxMongoKey), dbclt)
+			//c.Set(string(db.CtxMongoKey), dbclt)
+			c.Request = util.SetCtxKeyVal(c.Request, db.CtxMongoKey, dbclt)
+   			c.Request = util.SetCtxKeyVal(c.Request, log.CtxLogKey, l)
 
 			c.Next()
 			runtime.GC()
