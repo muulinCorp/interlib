@@ -15,9 +15,11 @@ import (
 type CoreDeviceClient interface {
 	core.MyGrpc
 	GetStateMap(devices []string) (map[string]string, error)
+	Remote(deviceID string, device, address uint32, value float64) error
 	StartUpdateRawdataStream(recvHandler func(success bool, mac string, err string), log log.Logger) error
 	StopUpdateRawdataStream() error
-	UpdateRawdata(dataType UpdateRawdataType, mac string, t time.Time, values SensorValuePool) error
+	UpdateRawdata(dataType RawdataType, mac string, t time.Time, values SensorValuePool) error
+	GetValueMap(dataType RawdataType, devices []string, recvHandler func(deviceID string, valuemap map[uint32]float64)) error
 }
 
 func NewGrpcClient(address string) (CoreDeviceClient, error) {
@@ -33,6 +35,25 @@ type grpcClt struct {
 	updateRawdataStream pb.CoreDeviceService_UpdateRawdataClient
 }
 
+func (grpc *grpcClt) Remote(deviceID string, device, address uint32, value float64) error {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	clt := pb.NewCoreDeviceServiceClient(grpc)
+	resp, err := clt.Remote(ctx, &pb.RemoteRequest{
+		DeviceID: deviceID,
+		Device:   device,
+		Address:  address,
+		Value:    value,
+	})
+	if err != nil {
+		return err
+	}
+	if !resp.Success {
+		return errors.New(resp.Error)
+	}
+	return nil
+}
+
 func (grpc *grpcClt) GetStateMap(deviceIDs []string) (map[string]string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
@@ -44,6 +65,28 @@ func (grpc *grpcClt) GetStateMap(deviceIDs []string) (map[string]string, error) 
 		return nil, err
 	}
 	return resp.StateMap, nil
+}
+
+func (grpc *grpcClt) GetValueMap(dataType RawdataType, devices []string, recvHandler func(deviceID string, valuemap map[uint32]float64)) error {
+	clt := pb.NewCoreDeviceServiceClient(grpc)
+	stream, err := clt.GetValueMap(context.Background(), &pb.GetValueMapRequest{
+		Type:      dataType.getRawdataRequestType(),
+		DeviceIDs: devices,
+	})
+	if err != nil {
+		return err
+	}
+	for {
+		resp, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return err
+		}
+		recvHandler(resp.DeviceID, resp.ValueMap)
+	}
+	return nil
 }
 
 func (grpc *grpcClt) StartUpdateRawdataStream(recvHandler func(success bool, mac string, err string), log log.Logger) error {
@@ -80,7 +123,7 @@ func (grpc *grpcClt) StopUpdateRawdataStream() error {
 	return grpc.updateRawdataStream.CloseSend()
 }
 
-func (grpc *grpcClt) UpdateRawdata(dataType UpdateRawdataType, mac string, t time.Time, values SensorValuePool) error {
+func (grpc *grpcClt) UpdateRawdata(dataType RawdataType, mac string, t time.Time, values SensorValuePool) error {
 	if grpc.updateRawdataStream == nil {
 		return errors.New("StartUpdateRawdataStream first")
 	}
