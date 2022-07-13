@@ -1,6 +1,8 @@
 package core
 
-import "google.golang.org/grpc"
+import (
+	"google.golang.org/grpc"
+)
 
 type MyGrpc interface {
 	grpc.ClientConnInterface
