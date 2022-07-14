@@ -26,9 +26,9 @@ type grpcClt struct {
 	core.MyGrpc
 }
 
-func (gclt *grpcClt) AssignDevices(channel string, devices DeviceAry, recvHandler func(suc bool, mac string, err string)) error {
+func (gclt *grpcClt) AssignDevices(host string, devices DeviceAry, recvHandler func(suc bool, mac string, err string)) error {
 	clt := pb.NewAppDeviceServiceClient(gclt)
-	ctx := metadata.AppendToOutgoingContext(context.Background(), "X-Channel", channel)
+	ctx := metadata.AppendToOutgoingContext(context.Background(), "X-Host", host)
 	stream, err := clt.AssignDevices(ctx, &pb.AssignDevicesRequest{
 		Devices: devices.getDevices(),
 	})

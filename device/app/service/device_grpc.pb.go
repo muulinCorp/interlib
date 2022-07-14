@@ -22,7 +22,14 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AppDeviceServiceClient interface {
+	// 分配裝置到通路
 	AssignDevices(ctx context.Context, in *AssignDevicesRequest, opts ...grpc.CallOption) (AppDeviceService_AssignDevicesClient, error)
+	// 裝置分配案場編輯
+	DeviceProjectEdit(ctx context.Context, in *DeviceRelationEditRequest, opts ...grpc.CallOption) (AppDeviceService_DeviceProjectEditClient, error)
+	// 裝置對應設備編輯
+	DeviceEquipmentEdit(ctx context.Context, in *DeviceRelationEditRequest, opts ...grpc.CallOption) (AppDeviceService_DeviceEquipmentEditClient, error)
+	// 依設備取得對應所有裝置
+	GetDevicesByEquips(ctx context.Context, in *GetDevicesByEquipsRequest, opts ...grpc.CallOption) (AppDeviceService_GetDevicesByEquipsClient, error)
 }
 
 type appDeviceServiceClient struct {
@@ -65,11 +72,114 @@ func (x *appDeviceServiceAssignDevicesClient) Recv() (*AssignDeviceResponse, err
 	return m, nil
 }
 
+func (c *appDeviceServiceClient) DeviceProjectEdit(ctx context.Context, in *DeviceRelationEditRequest, opts ...grpc.CallOption) (AppDeviceService_DeviceProjectEditClient, error) {
+	stream, err := c.cc.NewStream(ctx, &AppDeviceService_ServiceDesc.Streams[1], "/service.AppDeviceService/DeviceProjectEdit", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &appDeviceServiceDeviceProjectEditClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type AppDeviceService_DeviceProjectEditClient interface {
+	Recv() (*DeviceRelationEditResponse, error)
+	grpc.ClientStream
+}
+
+type appDeviceServiceDeviceProjectEditClient struct {
+	grpc.ClientStream
+}
+
+func (x *appDeviceServiceDeviceProjectEditClient) Recv() (*DeviceRelationEditResponse, error) {
+	m := new(DeviceRelationEditResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *appDeviceServiceClient) DeviceEquipmentEdit(ctx context.Context, in *DeviceRelationEditRequest, opts ...grpc.CallOption) (AppDeviceService_DeviceEquipmentEditClient, error) {
+	stream, err := c.cc.NewStream(ctx, &AppDeviceService_ServiceDesc.Streams[2], "/service.AppDeviceService/DeviceEquipmentEdit", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &appDeviceServiceDeviceEquipmentEditClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type AppDeviceService_DeviceEquipmentEditClient interface {
+	Recv() (*DeviceRelationEditResponse, error)
+	grpc.ClientStream
+}
+
+type appDeviceServiceDeviceEquipmentEditClient struct {
+	grpc.ClientStream
+}
+
+func (x *appDeviceServiceDeviceEquipmentEditClient) Recv() (*DeviceRelationEditResponse, error) {
+	m := new(DeviceRelationEditResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *appDeviceServiceClient) GetDevicesByEquips(ctx context.Context, in *GetDevicesByEquipsRequest, opts ...grpc.CallOption) (AppDeviceService_GetDevicesByEquipsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &AppDeviceService_ServiceDesc.Streams[3], "/service.AppDeviceService/GetDevicesByEquips", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &appDeviceServiceGetDevicesByEquipsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type AppDeviceService_GetDevicesByEquipsClient interface {
+	Recv() (*GetDevicesByEquipsResponse, error)
+	grpc.ClientStream
+}
+
+type appDeviceServiceGetDevicesByEquipsClient struct {
+	grpc.ClientStream
+}
+
+func (x *appDeviceServiceGetDevicesByEquipsClient) Recv() (*GetDevicesByEquipsResponse, error) {
+	m := new(GetDevicesByEquipsResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // AppDeviceServiceServer is the server API for AppDeviceService service.
 // All implementations must embed UnimplementedAppDeviceServiceServer
 // for forward compatibility
 type AppDeviceServiceServer interface {
+	// 分配裝置到通路
 	AssignDevices(*AssignDevicesRequest, AppDeviceService_AssignDevicesServer) error
+	// 裝置分配案場編輯
+	DeviceProjectEdit(*DeviceRelationEditRequest, AppDeviceService_DeviceProjectEditServer) error
+	// 裝置對應設備編輯
+	DeviceEquipmentEdit(*DeviceRelationEditRequest, AppDeviceService_DeviceEquipmentEditServer) error
+	// 依設備取得對應所有裝置
+	GetDevicesByEquips(*GetDevicesByEquipsRequest, AppDeviceService_GetDevicesByEquipsServer) error
 	mustEmbedUnimplementedAppDeviceServiceServer()
 }
 
@@ -79,6 +189,15 @@ type UnimplementedAppDeviceServiceServer struct {
 
 func (UnimplementedAppDeviceServiceServer) AssignDevices(*AssignDevicesRequest, AppDeviceService_AssignDevicesServer) error {
 	return status.Errorf(codes.Unimplemented, "method AssignDevices not implemented")
+}
+func (UnimplementedAppDeviceServiceServer) DeviceProjectEdit(*DeviceRelationEditRequest, AppDeviceService_DeviceProjectEditServer) error {
+	return status.Errorf(codes.Unimplemented, "method DeviceProjectEdit not implemented")
+}
+func (UnimplementedAppDeviceServiceServer) DeviceEquipmentEdit(*DeviceRelationEditRequest, AppDeviceService_DeviceEquipmentEditServer) error {
+	return status.Errorf(codes.Unimplemented, "method DeviceEquipmentEdit not implemented")
+}
+func (UnimplementedAppDeviceServiceServer) GetDevicesByEquips(*GetDevicesByEquipsRequest, AppDeviceService_GetDevicesByEquipsServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetDevicesByEquips not implemented")
 }
 func (UnimplementedAppDeviceServiceServer) mustEmbedUnimplementedAppDeviceServiceServer() {}
 
@@ -114,6 +233,69 @@ func (x *appDeviceServiceAssignDevicesServer) Send(m *AssignDeviceResponse) erro
 	return x.ServerStream.SendMsg(m)
 }
 
+func _AppDeviceService_DeviceProjectEdit_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(DeviceRelationEditRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(AppDeviceServiceServer).DeviceProjectEdit(m, &appDeviceServiceDeviceProjectEditServer{stream})
+}
+
+type AppDeviceService_DeviceProjectEditServer interface {
+	Send(*DeviceRelationEditResponse) error
+	grpc.ServerStream
+}
+
+type appDeviceServiceDeviceProjectEditServer struct {
+	grpc.ServerStream
+}
+
+func (x *appDeviceServiceDeviceProjectEditServer) Send(m *DeviceRelationEditResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _AppDeviceService_DeviceEquipmentEdit_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(DeviceRelationEditRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(AppDeviceServiceServer).DeviceEquipmentEdit(m, &appDeviceServiceDeviceEquipmentEditServer{stream})
+}
+
+type AppDeviceService_DeviceEquipmentEditServer interface {
+	Send(*DeviceRelationEditResponse) error
+	grpc.ServerStream
+}
+
+type appDeviceServiceDeviceEquipmentEditServer struct {
+	grpc.ServerStream
+}
+
+func (x *appDeviceServiceDeviceEquipmentEditServer) Send(m *DeviceRelationEditResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _AppDeviceService_GetDevicesByEquips_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetDevicesByEquipsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(AppDeviceServiceServer).GetDevicesByEquips(m, &appDeviceServiceGetDevicesByEquipsServer{stream})
+}
+
+type AppDeviceService_GetDevicesByEquipsServer interface {
+	Send(*GetDevicesByEquipsResponse) error
+	grpc.ServerStream
+}
+
+type appDeviceServiceGetDevicesByEquipsServer struct {
+	grpc.ServerStream
+}
+
+func (x *appDeviceServiceGetDevicesByEquipsServer) Send(m *GetDevicesByEquipsResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 // AppDeviceService_ServiceDesc is the grpc.ServiceDesc for AppDeviceService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -125,6 +307,21 @@ var AppDeviceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "AssignDevices",
 			Handler:       _AppDeviceService_AssignDevices_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "DeviceProjectEdit",
+			Handler:       _AppDeviceService_DeviceProjectEdit_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "DeviceEquipmentEdit",
+			Handler:       _AppDeviceService_DeviceEquipmentEdit_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "GetDevicesByEquips",
+			Handler:       _AppDeviceService_GetDevicesByEquips_Handler,
 			ServerStreams: true,
 		},
 	},

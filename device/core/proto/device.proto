@@ -60,9 +60,31 @@ message RemoteResponse {
   string error = 2;
 }
 
+enum DeviceState {
+  ToBeRepaired = 0;
+  Recycled = 1;
+}
+
+message UpdateDeviceStateRequest {
+  DeviceState state = 1;
+  repeated string macAddress = 2;
+}
+
+message UpdateDeviceStateResponse {
+  bool success = 1;
+  string macAddress = 2;
+  string error = 3;
+}
+
 service CoreDeviceService {
+  // 更新裝置上傳數據
   rpc UpdateRawdata(stream UpdateRawdataRequest) returns (stream UpdateRawdataResponse) {};
+  // 取得所有裝置連線狀態
   rpc GetStateMap(GetStateMapRequest) returns (GetStateMapResponse) {};
+  // 取得裝置中所有欄位數值
   rpc GetValueMap(GetValueMapRequest) returns (stream GetValueMapResponse) {};
+  // 遠端指令至裝置
   rpc Remote(RemoteRequest) returns (RemoteResponse) {};
+  // 更新裝置狀態
+  rpc UpdateDeviceState(UpdateDeviceStateRequest) returns (stream UpdateDeviceStateResponse) {};
 }
