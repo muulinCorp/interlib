@@ -1,0 +1,25 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "device/app/service";
+package service;
+
+
+message AssignDevicesRequest {
+  repeated Device devices = 1;
+}
+
+message Device {
+  string mac = 1;
+  string model = 2;
+}
+
+message AssignDeviceResponse {
+  bool success = 1;
+  string mac = 2;
+  string error = 3;
+}
+
+service AppDeviceService {
+  rpc AssignDevices(AssignDevicesRequest) returns (stream AssignDeviceResponse) {};
+  
+}

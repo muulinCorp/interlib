@@ -4,6 +4,10 @@ import (
 	pb "bitbucket.org/muulin/interlib/device/core/service"
 )
 
+const (
+	RouterKey = "gRPC_Core_Device_Router"
+)
+
 type RawdataType string
 
 const (
