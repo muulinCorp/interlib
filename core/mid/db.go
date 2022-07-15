@@ -51,15 +51,15 @@ func (am *dbMiddle) GetMiddleWare() func(f http.HandlerFunc) http.HandlerFunc {
 			}
 			defer dbclt.Close()
 
-			// redisClt, err := am.di.NewRedisClient(r.Context())
-			// if err != nil {
-			// 	w.WriteHeader(http.StatusInternalServerError)
-			// 	w.Write([]byte(err.Error()))
-			// 	return
-			// }
-			// defer redisClt.Close()
+			redisClt, err := am.di.NewRedisClient(r.Context())
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				w.Write([]byte(err.Error()))
+				return
+			}
+			defer redisClt.Close()
 
-			// r = util.SetCtxKeyVal(r, db.CtxRedisKey, redisClt)
+			r = util.SetCtxKeyVal(r, db.CtxRedisKey, redisClt)
 			r = util.SetCtxKeyVal(r, db.CtxMongoKey, dbclt)
 			r = util.SetCtxKeyVal(r, log.CtxLogKey, l)
 			f(w, r)
