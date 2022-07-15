@@ -13,7 +13,8 @@ service ChannelConf {
 
 // The request message containing the user's name.
 message GetConfRequest {
-  string env = 1;
+  string host = 1;
+  string env = 2;
 }
 
 // The response message containing the greetings

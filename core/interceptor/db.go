@@ -33,8 +33,14 @@ func StreamServerDBInterceptor(di DBMidDI) grpc.ServerOption {
 			return err
 		}
 		defer dbclt.Close()
+		redisClt, err := di.NewRedisClient(ss.Context())
+		if err != nil {
+			return err
+		}
+		defer redisClt.Close()
 		ctx := context.WithValue(ss.Context(), db.CtxMongoKey, dbclt)
 		ctx = context.WithValue(ctx, log.CtxLogKey, l)
+		ctx = context.WithValue(ctx, db.CtxRedisKey, redisClt)
 		err = handler(srv, &serverStream{
 			ServerStream: ss,
 			ctx:          ctx,
@@ -52,8 +58,14 @@ func UnaryServerDBInterceptor(di DBMidDI) grpc.ServerOption {
 			return nil, err
 		}
 		defer dbclt.Close()
+		redisClt, err := di.NewRedisClient(ctx)
+		if err != nil {
+			return nil, err
+		}
+		defer redisClt.Close()
 		ctx = context.WithValue(ctx, db.CtxMongoKey, dbclt)
 		ctx = context.WithValue(ctx, log.CtxLogKey, l)
+		ctx = context.WithValue(ctx, db.CtxRedisKey, redisClt)
 		resp, err := handler(ctx, req)
 		return resp, err
 	})

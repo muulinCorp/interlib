@@ -22,10 +22,16 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CoreDeviceServiceClient interface {
+	// 更新裝置上傳數據
 	UpdateRawdata(ctx context.Context, opts ...grpc.CallOption) (CoreDeviceService_UpdateRawdataClient, error)
+	// 取得所有裝置連線狀態
 	GetStateMap(ctx context.Context, in *GetStateMapRequest, opts ...grpc.CallOption) (*GetStateMapResponse, error)
+	// 取得裝置中所有欄位數值
 	GetValueMap(ctx context.Context, in *GetValueMapRequest, opts ...grpc.CallOption) (CoreDeviceService_GetValueMapClient, error)
+	// 遠端指令至裝置
 	Remote(ctx context.Context, in *RemoteRequest, opts ...grpc.CallOption) (*RemoteResponse, error)
+	// 更新裝置狀態
+	UpdateDeviceState(ctx context.Context, in *UpdateDeviceStateRequest, opts ...grpc.CallOption) (CoreDeviceService_UpdateDeviceStateClient, error)
 }
 
 type coreDeviceServiceClient struct {
@@ -117,14 +123,52 @@ func (c *coreDeviceServiceClient) Remote(ctx context.Context, in *RemoteRequest,
 	return out, nil
 }
 
+func (c *coreDeviceServiceClient) UpdateDeviceState(ctx context.Context, in *UpdateDeviceStateRequest, opts ...grpc.CallOption) (CoreDeviceService_UpdateDeviceStateClient, error) {
+	stream, err := c.cc.NewStream(ctx, &CoreDeviceService_ServiceDesc.Streams[2], "/service.CoreDeviceService/UpdateDeviceState", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &coreDeviceServiceUpdateDeviceStateClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type CoreDeviceService_UpdateDeviceStateClient interface {
+	Recv() (*UpdateDeviceStateResponse, error)
+	grpc.ClientStream
+}
+
+type coreDeviceServiceUpdateDeviceStateClient struct {
+	grpc.ClientStream
+}
+
+func (x *coreDeviceServiceUpdateDeviceStateClient) Recv() (*UpdateDeviceStateResponse, error) {
+	m := new(UpdateDeviceStateResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // CoreDeviceServiceServer is the server API for CoreDeviceService service.
 // All implementations must embed UnimplementedCoreDeviceServiceServer
 // for forward compatibility
 type CoreDeviceServiceServer interface {
+	// 更新裝置上傳數據
 	UpdateRawdata(CoreDeviceService_UpdateRawdataServer) error
+	// 取得所有裝置連線狀態
 	GetStateMap(context.Context, *GetStateMapRequest) (*GetStateMapResponse, error)
+	// 取得裝置中所有欄位數值
 	GetValueMap(*GetValueMapRequest, CoreDeviceService_GetValueMapServer) error
+	// 遠端指令至裝置
 	Remote(context.Context, *RemoteRequest) (*RemoteResponse, error)
+	// 更新裝置狀態
+	UpdateDeviceState(*UpdateDeviceStateRequest, CoreDeviceService_UpdateDeviceStateServer) error
 	mustEmbedUnimplementedCoreDeviceServiceServer()
 }
 
@@ -143,6 +187,9 @@ func (UnimplementedCoreDeviceServiceServer) GetValueMap(*GetValueMapRequest, Cor
 }
 func (UnimplementedCoreDeviceServiceServer) Remote(context.Context, *RemoteRequest) (*RemoteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Remote not implemented")
+}
+func (UnimplementedCoreDeviceServiceServer) UpdateDeviceState(*UpdateDeviceStateRequest, CoreDeviceService_UpdateDeviceStateServer) error {
+	return status.Errorf(codes.Unimplemented, "method UpdateDeviceState not implemented")
 }
 func (UnimplementedCoreDeviceServiceServer) mustEmbedUnimplementedCoreDeviceServiceServer() {}
 
@@ -240,6 +287,27 @@ func _CoreDeviceService_Remote_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CoreDeviceService_UpdateDeviceState_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(UpdateDeviceStateRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(CoreDeviceServiceServer).UpdateDeviceState(m, &coreDeviceServiceUpdateDeviceStateServer{stream})
+}
+
+type CoreDeviceService_UpdateDeviceStateServer interface {
+	Send(*UpdateDeviceStateResponse) error
+	grpc.ServerStream
+}
+
+type coreDeviceServiceUpdateDeviceStateServer struct {
+	grpc.ServerStream
+}
+
+func (x *coreDeviceServiceUpdateDeviceStateServer) Send(m *UpdateDeviceStateResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 // CoreDeviceService_ServiceDesc is the grpc.ServiceDesc for CoreDeviceService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -266,6 +334,11 @@ var CoreDeviceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "GetValueMap",
 			Handler:       _CoreDeviceService_GetValueMap_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "UpdateDeviceState",
+			Handler:       _CoreDeviceService_UpdateDeviceState_Handler,
 			ServerStreams: true,
 		},
 	},

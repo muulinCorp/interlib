@@ -1,0 +1,70 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "device/app/service";
+package service;
+
+
+message AssignDevicesRequest {
+  repeated Device devices = 1;
+}
+
+message Device {
+  string mac = 1;
+  string model = 2;
+}
+
+message AssignDeviceResponse {
+  bool success = 1;
+  string mac = 2;
+  string error = 3;
+}
+
+message DeviceRelationEditRequest {
+  string objID = 1;
+  repeated EditObj actions = 2;
+}
+
+enum EditType {
+  Add = 0;
+  Del = 1;
+}
+
+message EditObj {
+  EditType act = 1;
+  string deviceID = 2;
+}
+
+message DeviceRelationEditResponse {
+  bool success = 1;
+  string deviceID = 2;
+  string error = 3;
+}
+
+message GetDevicesByEquipsRequest {
+  repeated string equipIDs = 1;
+}
+
+message GetDevicesByEquipsResponse {
+  string equipID = 1;
+  repeated DeviceInfo devices =2;
+}
+
+message DeviceInfo {
+  string id = 1;
+  string macAddress = 2;
+  string state = 3;
+  string description =4;
+  string model = 5;
+  string onlineState = 6;
+}
+
+service AppDeviceService {
+  // 分配裝置到通路
+  rpc AssignDevices(AssignDevicesRequest) returns (stream AssignDeviceResponse) {};
+  // 裝置分配案場編輯
+  rpc DeviceProjectEdit(DeviceRelationEditRequest) returns (stream DeviceRelationEditResponse){};
+  // 裝置對應設備編輯
+  rpc DeviceEquipmentEdit(DeviceRelationEditRequest) returns (stream DeviceRelationEditResponse){};
+  // 依設備取得對應所有裝置
+  rpc GetDevicesByEquips(GetDevicesByEquipsRequest) returns (stream GetDevicesByEquipsResponse) {};
+}

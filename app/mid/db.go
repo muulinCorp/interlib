@@ -17,6 +17,7 @@ import (
 type DBMidDI interface {
 	log.LoggerDI
 	db.MongoDI
+	db.RedisDI
 }
 
 type DBMiddle string
@@ -57,8 +58,16 @@ func (am *dbMiddle) GetMiddleWare() func(f http.HandlerFunc) http.HandlerFunc {
 					return
 				}
 				defer dbclt.Close()
+				redisClt, err := dbdi.NewRedisClient(r.Context())
+				if err != nil {
+					w.WriteHeader(http.StatusInternalServerError)
+					w.Write([]byte(err.Error()))
+					return
+				}
+				defer redisClt.Close()
 				r = util.SetCtxKeyVal(r, db.CtxMongoKey, dbclt)
 				r = util.SetCtxKeyVal(r, log.CtxLogKey, l)
+				r = util.SetCtxKeyVal(r, db.CtxRedisKey, redisClt)
 				f(w, r)
 				runtime.GC()
 			} else {
