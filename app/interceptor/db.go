@@ -76,8 +76,14 @@ func getContextWitchRsrc(ctx context.Context, di DBMidDI) (context.Context, erro
 		return nil, err
 	}
 	defer dbclt.Close()
+	redisClt, err := di.NewRedisClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer redisClt.Close()
 	ctx = context.WithValue(ctx, db.CtxMongoKey, dbclt)
 	ctx = context.WithValue(ctx, log.CtxLogKey, l)
+	ctx = context.WithValue(ctx, db.CtxRedisKey, redisClt)
 	return ctx, nil
 }
 
