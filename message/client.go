@@ -9,13 +9,14 @@ import (
 
 	"bitbucket.org/muulin/interlib/core"
 	pb "bitbucket.org/muulin/interlib/message/service"
+	"google.golang.org/grpc/metadata"
 )
 
 type MessageClient interface {
 	core.MyGrpc
-	MqttPublish(topic string, msg []byte) error
-	Push(tokens []string, title, body string, data map[string]interface{}) (errorTokens []string, err error)
-	Mail(receivers []*MailReceiver, subject, plaintText, html string, recvHandler func(success bool, name, email, err string)) error
+	MqttPublish(host, topic string, msg []byte) error
+	Push(host string, tokens []string, title, body string, data map[string]interface{}) (errorTokens []string, err error)
+	Mail(host string, receivers []*MailReceiver, subject, plaintText, html string, recvHandler func(success bool, name, email, err string)) error
 }
 
 func NewGrpcClient(address string) (MessageClient, error) {
@@ -30,8 +31,10 @@ type grpcClt struct {
 	core.MyGrpc
 }
 
-func (grpc *grpcClt) MqttPublish(topic string, msg []byte) error {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+func (grpc *grpcClt) MqttPublish(host string, topic string, msg []byte) error {
+	ctx, cancel := context.WithTimeout(
+		metadata.AppendToOutgoingContext(context.Background(), "X-Host", host),
+		time.Second)
 	defer cancel()
 	clt := pb.NewMessageServiceClient(grpc)
 
@@ -48,8 +51,10 @@ func (grpc *grpcClt) MqttPublish(topic string, msg []byte) error {
 	return nil
 }
 
-func (grpc *grpcClt) Push(tokens []string, title, body string, data map[string]interface{}) (errorTokens []string, err error) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+func (grpc *grpcClt) Push(host string, tokens []string, title, body string, data map[string]interface{}) (errorTokens []string, err error) {
+	ctx, cancel := context.WithTimeout(
+		metadata.AppendToOutgoingContext(context.Background(), "X-Host", host),
+		time.Second)
 	defer cancel()
 	clt := pb.NewMessageServiceClient(grpc)
 	d, _ := json.Marshal(data)
@@ -69,11 +74,13 @@ func (grpc *grpcClt) Push(tokens []string, title, body string, data map[string]i
 	return
 }
 
-func (grpc *grpcClt) Mail(receivers []*MailReceiver, subject, plaintText, html string, recvHandler func(success bool, name, email, err string)) error {
+func (grpc *grpcClt) Mail(host string, receivers []*MailReceiver, subject, plaintText, html string, recvHandler func(success bool, name, email, err string)) error {
 	if len(receivers) == 0 {
 		return errors.New("no receivers")
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(
+		metadata.AppendToOutgoingContext(context.Background(), "X-Host", host),
+		time.Second)
 	defer cancel()
 	clt := pb.NewMessageServiceClient(grpc)
 	var pbReceivers []*pb.MailReceiver
