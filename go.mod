@@ -1,15 +1,16 @@
 module bitbucket.org/muulin/interlib
 
-go 1.17
+go 1.18
 
 require (
 	github.com/94peter/sterna v0.19.6
 	github.com/gin-gonic/gin v1.8.1
 	github.com/google/uuid v1.3.0
 	github.com/gorilla/mux v1.8.0
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.8.0
 	google.golang.org/grpc v1.47.0
 	google.golang.org/protobuf v1.28.0
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
@@ -54,8 +55,7 @@ require (
 	golang.org/x/sys v0.0.0-20220708085239-5a0f0661e09d // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/genproto v0.0.0-20220711200234-e2551ce405a2 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 replace github.com/94peter/sterna => ../sterna

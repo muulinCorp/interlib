@@ -1,0 +1,53 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "message/service";
+package service;
+
+
+
+message MqttPublishRequest {
+  repeated string topics = 1;
+  bytes msg = 2; 
+}
+
+message MqttPublishResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message PushRequest {
+  repeated string tokens = 1;
+  string title = 2;
+  string body = 3;
+  bytes data = 4;
+}
+
+message PushResponse {
+  repeated string errorTokens = 1;
+  string error = 2;
+}
+
+message MailRequest {
+  repeated MailReceiver receiver = 1;
+  string subject = 2;
+  string plaintText =3;
+  string html = 4;
+}
+
+message MailResponse {
+  bool success = 1;
+  string name = 2;
+  string mail = 3;
+  string error = 4;
+}
+
+message MailReceiver {
+  string name = 1;
+  string email = 2;
+}
+
+service MessageService {
+  rpc MqttPublish(MqttPublishRequest) returns (MqttPublishResponse) {};
+  rpc Push(PushRequest) returns (PushResponse) {};
+  rpc Mail(MailRequest) returns (stream MailResponse) {};
+}
