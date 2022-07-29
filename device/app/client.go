@@ -6,12 +6,13 @@ import (
 
 	"bitbucket.org/muulin/interlib/core"
 	pb "bitbucket.org/muulin/interlib/device/app/service"
+	"github.com/94peter/sterna/auth"
 	"google.golang.org/grpc/metadata"
 )
 
 type AppDeviceClient interface {
 	core.MyGrpc
-	AssignDevices(channel string, devices DeviceAry, recvHandler func(suc bool, mac string, err string)) error
+	AssignDevices(channel string, devices DeviceAry, recvHandler func(suc bool, mac string, err string), reqUser auth.ReqUser) error
 }
 
 func NewGrpcClient(address string) (AppDeviceClient, error) {
@@ -26,9 +27,10 @@ type grpcClt struct {
 	core.MyGrpc
 }
 
-func (gclt *grpcClt) AssignDevices(host string, devices DeviceAry, recvHandler func(suc bool, mac string, err string)) error {
+func (gclt *grpcClt) AssignDevices(host string, devices DeviceAry, recvHandler func(suc bool, mac string, err string), reqUser auth.ReqUser) error {
 	clt := pb.NewAppDeviceServiceClient(gclt)
 	ctx := metadata.AppendToOutgoingContext(context.Background(), "X-Host", host)
+	ctx = metadata.AppendToOutgoingContext(ctx, "X-ReqUser", reqUser.Encode())
 	stream, err := clt.AssignDevices(ctx, &pb.AssignDevicesRequest{
 		Devices: devices.getDevices(),
 	})
