@@ -24,8 +24,8 @@ func (ss *serverStream) Context() context.Context {
 	return ss.ctx
 }
 
-func StreamServerDBInterceptor(di DBMidDI) grpc.ServerOption {
-	return grpc.StreamInterceptor(func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
+func StreamServerDBInterceptor(di DBMidDI) grpc.StreamServerInterceptor {
+	return grpc.StreamServerInterceptor(func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
 		uuid := uuid.New().String()
 		l := di.NewLogger(uuid)
 		dbclt, err := di.NewMongoDBClient(ss.Context(), "")
@@ -49,8 +49,8 @@ func StreamServerDBInterceptor(di DBMidDI) grpc.ServerOption {
 	})
 }
 
-func UnaryServerDBInterceptor(di DBMidDI) grpc.ServerOption {
-	return grpc.UnaryInterceptor(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+func UnaryServerDBInterceptor(di DBMidDI) grpc.UnaryServerInterceptor {
+	return grpc.UnaryServerInterceptor(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 		uuid := uuid.New().String()
 		l := di.NewLogger(uuid)
 		dbclt, err := di.NewMongoDBClient(ctx, "")
