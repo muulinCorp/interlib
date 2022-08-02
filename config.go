@@ -37,7 +37,7 @@ func (conf *GrpcRouterConf) InitConfByFile(f string) {
 }
 
 func (conf GrpcRouterConf) getAddress(key string) (string, error) {
-	address, ok := conf[channel.RouterKey]
+	address, ok := conf[key]
 	if !ok {
 		return "", fmt.Errorf("config not set router key [%s]", channel.RouterKey)
 	}
