@@ -15,6 +15,16 @@ message ValidateTokenResponse {
   repeated string perms = 5;
 }
 
+message IsAccountsExistRequest {
+  repeated string accounts = 1;
+}
+
+message IsAccountsExistResponse {
+  repeated string NotExistAccounts = 1;
+}
+
 service AuthService {
   rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse) {};
+  rpc IsAccountsExist(IsAccountsExistRequest) returns (IsAccountsExistResponse) {};
 }
+
