@@ -10,6 +10,7 @@ import (
 type ChannelClient interface {
 	core.MyGrpc
 	GetConf(host, env string) ([]byte, error)
+	IsExist(host string) (bool, error)
 }
 
 func NewGrpcClient(address string) (ChannelClient, error) {
@@ -36,4 +37,14 @@ func (gclt *grpcClt) GetConf(host, env string) ([]byte, error) {
 	}
 
 	return resp.Config, nil
+}
+
+func (gclt *grpcClt) IsExist(host string) (bool, error) {
+	clt := pb.NewChannelConfClient(gclt)
+
+	resp, err := clt.IsExist(context.Background(), &pb.IsExistRequest{Host: host})
+	if err != nil {
+		return false, err
+	}
+	return resp.IsExist, nil
 }
