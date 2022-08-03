@@ -2,7 +2,6 @@ package interceptor
 
 import (
 	"context"
-	"encoding/json"
 	"reflect"
 
 	"bitbucket.org/muulin/interlib/channel"
@@ -13,6 +12,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+	"gopkg.in/yaml.v2"
 )
 
 var (
@@ -41,7 +41,7 @@ func getDI(ctx context.Context, clt channel.ChannelClient, env string, di DBMidD
 	}
 	hosts := md.Get("X-Host")
 	if len(hosts) != 1 {
-		return nil, status.Error(codes.InvalidArgument, "missing X-Host")
+		return nil, nil
 	}
 	var mydi DBMidDI
 	if mydi, ok = serviceDiMap[hosts[0]]; ok {
@@ -59,7 +59,7 @@ func getDI(ctx context.Context, clt channel.ChannelClient, env string, di DBMidD
 	}
 	newValue := reflect.New(val.Type()).Interface()
 
-	err = json.Unmarshal(confByte, newValue)
+	err = yaml.Unmarshal(confByte, newValue)
 	if err != nil {
 		return nil, err
 	}
@@ -87,8 +87,8 @@ func getContextWitchRsrc(ctx context.Context, di DBMidDI) (context.Context, erro
 	return ctx, nil
 }
 
-func StreamServerDBInterceptor(clt channel.ChannelClient, env string, di DBMidDI) grpc.ServerOption {
-	return grpc.StreamInterceptor(func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
+func StreamServerDBInterceptor(clt channel.ChannelClient, env string, di DBMidDI) grpc.StreamServerInterceptor {
+	return grpc.StreamServerInterceptor(func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
 
 		di, err := getDI(ss.Context(), clt, env, di)
 		if err != nil {
@@ -106,8 +106,8 @@ func StreamServerDBInterceptor(clt channel.ChannelClient, env string, di DBMidDI
 	})
 }
 
-func UnaryServerDBInterceptor(clt channel.ChannelClient, env string, di DBMidDI) grpc.ServerOption {
-	return grpc.UnaryInterceptor(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+func UnaryServerDBInterceptor(clt channel.ChannelClient, env string, di DBMidDI) grpc.UnaryServerInterceptor {
+	return grpc.UnaryServerInterceptor(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 		di, err := getDI(ctx, clt, env, di)
 		if err != nil {
 			return nil, err

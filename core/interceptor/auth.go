@@ -15,20 +15,23 @@ func getReqUser(ctx context.Context) (auth.ReqUser, error) {
 	if !ok {
 		return nil, status.Error(codes.InvalidArgument, "can not get metadata")
 	}
+
 	reqUserStr := md.Get("X-ReqUser")
-	if len(reqUserStr) != 1 {
-		return nil, status.Error(codes.InvalidArgument, "missing X-ReqUser")
+
+	if len(reqUserStr) == 1 {
+		reqUser := auth.NewEmptyReqUser()
+		err := reqUser.Decode(reqUserStr[0])
+		if err != nil {
+			return nil, status.Error(codes.Internal, "decode error: "+err.Error())
+		}
+		return reqUser, nil
+
 	}
-	reqUser := auth.NewEmptyReqUser()
-	err := reqUser.Decode(reqUserStr[0])
-	if err != nil {
-		return nil, status.Error(codes.Internal, "decode error: "+err.Error())
-	}
-	return reqUser, nil
+	return nil, nil
 }
 
-func StreamServerAuthInterceptor() grpc.ServerOption {
-	return grpc.StreamInterceptor(func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
+func StreamServerAuthInterceptor() grpc.StreamServerInterceptor {
+	return grpc.StreamServerInterceptor(func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
 		user, err := getReqUser(ss.Context())
 		if err != nil {
 			return err
@@ -42,8 +45,8 @@ func StreamServerAuthInterceptor() grpc.ServerOption {
 	})
 }
 
-func UnaryServerAuthInterceptor() grpc.ServerOption {
-	return grpc.UnaryInterceptor(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+func UnaryServerAuthInterceptor() grpc.UnaryServerInterceptor {
+	return grpc.UnaryServerInterceptor(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 		user, err := getReqUser(ctx)
 		if err != nil {
 			return nil, err

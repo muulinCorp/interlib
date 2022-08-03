@@ -8,6 +8,7 @@ import (
 	"bitbucket.org/muulin/interlib/channel"
 	appDevice "bitbucket.org/muulin/interlib/device/app"
 	coreDevice "bitbucket.org/muulin/interlib/device/core"
+	"bitbucket.org/muulin/interlib/message"
 	"bitbucket.org/muulin/interlib/rawdata"
 	"gopkg.in/yaml.v2"
 )
@@ -36,7 +37,7 @@ func (conf *GrpcRouterConf) InitConfByFile(f string) {
 }
 
 func (conf GrpcRouterConf) getAddress(key string) (string, error) {
-	address, ok := conf[channel.RouterKey]
+	address, ok := conf[key]
 	if !ok {
 		return "", fmt.Errorf("config not set router key [%s]", channel.RouterKey)
 	}
@@ -65,4 +66,12 @@ func (conf GrpcRouterConf) NewAppDeviceClient() (appDevice.AppDeviceClient, erro
 		return nil, err
 	}
 	return appDevice.NewGrpcClient(address)
+}
+
+func (conf GrpcRouterConf) NewMessageClient() (message.MessageClient, error) {
+	address, err := conf.getAddress(message.RouterKey)
+	if err != nil {
+		return nil, err
+	}
+	return message.NewGrpcClient(address)
 }
