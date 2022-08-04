@@ -9,6 +9,7 @@ package service;
 service ChannelConf {
   // Sends a greeting
   rpc GetConf (GetConfRequest) returns (GetConfReply) {}
+  rpc IsExist (IsExistRequest) returns (IsExistReply) {}
 }
 
 // The request message containing the user's name.
@@ -20,4 +21,12 @@ message GetConfRequest {
 // The response message containing the greetings
 message GetConfReply {
   bytes config = 1;
+}
+
+message IsExistRequest {
+  string host = 1;
+}
+
+message IsExistReply {
+  bool isExist = 1;
 }
