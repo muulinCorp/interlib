@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"bitbucket.org/muulin/interlib/auth"
 	"bitbucket.org/muulin/interlib/channel"
 	appDevice "bitbucket.org/muulin/interlib/device/app"
 	coreDevice "bitbucket.org/muulin/interlib/device/core"
@@ -74,4 +75,12 @@ func (conf GrpcRouterConf) NewMessageClient() (message.MessageClient, error) {
 		return nil, err
 	}
 	return message.NewGrpcClient(address)
+}
+
+func (conf GrpcRouterConf) NewAuthClient() (auth.AuthClient, error) {
+	address, err := conf.getAddress(auth.RouterKey)
+	if err != nil {
+		return nil, err
+	}
+	return auth.NewGrpcClient(address)
 }

@@ -8,3 +8,7 @@ const (
 	PermClassA = auth.UserPerm("classA")
 	PermClassB = auth.UserPerm("classB")
 )
+
+const (
+	RouterKey = "gRPC_Auth_Router"
+)
