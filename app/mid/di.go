@@ -97,7 +97,8 @@ func (m *diMiddle) Handler() gin.HandlerFunc {
 			serviceDiMap[host] = newValue
 			mydi = newValue
 		}
-		c.Set(string(CtxServDiKey), mydi)
+		c.Request = util.SetCtxKeyVal(c.Request, CtxServDiKey, mydi)
+		//c.Set(string(CtxServDiKey), mydi)
 		c.Next()
 	}
 }
