@@ -22,12 +22,28 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AppDeviceServiceClient interface {
-	// 分配裝置到通路
-	AssignDevices(ctx context.Context, in *AssignDevicesRequest, opts ...grpc.CallOption) (AppDeviceService_AssignDevicesClient, error)
+	// 建立配送單
+	CreateSendTxn(ctx context.Context, in *CreateSendTxnRequest, opts ...grpc.CallOption) (AppDeviceService_CreateSendTxnClient, error)
+	// 修改配送單
+	ModifySendTxn(ctx context.Context, in *ModifySendTxnRequest, opts ...grpc.CallOption) (*CommonResponse, error)
+	// 取消配送單
+	CancelSendTxn(ctx context.Context, in *ApplyTxn, opts ...grpc.CallOption) (*CommonResponse, error)
+	// 取得配送單/回收單
+	ListTxn(ctx context.Context, in *QueryTxnRequest, opts ...grpc.CallOption) (AppDeviceService_ListTxnClient, error)
+	// Txn 新增 Comment
+	TxnAddComment(ctx context.Context, in *TxnAddCommentRequest, opts ...grpc.CallOption) (*CommonResponse, error)
+	// 搬移 Txn
+	MigrationTxn(ctx context.Context, in *MigrationTxnRequest, opts ...grpc.CallOption) (*CommonResponse, error)
+	// 刪除 Txn
+	RemoveTxn(ctx context.Context, in *RemoveTxnRequest, opts ...grpc.CallOption) (*CommonResponse, error)
+	// 回覆 Txn
+	ReplyTxn(ctx context.Context, in *ReplyTxnRequest, opts ...grpc.CallOption) (*ReplyTxnResponse, error)
+	// 確認回收單
+	ConfirmRecycle(ctx context.Context, in *ApplyTxn, opts ...grpc.CallOption) (*CommonResponse, error)
 	// 裝置分配案場編輯
-	DeviceProjectEdit(ctx context.Context, in *DeviceRelationEditRequest, opts ...grpc.CallOption) (AppDeviceService_DeviceProjectEditClient, error)
+	// rpc DeviceProjectEdit(DeviceRelationEditRequest) returns (stream DeviceRelationEditResponse){};
 	// 裝置對應設備編輯
-	DeviceEquipmentEdit(ctx context.Context, in *DeviceRelationEditRequest, opts ...grpc.CallOption) (AppDeviceService_DeviceEquipmentEditClient, error)
+	// rpc DeviceEquipmentEdit(DeviceRelationEditRequest) returns (stream DeviceRelationEditResponse){};
 	// 依設備取得對應所有裝置
 	GetDevicesByEquips(ctx context.Context, in *GetDevicesByEquipsRequest, opts ...grpc.CallOption) (AppDeviceService_GetDevicesByEquipsClient, error)
 }
@@ -40,12 +56,12 @@ func NewAppDeviceServiceClient(cc grpc.ClientConnInterface) AppDeviceServiceClie
 	return &appDeviceServiceClient{cc}
 }
 
-func (c *appDeviceServiceClient) AssignDevices(ctx context.Context, in *AssignDevicesRequest, opts ...grpc.CallOption) (AppDeviceService_AssignDevicesClient, error) {
-	stream, err := c.cc.NewStream(ctx, &AppDeviceService_ServiceDesc.Streams[0], "/service.AppDeviceService/AssignDevices", opts...)
+func (c *appDeviceServiceClient) CreateSendTxn(ctx context.Context, in *CreateSendTxnRequest, opts ...grpc.CallOption) (AppDeviceService_CreateSendTxnClient, error) {
+	stream, err := c.cc.NewStream(ctx, &AppDeviceService_ServiceDesc.Streams[0], "/service.AppDeviceService/CreateSendTxn", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &appDeviceServiceAssignDevicesClient{stream}
+	x := &appDeviceServiceCreateSendTxnClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -55,29 +71,47 @@ func (c *appDeviceServiceClient) AssignDevices(ctx context.Context, in *AssignDe
 	return x, nil
 }
 
-type AppDeviceService_AssignDevicesClient interface {
-	Recv() (*AssignDeviceResponse, error)
+type AppDeviceService_CreateSendTxnClient interface {
+	Recv() (*CreateSendTxnResponse, error)
 	grpc.ClientStream
 }
 
-type appDeviceServiceAssignDevicesClient struct {
+type appDeviceServiceCreateSendTxnClient struct {
 	grpc.ClientStream
 }
 
-func (x *appDeviceServiceAssignDevicesClient) Recv() (*AssignDeviceResponse, error) {
-	m := new(AssignDeviceResponse)
+func (x *appDeviceServiceCreateSendTxnClient) Recv() (*CreateSendTxnResponse, error) {
+	m := new(CreateSendTxnResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
 }
 
-func (c *appDeviceServiceClient) DeviceProjectEdit(ctx context.Context, in *DeviceRelationEditRequest, opts ...grpc.CallOption) (AppDeviceService_DeviceProjectEditClient, error) {
-	stream, err := c.cc.NewStream(ctx, &AppDeviceService_ServiceDesc.Streams[1], "/service.AppDeviceService/DeviceProjectEdit", opts...)
+func (c *appDeviceServiceClient) ModifySendTxn(ctx context.Context, in *ModifySendTxnRequest, opts ...grpc.CallOption) (*CommonResponse, error) {
+	out := new(CommonResponse)
+	err := c.cc.Invoke(ctx, "/service.AppDeviceService/ModifySendTxn", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &appDeviceServiceDeviceProjectEditClient{stream}
+	return out, nil
+}
+
+func (c *appDeviceServiceClient) CancelSendTxn(ctx context.Context, in *ApplyTxn, opts ...grpc.CallOption) (*CommonResponse, error) {
+	out := new(CommonResponse)
+	err := c.cc.Invoke(ctx, "/service.AppDeviceService/CancelSendTxn", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *appDeviceServiceClient) ListTxn(ctx context.Context, in *QueryTxnRequest, opts ...grpc.CallOption) (AppDeviceService_ListTxnClient, error) {
+	stream, err := c.cc.NewStream(ctx, &AppDeviceService_ServiceDesc.Streams[1], "/service.AppDeviceService/ListTxn", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &appDeviceServiceListTxnClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -87,57 +121,70 @@ func (c *appDeviceServiceClient) DeviceProjectEdit(ctx context.Context, in *Devi
 	return x, nil
 }
 
-type AppDeviceService_DeviceProjectEditClient interface {
-	Recv() (*DeviceRelationEditResponse, error)
+type AppDeviceService_ListTxnClient interface {
+	Recv() (*QueryTxnResponse, error)
 	grpc.ClientStream
 }
 
-type appDeviceServiceDeviceProjectEditClient struct {
+type appDeviceServiceListTxnClient struct {
 	grpc.ClientStream
 }
 
-func (x *appDeviceServiceDeviceProjectEditClient) Recv() (*DeviceRelationEditResponse, error) {
-	m := new(DeviceRelationEditResponse)
+func (x *appDeviceServiceListTxnClient) Recv() (*QueryTxnResponse, error) {
+	m := new(QueryTxnResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
 }
 
-func (c *appDeviceServiceClient) DeviceEquipmentEdit(ctx context.Context, in *DeviceRelationEditRequest, opts ...grpc.CallOption) (AppDeviceService_DeviceEquipmentEditClient, error) {
-	stream, err := c.cc.NewStream(ctx, &AppDeviceService_ServiceDesc.Streams[2], "/service.AppDeviceService/DeviceEquipmentEdit", opts...)
+func (c *appDeviceServiceClient) TxnAddComment(ctx context.Context, in *TxnAddCommentRequest, opts ...grpc.CallOption) (*CommonResponse, error) {
+	out := new(CommonResponse)
+	err := c.cc.Invoke(ctx, "/service.AppDeviceService/TxnAddComment", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &appDeviceServiceDeviceEquipmentEditClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
+	return out, nil
 }
 
-type AppDeviceService_DeviceEquipmentEditClient interface {
-	Recv() (*DeviceRelationEditResponse, error)
-	grpc.ClientStream
-}
-
-type appDeviceServiceDeviceEquipmentEditClient struct {
-	grpc.ClientStream
-}
-
-func (x *appDeviceServiceDeviceEquipmentEditClient) Recv() (*DeviceRelationEditResponse, error) {
-	m := new(DeviceRelationEditResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
+func (c *appDeviceServiceClient) MigrationTxn(ctx context.Context, in *MigrationTxnRequest, opts ...grpc.CallOption) (*CommonResponse, error) {
+	out := new(CommonResponse)
+	err := c.cc.Invoke(ctx, "/service.AppDeviceService/MigrationTxn", in, out, opts...)
+	if err != nil {
 		return nil, err
 	}
-	return m, nil
+	return out, nil
+}
+
+func (c *appDeviceServiceClient) RemoveTxn(ctx context.Context, in *RemoveTxnRequest, opts ...grpc.CallOption) (*CommonResponse, error) {
+	out := new(CommonResponse)
+	err := c.cc.Invoke(ctx, "/service.AppDeviceService/RemoveTxn", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *appDeviceServiceClient) ReplyTxn(ctx context.Context, in *ReplyTxnRequest, opts ...grpc.CallOption) (*ReplyTxnResponse, error) {
+	out := new(ReplyTxnResponse)
+	err := c.cc.Invoke(ctx, "/service.AppDeviceService/ReplyTxn", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *appDeviceServiceClient) ConfirmRecycle(ctx context.Context, in *ApplyTxn, opts ...grpc.CallOption) (*CommonResponse, error) {
+	out := new(CommonResponse)
+	err := c.cc.Invoke(ctx, "/service.AppDeviceService/ConfirmRecycle", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *appDeviceServiceClient) GetDevicesByEquips(ctx context.Context, in *GetDevicesByEquipsRequest, opts ...grpc.CallOption) (AppDeviceService_GetDevicesByEquipsClient, error) {
-	stream, err := c.cc.NewStream(ctx, &AppDeviceService_ServiceDesc.Streams[3], "/service.AppDeviceService/GetDevicesByEquips", opts...)
+	stream, err := c.cc.NewStream(ctx, &AppDeviceService_ServiceDesc.Streams[2], "/service.AppDeviceService/GetDevicesByEquips", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -172,12 +219,28 @@ func (x *appDeviceServiceGetDevicesByEquipsClient) Recv() (*GetDevicesByEquipsRe
 // All implementations must embed UnimplementedAppDeviceServiceServer
 // for forward compatibility
 type AppDeviceServiceServer interface {
-	// 分配裝置到通路
-	AssignDevices(*AssignDevicesRequest, AppDeviceService_AssignDevicesServer) error
+	// 建立配送單
+	CreateSendTxn(*CreateSendTxnRequest, AppDeviceService_CreateSendTxnServer) error
+	// 修改配送單
+	ModifySendTxn(context.Context, *ModifySendTxnRequest) (*CommonResponse, error)
+	// 取消配送單
+	CancelSendTxn(context.Context, *ApplyTxn) (*CommonResponse, error)
+	// 取得配送單/回收單
+	ListTxn(*QueryTxnRequest, AppDeviceService_ListTxnServer) error
+	// Txn 新增 Comment
+	TxnAddComment(context.Context, *TxnAddCommentRequest) (*CommonResponse, error)
+	// 搬移 Txn
+	MigrationTxn(context.Context, *MigrationTxnRequest) (*CommonResponse, error)
+	// 刪除 Txn
+	RemoveTxn(context.Context, *RemoveTxnRequest) (*CommonResponse, error)
+	// 回覆 Txn
+	ReplyTxn(context.Context, *ReplyTxnRequest) (*ReplyTxnResponse, error)
+	// 確認回收單
+	ConfirmRecycle(context.Context, *ApplyTxn) (*CommonResponse, error)
 	// 裝置分配案場編輯
-	DeviceProjectEdit(*DeviceRelationEditRequest, AppDeviceService_DeviceProjectEditServer) error
+	// rpc DeviceProjectEdit(DeviceRelationEditRequest) returns (stream DeviceRelationEditResponse){};
 	// 裝置對應設備編輯
-	DeviceEquipmentEdit(*DeviceRelationEditRequest, AppDeviceService_DeviceEquipmentEditServer) error
+	// rpc DeviceEquipmentEdit(DeviceRelationEditRequest) returns (stream DeviceRelationEditResponse){};
 	// 依設備取得對應所有裝置
 	GetDevicesByEquips(*GetDevicesByEquipsRequest, AppDeviceService_GetDevicesByEquipsServer) error
 	mustEmbedUnimplementedAppDeviceServiceServer()
@@ -187,14 +250,32 @@ type AppDeviceServiceServer interface {
 type UnimplementedAppDeviceServiceServer struct {
 }
 
-func (UnimplementedAppDeviceServiceServer) AssignDevices(*AssignDevicesRequest, AppDeviceService_AssignDevicesServer) error {
-	return status.Errorf(codes.Unimplemented, "method AssignDevices not implemented")
+func (UnimplementedAppDeviceServiceServer) CreateSendTxn(*CreateSendTxnRequest, AppDeviceService_CreateSendTxnServer) error {
+	return status.Errorf(codes.Unimplemented, "method CreateSendTxn not implemented")
 }
-func (UnimplementedAppDeviceServiceServer) DeviceProjectEdit(*DeviceRelationEditRequest, AppDeviceService_DeviceProjectEditServer) error {
-	return status.Errorf(codes.Unimplemented, "method DeviceProjectEdit not implemented")
+func (UnimplementedAppDeviceServiceServer) ModifySendTxn(context.Context, *ModifySendTxnRequest) (*CommonResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ModifySendTxn not implemented")
 }
-func (UnimplementedAppDeviceServiceServer) DeviceEquipmentEdit(*DeviceRelationEditRequest, AppDeviceService_DeviceEquipmentEditServer) error {
-	return status.Errorf(codes.Unimplemented, "method DeviceEquipmentEdit not implemented")
+func (UnimplementedAppDeviceServiceServer) CancelSendTxn(context.Context, *ApplyTxn) (*CommonResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CancelSendTxn not implemented")
+}
+func (UnimplementedAppDeviceServiceServer) ListTxn(*QueryTxnRequest, AppDeviceService_ListTxnServer) error {
+	return status.Errorf(codes.Unimplemented, "method ListTxn not implemented")
+}
+func (UnimplementedAppDeviceServiceServer) TxnAddComment(context.Context, *TxnAddCommentRequest) (*CommonResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TxnAddComment not implemented")
+}
+func (UnimplementedAppDeviceServiceServer) MigrationTxn(context.Context, *MigrationTxnRequest) (*CommonResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MigrationTxn not implemented")
+}
+func (UnimplementedAppDeviceServiceServer) RemoveTxn(context.Context, *RemoveTxnRequest) (*CommonResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveTxn not implemented")
+}
+func (UnimplementedAppDeviceServiceServer) ReplyTxn(context.Context, *ReplyTxnRequest) (*ReplyTxnResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReplyTxn not implemented")
+}
+func (UnimplementedAppDeviceServiceServer) ConfirmRecycle(context.Context, *ApplyTxn) (*CommonResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfirmRecycle not implemented")
 }
 func (UnimplementedAppDeviceServiceServer) GetDevicesByEquips(*GetDevicesByEquipsRequest, AppDeviceService_GetDevicesByEquipsServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetDevicesByEquips not implemented")
@@ -212,67 +293,172 @@ func RegisterAppDeviceServiceServer(s grpc.ServiceRegistrar, srv AppDeviceServic
 	s.RegisterService(&AppDeviceService_ServiceDesc, srv)
 }
 
-func _AppDeviceService_AssignDevices_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(AssignDevicesRequest)
+func _AppDeviceService_CreateSendTxn_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(CreateSendTxnRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(AppDeviceServiceServer).AssignDevices(m, &appDeviceServiceAssignDevicesServer{stream})
+	return srv.(AppDeviceServiceServer).CreateSendTxn(m, &appDeviceServiceCreateSendTxnServer{stream})
 }
 
-type AppDeviceService_AssignDevicesServer interface {
-	Send(*AssignDeviceResponse) error
+type AppDeviceService_CreateSendTxnServer interface {
+	Send(*CreateSendTxnResponse) error
 	grpc.ServerStream
 }
 
-type appDeviceServiceAssignDevicesServer struct {
+type appDeviceServiceCreateSendTxnServer struct {
 	grpc.ServerStream
 }
 
-func (x *appDeviceServiceAssignDevicesServer) Send(m *AssignDeviceResponse) error {
+func (x *appDeviceServiceCreateSendTxnServer) Send(m *CreateSendTxnResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _AppDeviceService_DeviceProjectEdit_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(DeviceRelationEditRequest)
+func _AppDeviceService_ModifySendTxn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ModifySendTxnRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppDeviceServiceServer).ModifySendTxn(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.AppDeviceService/ModifySendTxn",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppDeviceServiceServer).ModifySendTxn(ctx, req.(*ModifySendTxnRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AppDeviceService_CancelSendTxn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ApplyTxn)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppDeviceServiceServer).CancelSendTxn(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.AppDeviceService/CancelSendTxn",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppDeviceServiceServer).CancelSendTxn(ctx, req.(*ApplyTxn))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AppDeviceService_ListTxn_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(QueryTxnRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(AppDeviceServiceServer).DeviceProjectEdit(m, &appDeviceServiceDeviceProjectEditServer{stream})
+	return srv.(AppDeviceServiceServer).ListTxn(m, &appDeviceServiceListTxnServer{stream})
 }
 
-type AppDeviceService_DeviceProjectEditServer interface {
-	Send(*DeviceRelationEditResponse) error
+type AppDeviceService_ListTxnServer interface {
+	Send(*QueryTxnResponse) error
 	grpc.ServerStream
 }
 
-type appDeviceServiceDeviceProjectEditServer struct {
+type appDeviceServiceListTxnServer struct {
 	grpc.ServerStream
 }
 
-func (x *appDeviceServiceDeviceProjectEditServer) Send(m *DeviceRelationEditResponse) error {
+func (x *appDeviceServiceListTxnServer) Send(m *QueryTxnResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _AppDeviceService_DeviceEquipmentEdit_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(DeviceRelationEditRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+func _AppDeviceService_TxnAddComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TxnAddCommentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
 	}
-	return srv.(AppDeviceServiceServer).DeviceEquipmentEdit(m, &appDeviceServiceDeviceEquipmentEditServer{stream})
+	if interceptor == nil {
+		return srv.(AppDeviceServiceServer).TxnAddComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.AppDeviceService/TxnAddComment",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppDeviceServiceServer).TxnAddComment(ctx, req.(*TxnAddCommentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
-type AppDeviceService_DeviceEquipmentEditServer interface {
-	Send(*DeviceRelationEditResponse) error
-	grpc.ServerStream
+func _AppDeviceService_MigrationTxn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MigrationTxnRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppDeviceServiceServer).MigrationTxn(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.AppDeviceService/MigrationTxn",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppDeviceServiceServer).MigrationTxn(ctx, req.(*MigrationTxnRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
-type appDeviceServiceDeviceEquipmentEditServer struct {
-	grpc.ServerStream
+func _AppDeviceService_RemoveTxn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveTxnRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppDeviceServiceServer).RemoveTxn(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.AppDeviceService/RemoveTxn",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppDeviceServiceServer).RemoveTxn(ctx, req.(*RemoveTxnRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
-func (x *appDeviceServiceDeviceEquipmentEditServer) Send(m *DeviceRelationEditResponse) error {
-	return x.ServerStream.SendMsg(m)
+func _AppDeviceService_ReplyTxn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReplyTxnRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppDeviceServiceServer).ReplyTxn(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.AppDeviceService/ReplyTxn",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppDeviceServiceServer).ReplyTxn(ctx, req.(*ReplyTxnRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AppDeviceService_ConfirmRecycle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ApplyTxn)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppDeviceServiceServer).ConfirmRecycle(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.AppDeviceService/ConfirmRecycle",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppDeviceServiceServer).ConfirmRecycle(ctx, req.(*ApplyTxn))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _AppDeviceService_GetDevicesByEquips_Handler(srv interface{}, stream grpc.ServerStream) error {
@@ -302,21 +488,45 @@ func (x *appDeviceServiceGetDevicesByEquipsServer) Send(m *GetDevicesByEquipsRes
 var AppDeviceService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "service.AppDeviceService",
 	HandlerType: (*AppDeviceServiceServer)(nil),
-	Methods:     []grpc.MethodDesc{},
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ModifySendTxn",
+			Handler:    _AppDeviceService_ModifySendTxn_Handler,
+		},
+		{
+			MethodName: "CancelSendTxn",
+			Handler:    _AppDeviceService_CancelSendTxn_Handler,
+		},
+		{
+			MethodName: "TxnAddComment",
+			Handler:    _AppDeviceService_TxnAddComment_Handler,
+		},
+		{
+			MethodName: "MigrationTxn",
+			Handler:    _AppDeviceService_MigrationTxn_Handler,
+		},
+		{
+			MethodName: "RemoveTxn",
+			Handler:    _AppDeviceService_RemoveTxn_Handler,
+		},
+		{
+			MethodName: "ReplyTxn",
+			Handler:    _AppDeviceService_ReplyTxn_Handler,
+		},
+		{
+			MethodName: "ConfirmRecycle",
+			Handler:    _AppDeviceService_ConfirmRecycle_Handler,
+		},
+	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "AssignDevices",
-			Handler:       _AppDeviceService_AssignDevices_Handler,
+			StreamName:    "CreateSendTxn",
+			Handler:       _AppDeviceService_CreateSendTxn_Handler,
 			ServerStreams: true,
 		},
 		{
-			StreamName:    "DeviceProjectEdit",
-			Handler:       _AppDeviceService_DeviceProjectEdit_Handler,
-			ServerStreams: true,
-		},
-		{
-			StreamName:    "DeviceEquipmentEdit",
-			Handler:       _AppDeviceService_DeviceEquipmentEdit_Handler,
+			StreamName:    "ListTxn",
+			Handler:       _AppDeviceService_ListTxn_Handler,
 			ServerStreams: true,
 		},
 		{
