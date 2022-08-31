@@ -1,6 +1,8 @@
 package appDevice
 
 import (
+	"time"
+
 	pb "bitbucket.org/muulin/interlib/device/app/service"
 )
 
@@ -9,8 +11,9 @@ const (
 )
 
 type Device struct {
-	Mac   string
-	Model string
+	Mac       string
+	VirtualID string
+	Model     string
 }
 
 type DeviceAry []*Device
@@ -18,9 +21,51 @@ type DeviceAry []*Device
 func (da DeviceAry) getDevices() (result []*pb.Device) {
 	for _, d := range da {
 		result = append(result, &pb.Device{
-			Mac:   d.Mac,
-			Model: d.Model,
+			Mac:       d.Mac,
+			VirtualID: d.VirtualID,
+			Model:     d.Model,
 		})
 	}
 	return
+}
+
+type TxnType string
+
+const (
+	TxnTypeSend    = TxnType("sending")
+	TxnTypeRecycle = TxnType("recycling")
+)
+
+type TxnState string
+
+const (
+	TxnStateNew    = TxnState("new")
+	TxnStateDone   = TxnState("confirmed")
+	TxnStateCancel = TxnState("canceled")
+)
+
+type QueryTxnRequest struct {
+	Typ       TxnType
+	State     TxnState
+	StartTime time.Time
+	EndTime   time.Time
+}
+
+type TxnEditType string
+
+const (
+	TxnEditTypeAdd = TxnEditType("add")
+	TxnEditTypeDel = TxnEditType("del")
+)
+
+type DeviceInfo struct {
+	Mac       string
+	VirtualID string
+	Model     string
+	Desc      string
+}
+
+type TxnAct struct {
+	Edit   TxnEditType
+	Device *DeviceInfo
 }
