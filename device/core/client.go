@@ -137,3 +137,47 @@ func (grpc *grpcClt) UpdateRawdata(dataType RawdataType, mac string, t time.Time
 			},
 		})
 }
+
+func (grpc *grpcClt) UpdateDeviceState(
+	macList []string,
+	state DeviceState,
+	comment string,
+	errorHandler func(mac string, err string),
+) error {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	clt := pb.NewCoreDeviceServiceClient(grpc)
+	var updateState pb.DeviceState
+	switch state {
+	case Assigned:
+		updateState = pb.DeviceState_Assigned
+	case Used:
+		updateState = pb.DeviceState_Assigned
+	case ToBeRepaired:
+		updateState = pb.DeviceState_ToBeRepaired
+	default:
+		return errors.New("state must be [assigned, used, 2bRepaired]")
+	}
+	stream, err := clt.UpdateDeviceState(ctx, &pb.UpdateDeviceStateRequest{
+		State:      updateState,
+		MacAddress: macList,
+		Comment:    comment,
+	})
+	if err != nil {
+		return err
+	}
+	for {
+		resp, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return err
+		}
+		if !resp.Success {
+
+		}
+		errorHandler(resp.MacAddress, resp.Error)
+	}
+	return nil
+}

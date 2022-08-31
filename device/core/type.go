@@ -41,3 +41,14 @@ func (pool SensorValuePool) getSensorValueMap() map[uint32]*pb.SensorValue {
 	}
 	return result
 }
+
+type DeviceState string
+
+const (
+	// 已分配
+	Assigned = DeviceState("assigned")
+	// 使用中
+	Used = DeviceState("used")
+	// 待維修
+	ToBeRepaired = DeviceState("2bRepaired")
+)
