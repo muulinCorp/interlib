@@ -36,8 +36,6 @@ type AppDeviceServiceClient interface {
 	MigrationTxn(ctx context.Context, in *MigrationTxnRequest, opts ...grpc.CallOption) (*CommonResponse, error)
 	// 刪除 Txn
 	RemoveTxn(ctx context.Context, in *RemoveTxnRequest, opts ...grpc.CallOption) (*CommonResponse, error)
-	// 回覆 Txn
-	ReplyTxn(ctx context.Context, in *ReplyTxnRequest, opts ...grpc.CallOption) (*ReplyTxnResponse, error)
 	// 確認回收單
 	ConfirmRecycle(ctx context.Context, in *ApplyTxn, opts ...grpc.CallOption) (*CommonResponse, error)
 	// 裝置分配案場編輯
@@ -165,15 +163,6 @@ func (c *appDeviceServiceClient) RemoveTxn(ctx context.Context, in *RemoveTxnReq
 	return out, nil
 }
 
-func (c *appDeviceServiceClient) ReplyTxn(ctx context.Context, in *ReplyTxnRequest, opts ...grpc.CallOption) (*ReplyTxnResponse, error) {
-	out := new(ReplyTxnResponse)
-	err := c.cc.Invoke(ctx, "/service.AppDeviceService/ReplyTxn", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *appDeviceServiceClient) ConfirmRecycle(ctx context.Context, in *ApplyTxn, opts ...grpc.CallOption) (*CommonResponse, error) {
 	out := new(CommonResponse)
 	err := c.cc.Invoke(ctx, "/service.AppDeviceService/ConfirmRecycle", in, out, opts...)
@@ -233,8 +222,6 @@ type AppDeviceServiceServer interface {
 	MigrationTxn(context.Context, *MigrationTxnRequest) (*CommonResponse, error)
 	// 刪除 Txn
 	RemoveTxn(context.Context, *RemoveTxnRequest) (*CommonResponse, error)
-	// 回覆 Txn
-	ReplyTxn(context.Context, *ReplyTxnRequest) (*ReplyTxnResponse, error)
 	// 確認回收單
 	ConfirmRecycle(context.Context, *ApplyTxn) (*CommonResponse, error)
 	// 裝置分配案場編輯
@@ -270,9 +257,6 @@ func (UnimplementedAppDeviceServiceServer) MigrationTxn(context.Context, *Migrat
 }
 func (UnimplementedAppDeviceServiceServer) RemoveTxn(context.Context, *RemoveTxnRequest) (*CommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveTxn not implemented")
-}
-func (UnimplementedAppDeviceServiceServer) ReplyTxn(context.Context, *ReplyTxnRequest) (*ReplyTxnResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ReplyTxn not implemented")
 }
 func (UnimplementedAppDeviceServiceServer) ConfirmRecycle(context.Context, *ApplyTxn) (*CommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ConfirmRecycle not implemented")
@@ -425,24 +409,6 @@ func _AppDeviceService_RemoveTxn_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AppDeviceService_ReplyTxn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReplyTxnRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppDeviceServiceServer).ReplyTxn(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/service.AppDeviceService/ReplyTxn",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppDeviceServiceServer).ReplyTxn(ctx, req.(*ReplyTxnRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _AppDeviceService_ConfirmRecycle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ApplyTxn)
 	if err := dec(in); err != nil {
@@ -508,10 +474,6 @@ var AppDeviceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemoveTxn",
 			Handler:    _AppDeviceService_RemoveTxn_Handler,
-		},
-		{
-			MethodName: "ReplyTxn",
-			Handler:    _AppDeviceService_ReplyTxn_Handler,
 		},
 		{
 			MethodName: "ConfirmRecycle",
