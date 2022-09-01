@@ -133,23 +133,6 @@ message RemoveTxnRequest {
   string id = 1;
 }
 
-enum Reply {
-  Confirm = 0;
-  Cancel = 1;
-}
-
-message ReplyTxnRequest {
-  string id = 1;
-  Reply reply = 2;
-  string comment = 3;
-}
-
-
-message ReplyTxnResponse {
-  string id = 1;
-  repeated Device devices = 2;
-}
-
 service AppDeviceService {
   // 建立配送單
   rpc CreateSendTxn(CreateSendTxnRequest) returns (stream CreateSendTxnResponse) {};
@@ -165,8 +148,6 @@ service AppDeviceService {
   rpc MigrationTxn(MigrationTxnRequest) returns (CommonResponse) {};
   // 刪除 Txn
   rpc RemoveTxn(RemoveTxnRequest) returns (CommonResponse) {};
-  // 回覆 Txn
-  rpc ReplyTxn(ReplyTxnRequest) returns (ReplyTxnResponse) {};
   // 確認回收單
   rpc ConfirmRecycle(ApplyTxn) returns (CommonResponse) {};
   // 裝置分配案場編輯
