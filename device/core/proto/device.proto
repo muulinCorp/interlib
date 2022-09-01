@@ -62,12 +62,14 @@ message RemoteResponse {
 
 enum DeviceState {
   ToBeRepaired = 0;
-  Recycled = 1;
+  Used = 1;
+  Assigned = 2;
 }
 
 message UpdateDeviceStateRequest {
   DeviceState state = 1;
   repeated string macAddress = 2;
+  string comment = 3;
 }
 
 message UpdateDeviceStateResponse {
