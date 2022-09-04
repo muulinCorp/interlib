@@ -1,0 +1,40 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "comm/service";
+package service;
+
+
+
+message Iot627TimingRequest {
+  string mac = 1;
+  string virtualID =2;
+  string zone = 3;
+}
+
+message Iot627RemoteRequest {
+  string mac = 1;
+  string virtualID =2;
+  string key = 3;
+  double value =4;
+}
+
+message Iot627GetControlValueRequest {
+  string mac = 1;
+  string virtualID =2;
+}
+
+message CommonResponse {
+  uint32 statusCode = 1;
+  string mac = 2;
+  string virtualID =3;
+  string message = 4;
+}
+
+service CommService {
+  // 遠端校時
+  rpc Iot627Timing(stream Iot627TimingRequest) returns (stream CommonResponse){};
+  // 遠端控制
+  rpc Iot627Remote(Iot627RemoteRequest) returns (CommonResponse){};
+  // 回傳所有控制數值
+  rpc Iot627GetControlValue(Iot627GetControlValueRequest) returns (CommonResponse){};
+}
