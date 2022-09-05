@@ -7,10 +7,12 @@ import (
 
 	"bitbucket.org/muulin/interlib/auth"
 	"bitbucket.org/muulin/interlib/channel"
+	"bitbucket.org/muulin/interlib/comm"
 	appDevice "bitbucket.org/muulin/interlib/device/app"
 	coreDevice "bitbucket.org/muulin/interlib/device/core"
 	"bitbucket.org/muulin/interlib/message"
 	"bitbucket.org/muulin/interlib/rawdata"
+	"github.com/94peter/sterna/log"
 	"gopkg.in/yaml.v2"
 )
 
@@ -83,4 +85,12 @@ func (conf GrpcRouterConf) NewAuthClient() (auth.AuthClient, error) {
 		return nil, err
 	}
 	return auth.NewGrpcClient(address)
+}
+
+func (conf GrpcRouterConf) NewCommClient(l log.Logger) (comm.CommClient, error) {
+	address, err := conf.getAddress(comm.RouterKey)
+	if err != nil {
+		return nil, err
+	}
+	return comm.NewGrpcClient(address, l)
 }

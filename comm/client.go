@@ -1,4 +1,4 @@
-package appDevice
+package comm
 
 import (
 	"context"
