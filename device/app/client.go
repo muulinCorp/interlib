@@ -2,12 +2,15 @@ package appDevice
 
 import (
 	"context"
-	"errors"
+	"fmt"
 	"io"
+	"net/http"
 	"time"
 
 	"bitbucket.org/muulin/interlib/core"
 	pb "bitbucket.org/muulin/interlib/device/app/service"
+	"bitbucket.org/muulin/interlib/types"
+	"github.com/94peter/sterna/api"
 	"github.com/94peter/sterna/auth"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -105,8 +108,9 @@ func (gclt *grpcClt) ModifySendTxn(
 	if err != nil {
 		return err
 	}
-	if !resp.Success {
-		return errors.New(resp.Error)
+	if resp.StatusCode != http.StatusOK {
+		return types.NewErrorWaper(api.NewApiError(int(resp.StatusCode), resp.Message),
+			fmt.Sprintf("modify txn [%s] fail", id))
 	}
 	return nil
 }
@@ -124,8 +128,9 @@ func (gclt *grpcClt) CancelSendTxn(
 	if err != nil {
 		return err
 	}
-	if !resp.Success {
-		return errors.New(resp.Error)
+	if resp.StatusCode != http.StatusOK {
+		return types.NewErrorWaper(api.NewApiError(int(resp.StatusCode), resp.Message),
+			fmt.Sprintf("cancel txn [%s] fail", id))
 	}
 	return nil
 }
@@ -184,8 +189,9 @@ func (gclt *grpcClt) TxnAddComment(host string, id string, comment string, reqUs
 	if err != nil {
 		return err
 	}
-	if !resp.Success {
-		return errors.New(resp.Error)
+	if resp.StatusCode != http.StatusOK {
+		return types.NewErrorWaper(api.NewApiError(int(resp.StatusCode), resp.Message),
+			fmt.Sprintf("Add txn comment [%s] fail", id))
 	}
 	return nil
 }
@@ -201,8 +207,9 @@ func (gclt *grpcClt) MigrationTxn(host string, targetHost string, id string, req
 	if err != nil {
 		return err
 	}
-	if !resp.Success {
-		return errors.New(resp.Error)
+	if resp.StatusCode != http.StatusOK {
+		return types.NewErrorWaper(api.NewApiError(int(resp.StatusCode), resp.Message),
+			fmt.Sprintf("Migration txn [%s] fail", id))
 	}
 	return nil
 }
@@ -217,8 +224,9 @@ func (gclt *grpcClt) RemoveTxn(host string, id string, reqUser auth.ReqUser) err
 	if err != nil {
 		return err
 	}
-	if !resp.Success {
-		return errors.New(resp.Error)
+	if resp.StatusCode != http.StatusOK {
+		return types.NewErrorWaper(api.NewApiError(int(resp.StatusCode), resp.Message),
+			fmt.Sprintf("Remove txn [%s] fail", id))
 	}
 	return nil
 }
@@ -234,8 +242,10 @@ func (gclt *grpcClt) ConfirmRecycle(host string, id string, comment string, reqU
 	if err != nil {
 		return err
 	}
-	if !resp.Success {
-		return errors.New(resp.Error)
+
+	if resp.StatusCode != http.StatusOK {
+		return types.NewErrorWaper(api.NewApiError(int(resp.StatusCode), resp.Message),
+			fmt.Sprintf("Confirm txn [%s] fail", id))
 	}
 	return nil
 }
