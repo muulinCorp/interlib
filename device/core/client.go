@@ -18,7 +18,7 @@ type CoreDeviceClient interface {
 	Remote(deviceID string, device, address uint32, value float64) error
 	StartUpdateRawdataStream(recvHandler func(success bool, mac string, err string), log log.Logger) error
 	StopUpdateRawdataStream() error
-	UpdateRawdata(dataType RawdataType, mac string, t time.Time, values SensorValuePool) error
+	UpdateRawdata(dataType RawdataType, mac, virtualID string, t time.Time, values SensorValuePool) error
 	GetValueMap(dataType RawdataType, devices []string, recvHandler func(deviceID string, valuemap map[uint32]float64)) error
 }
 
@@ -123,7 +123,7 @@ func (grpc *grpcClt) StopUpdateRawdataStream() error {
 	return grpc.updateRawdataStream.CloseSend()
 }
 
-func (grpc *grpcClt) UpdateRawdata(dataType RawdataType, mac string, t time.Time, values SensorValuePool) error {
+func (grpc *grpcClt) UpdateRawdata(dataType RawdataType, mac, virtualID string, t time.Time, values SensorValuePool) error {
 	if grpc.updateRawdataStream == nil {
 		return errors.New("StartUpdateRawdataStream first")
 	}
@@ -131,9 +131,10 @@ func (grpc *grpcClt) UpdateRawdata(dataType RawdataType, mac string, t time.Time
 		&pb.UpdateRawdataRequest{
 			Type: dataType.getRawdataRequestType(),
 			Data: &pb.Rawdata{
-				Mac:    mac,
-				Time:   t.Format(time.RFC3339),
-				Values: values.getSensorValueMap(),
+				Mac:       mac,
+				VirtualID: virtualID,
+				Time:      t.Format(time.RFC3339),
+				Values:    values.getSensorValueMap(),
 			},
 		})
 }

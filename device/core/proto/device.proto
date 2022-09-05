@@ -15,8 +15,9 @@ message UpdateRawdataRequest {
 
 message Rawdata {
   string mac = 1;
-  string time = 2;
-  map<uint32, SensorValue> values = 3;
+  string virtualID =2;
+  string time = 3;
+  map<uint32, SensorValue> values = 4;
 }
 
 message SensorValue {
