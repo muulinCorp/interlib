@@ -7,9 +7,10 @@ import "google/protobuf/timestamp.proto";
 
 
 message Device {
-  string mac = 1;
-  string virtualID =2;
-  string model = 3;
+  string id = 1;
+  string mac = 2;
+  string virtualID =3;
+  string model = 4;
 }
 
 message DeviceRelationEditRequest {
@@ -125,8 +126,8 @@ message MigrationTxnRequest {
 }
 
 message CommonResponse {
-  bool success = 1;
-  string error = 2;
+  uint32 statusCode = 1;
+  string message = 2;
 }
 
 message RemoveTxnRequest {
