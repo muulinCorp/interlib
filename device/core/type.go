@@ -45,6 +45,10 @@ func (pool SensorValuePool) getSensorValueMap() map[uint32]*pb.SensorValue {
 type DeviceState string
 
 const (
+	// 入庫
+	Stock = DeviceState("stock")
+	// 配送中
+	Sending = DeviceState("sending")
 	// 已分配
 	Assigned = DeviceState("assigned")
 	// 使用中

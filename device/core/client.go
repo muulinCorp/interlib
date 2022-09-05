@@ -157,6 +157,10 @@ func (grpc *grpcClt) UpdateDeviceState(
 		updateState = pb.DeviceState_Assigned
 	case ToBeRepaired:
 		updateState = pb.DeviceState_ToBeRepaired
+	case Sending:
+		updateState = pb.DeviceState_Sending
+	case Stock:
+		updateState = pb.DeviceState_Stock
 	default:
 		return errors.New("state must be [assigned, used, 2bRepaired]")
 	}
