@@ -20,6 +20,7 @@ type CoreDeviceClient interface {
 	StopUpdateRawdataStream() error
 	UpdateRawdata(dataType RawdataType, mac, virtualID string, t time.Time, values SensorValuePool) error
 	GetValueMap(dataType RawdataType, devices []string, recvHandler func(deviceID string, valuemap map[uint32]float64)) error
+	UpdateDeviceState(macList []string, state DeviceState, comment string, errorHandler func(mac string, err string)) error
 }
 
 func NewGrpcClient(address string) (CoreDeviceClient, error) {
