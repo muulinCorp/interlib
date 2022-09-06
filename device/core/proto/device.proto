@@ -65,7 +65,7 @@ enum DeviceState {
   ToBeRepaired = 0;
   Used = 1;
   Assigned = 2;
-  Sending = 3;
+  Reserved = 3;
   Stock = 4;
 }
 

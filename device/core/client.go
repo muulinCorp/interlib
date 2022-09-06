@@ -158,7 +158,8 @@ func (grpc *grpcClt) UpdateDeviceState(
 	case ToBeRepaired:
 		updateState = pb.DeviceState_ToBeRepaired
 	case Sending:
-		updateState = pb.DeviceState_Sending
+	// FIXME protoc --go_out=device/core/service --go-grpc_out=device/core/service device/core/proto/device.proto
+		updateState = pb.DeviceState_Reserved
 	case Stock:
 		updateState = pb.DeviceState_Stock
 	default:
