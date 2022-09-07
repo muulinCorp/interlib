@@ -23,7 +23,7 @@ message Iot627GetControlValueRequest {
   string virtualID =2;
 }
 
-message CommonResponse {
+message CommResponse {
   uint32 statusCode = 1;
   string mac = 2;
   string virtualID =3;
@@ -32,9 +32,9 @@ message CommonResponse {
 
 service CommService {
   // 遠端校時
-  rpc Iot627Timing(stream Iot627TimingRequest) returns (stream CommonResponse){};
+  rpc Iot627Timing(stream Iot627TimingRequest) returns (stream CommResponse){};
   // 遠端控制
-  rpc Iot627Remote(Iot627RemoteRequest) returns (CommonResponse){};
+  rpc Iot627Remote(Iot627RemoteRequest) returns (CommResponse){};
   // 回傳所有控制數值
-  rpc Iot627GetControlValue(Iot627GetControlValueRequest) returns (CommonResponse){};
+  rpc Iot627GetControlValue(Iot627GetControlValueRequest) returns (CommResponse){};
 }
