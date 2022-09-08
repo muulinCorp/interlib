@@ -1,6 +1,8 @@
 package core
 
 import (
+	"time"
+
 	"google.golang.org/grpc"
 )
 
@@ -10,7 +12,7 @@ type MyGrpc interface {
 }
 
 func NewMyGrpc(address string) (MyGrpc, error) {
-	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
+	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(time.Second*10))
 	if err != nil {
 		return nil, err
 	}

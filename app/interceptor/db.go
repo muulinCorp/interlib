@@ -39,10 +39,11 @@ func getDI(ctx context.Context, clt channel.ChannelClient, env string, di DBMidD
 	if !ok {
 		return nil, status.Error(codes.InvalidArgument, "can not get metadata")
 	}
-	hosts := md.Get("X-Host")
+	hosts := md.Get("X-Channel")
 	if len(hosts) != 1 {
 		return nil, nil
 	}
+
 	var mydi DBMidDI
 	if mydi, ok = serviceDiMap[hosts[0]]; ok {
 		return mydi, nil
@@ -58,7 +59,6 @@ func getDI(ctx context.Context, clt channel.ChannelClient, env string, di DBMidD
 		val = reflect.Indirect(val)
 	}
 	newValue := reflect.New(val.Type()).Interface()
-
 	err = yaml.Unmarshal(confByte, newValue)
 	if err != nil {
 		return nil, err
@@ -67,41 +67,42 @@ func getDI(ctx context.Context, clt channel.ChannelClient, env string, di DBMidD
 	return serviceDiMap[hosts[0]], nil
 }
 
-func getContextWitchRsrc(ctx context.Context, di DBMidDI) (context.Context, error) {
+func getContextWitchRsrc(ctx context.Context, di DBMidDI) (r *rsrc, err error) {
 	uuid := uuid.New().String()
 	l := di.NewLogger(uuid)
-
 	dbclt, err := di.NewMongoDBClient(ctx, "")
 	if err != nil {
-		return nil, err
+		return
 	}
-	defer dbclt.Close()
 	redisClt, err := di.NewRedisClient(ctx)
 	if err != nil {
-		return nil, err
+		return
 	}
-	defer redisClt.Close()
-	ctx = context.WithValue(ctx, db.CtxMongoKey, dbclt)
-	ctx = context.WithValue(ctx, log.CtxLogKey, l)
-	ctx = context.WithValue(ctx, db.CtxRedisKey, redisClt)
-	return ctx, nil
+	r = &rsrc{
+		l:        l,
+		dbclt:    dbclt,
+		redisClt: redisClt,
+	}
+	return
 }
 
 func StreamServerDBInterceptor(clt channel.ChannelClient, env string, di DBMidDI) grpc.StreamServerInterceptor {
 	return grpc.StreamServerInterceptor(func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
+		ctx := ss.Context()
+		di, err := getDI(ctx, clt, env, di)
+		if err != nil {
+			return err
+		}
+		rsrc, err := getContextWitchRsrc(ctx, di)
+		if err != nil {
+			return err
+		}
 
-		di, err := getDI(ss.Context(), clt, env, di)
-		if err != nil {
-			return err
-		}
-		ctx, err := getContextWitchRsrc(ss.Context(), di)
-		if err != nil {
-			return err
-		}
 		err = handler(srv, &serverStream{
 			ServerStream: ss,
-			ctx:          ctx,
+			ctx:          rsrc.setContext(ctx),
 		})
+		rsrc.close()
 		return
 	})
 }
@@ -112,11 +113,34 @@ func UnaryServerDBInterceptor(clt channel.ChannelClient, env string, di DBMidDI)
 		if err != nil {
 			return nil, err
 		}
-		ctx, err = getContextWitchRsrc(ctx, di)
+		r, err := getContextWitchRsrc(ctx, di)
 		if err != nil {
 			return nil, err
 		}
-		resp, err := handler(ctx, req)
+		resp, err := handler(r.setContext(ctx), req)
+		r.close()
 		return resp, err
 	})
+}
+
+type rsrc struct {
+	dbclt    db.MongoDBClient
+	redisClt db.RedisClient
+	l        log.Logger
+}
+
+func (r *rsrc) close() {
+	if r.dbclt != nil {
+		r.dbclt.Close()
+	}
+	if r.redisClt != nil {
+		r.redisClt.Close()
+	}
+}
+
+func (r *rsrc) setContext(ctx context.Context) context.Context {
+	ctx = context.WithValue(ctx, db.CtxMongoKey, r.dbclt)
+	ctx = context.WithValue(ctx, log.CtxLogKey, r.l)
+	ctx = context.WithValue(ctx, db.CtxRedisKey, r.redisClt)
+	return ctx
 }

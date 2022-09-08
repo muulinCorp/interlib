@@ -9,7 +9,9 @@ import (
 
 	"bitbucket.org/muulin/interlib/core"
 	pb "bitbucket.org/muulin/interlib/device/core/service"
+	"github.com/94peter/sterna/auth"
 	"github.com/94peter/sterna/log"
+	"google.golang.org/grpc/metadata"
 )
 
 type CoreDeviceClient interface {
@@ -20,7 +22,7 @@ type CoreDeviceClient interface {
 	StopUpdateRawdataStream() error
 	UpdateRawdata(dataType RawdataType, mac, virtualID string, t time.Time, values SensorValuePool) error
 	GetValueMap(dataType RawdataType, devices []string, recvHandler func(deviceID string, valuemap map[uint32]float64)) error
-	UpdateDeviceState(macList []string, state DeviceState, comment string, errorHandler func(mac string, err string)) error
+	UpdateDeviceState(macList []string, state DeviceState, comment string, errorHandler func(mac string, err string), reqUser auth.ReqUser) error
 }
 
 func NewGrpcClient(address string) (CoreDeviceClient, error) {
@@ -145,9 +147,11 @@ func (grpc *grpcClt) UpdateDeviceState(
 	state DeviceState,
 	comment string,
 	errorHandler func(mac string, err string),
+	reqUser auth.ReqUser,
 ) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+	ctx = metadata.AppendToOutgoingContext(ctx, "X-ReqUser", reqUser.Encode())
 	clt := pb.NewCoreDeviceServiceClient(grpc)
 	var updateState pb.DeviceState
 	switch state {
