@@ -11,6 +11,7 @@ const (
 )
 
 type Device struct {
+	Id        string
 	Mac       string
 	VirtualID string
 	Model     string
@@ -21,6 +22,7 @@ type DeviceAry []*Device
 func (da DeviceAry) getDevices() (result []*pb.Device) {
 	for _, d := range da {
 		result = append(result, &pb.Device{
+			Id:        d.Id,
 			Mac:       d.Mac,
 			VirtualID: d.VirtualID,
 			Model:     d.Model,
