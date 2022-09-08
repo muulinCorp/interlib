@@ -15,7 +15,7 @@ type MyGrpc interface {
 func NewMyGrpc(address string) (MyGrpc, error) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(time.Second*10))
 	if err != nil {
-		return nil, fmt.Errorf("address [%s] error: " + err.Error())
+		return nil, fmt.Errorf("address [%s] error: %s", address, err.Error())
 	}
 	return &myGrpcImpl{
 		ClientConn: conn,
