@@ -4,7 +4,9 @@ import (
 	"net/http"
 	"reflect"
 
+	"bitbucket.org/muulin/interlib/channel"
 	"github.com/94peter/sterna"
+	"github.com/94peter/sterna/api"
 	"github.com/94peter/sterna/api/mid"
 	"github.com/94peter/sterna/util"
 	"github.com/gin-gonic/gin"
@@ -20,33 +22,33 @@ const (
 
 type DIMiddle string
 
-func NewDiMid(proto string, env string, di interface{}) mid.Middle {
+func NewDiMid(channelClt channel.ChannelClient, env string, di interface{}) mid.Middle {
 	return &diMiddle{
-		proto: proto,
-		env:   env,
-		di:    di,
+		clt: channelClt,
+		env: env,
+		di:  di,
 	}
 }
 
-func NewGinDiMid(proto string, env string, di interface{}) mid.GinMiddle {
+func NewGinDiMid(channelClt channel.ChannelClient, env string, di interface{}) mid.GinMiddle {
 	return &diMiddle{
-		proto: proto,
-		env:   env,
-		di:    di,
+		clt: channelClt,
+		env: env,
+		di:  di,
 	}
 }
 
 type diMiddle struct {
-	proto string
-	env   string
-	di    interface{}
+	clt channel.ChannelClient
+	env string
+	di  interface{}
 }
 
 func (lm *diMiddle) GetName() string {
 	return "di"
 }
 
-const path = "/internal/v1/channel/conf/"
+// const path = "/internal/v1/channel/conf/"
 
 func (am *diMiddle) GetMiddleWare() func(f http.HandlerFunc) http.HandlerFunc {
 	return func(f http.HandlerFunc) http.HandlerFunc {
@@ -61,13 +63,13 @@ func (am *diMiddle) GetMiddleWare() func(f http.HandlerFunc) http.HandlerFunc {
 					val = reflect.Indirect(val)
 				}
 				newValue := reflect.New(val.Type()).Interface()
-				uri := util.StrAppend(am.proto, "://", host, path, am.env)
-				err := sterna.InitConfByUri(uri, newValue)
+				confByte, err := am.clt.GetConf(host, am.env)
 				if err != nil {
 					w.WriteHeader(http.StatusInternalServerError)
 					w.Write([]byte(err.Error()))
 					return
 				}
+				sterna.InitConfByByte(confByte, newValue)
 				serviceDiMap[host] = newValue
 				mydi = newValue
 			}
@@ -77,28 +79,28 @@ func (am *diMiddle) GetMiddleWare() func(f http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func (m *diMiddle) Handler() gin.HandlerFunc {
+func (am *diMiddle) Handler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		host := GetGinHost(c)
 		var mydi interface{}
 		var ok bool
 		if mydi, ok = serviceDiMap[host]; !ok {
-			val := reflect.ValueOf(m.di)
+			val := reflect.ValueOf(am.di)
 			if val.Kind() == reflect.Ptr {
 				val = reflect.Indirect(val)
 			}
 			newValue := reflect.New(val.Type()).Interface()
-			uri := util.StrAppend(m.proto, "://", host, path, m.env)
-			err := sterna.InitConfByUri(uri, newValue)
+			confByte, err := am.clt.GetConf(host, am.env)
 			if err != nil {
-				c.String(http.StatusInternalServerError, err.Error())
+				api.GinOutputErr(c, api.NewApiError(http.StatusInternalServerError, err.Error()))
+				c.Abort()
 				return
 			}
+			sterna.InitConfByByte(confByte, newValue)
 			serviceDiMap[host] = newValue
 			mydi = newValue
 		}
 		c.Request = util.SetCtxKeyVal(c.Request, CtxServDiKey, mydi)
-		//c.Set(string(CtxServDiKey), mydi)
 		c.Next()
 	}
 }
