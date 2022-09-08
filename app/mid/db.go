@@ -94,6 +94,7 @@ func (m *dbMiddle) Handler() gin.HandlerFunc {
 		servDi := util.GetCtxVal(c.Request, CtxServDiKey)
 		if servDi == nil {
 			api.GinOutputErr(c, api.NewApiError(http.StatusInternalServerError, "can not get di"))
+			c.Abort()
 			return
 		}
 
@@ -104,6 +105,7 @@ func (m *dbMiddle) Handler() gin.HandlerFunc {
 			dbclt, err := dbdi.NewMongoDBClient(c.Request.Context(), "")
 			if err != nil {
 				api.GinOutputErr(c, api.NewApiError(http.StatusInternalServerError, err.Error()))
+				c.Abort()
 				return
 			}
 			defer dbclt.Close()
@@ -111,18 +113,20 @@ func (m *dbMiddle) Handler() gin.HandlerFunc {
 			redisClt, err := dbdi.NewRedisClient(c.Request.Context())
 			if err != nil {
 				api.GinOutputErr(c, api.NewApiError(http.StatusInternalServerError, err.Error()))
+				c.Abort()
 				return
 			}
 			defer redisClt.Close()
 
 			c.Request = util.SetCtxKeyVal(c.Request, db.CtxMongoKey, dbclt)
-   			c.Request = util.SetCtxKeyVal(c.Request, log.CtxLogKey, l)
+			c.Request = util.SetCtxKeyVal(c.Request, log.CtxLogKey, l)
 			c.Request = util.SetCtxKeyVal(c.Request, db.CtxRedisKey, redisClt)
 
 			c.Next()
 			runtime.GC()
 		} else {
 			api.GinOutputErr(c, api.NewApiError(http.StatusInternalServerError, "invalid di"))
+			c.Abort()
 			return
 		}
 	}

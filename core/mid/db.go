@@ -4,10 +4,12 @@ import (
 	"net/http"
 	"runtime"
 
+	"github.com/94peter/sterna/api"
 	"github.com/94peter/sterna/api/mid"
 	"github.com/94peter/sterna/db"
 	"github.com/94peter/sterna/log"
 	"github.com/94peter/sterna/util"
+	"github.com/gin-gonic/gin"
 
 	"github.com/google/uuid"
 )
@@ -21,6 +23,13 @@ type DBMidDI interface {
 type DBMiddle string
 
 func NewDBMid(di DBMidDI, name string) mid.Middle {
+	return &dbMiddle{
+		name: name,
+		di:   di,
+	}
+}
+
+func NewGinDBMid(di DBMidDI, name string) mid.GinMiddle {
 	return &dbMiddle{
 		name: name,
 		di:   di,
@@ -66,5 +75,33 @@ func (am *dbMiddle) GetMiddleWare() func(f http.HandlerFunc) http.HandlerFunc {
 
 			runtime.GC()
 		}
+	}
+}
+
+func (am *dbMiddle) Handler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		uuid := uuid.New().String()
+		l := am.di.NewLogger(uuid)
+
+		dbclt, err := am.di.NewMongoDBClient(c.Request.Context(), "")
+		if err != nil {
+			api.GinOutputErr(c, api.NewApiError(http.StatusInternalServerError, err.Error()))
+			c.Abort()
+			return
+		}
+		defer dbclt.Close()
+		redisClt, err := am.di.NewRedisClient(c.Request.Context())
+		if err != nil {
+			api.GinOutputErr(c, api.NewApiError(http.StatusInternalServerError, err.Error()))
+			c.Abort()
+			return
+		}
+		defer redisClt.Close()
+		c.Request = util.SetCtxKeyVal(c.Request, db.CtxMongoKey, dbclt)
+		c.Request = util.SetCtxKeyVal(c.Request, log.CtxLogKey, l)
+		c.Request = util.SetCtxKeyVal(c.Request, db.CtxRedisKey, redisClt)
+		c.Next()
+
+		runtime.GC()
 	}
 }
