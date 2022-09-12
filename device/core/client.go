@@ -185,9 +185,8 @@ func (grpc *grpcClt) UpdateDeviceState(
 			return err
 		}
 		if !resp.Success {
-
+			errorHandler(resp.MacAddress, resp.Error)
 		}
-		errorHandler(resp.MacAddress, resp.Error)
 	}
 	return nil
 }
