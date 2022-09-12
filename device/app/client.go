@@ -89,7 +89,6 @@ func (gclt *grpcClt) ModifySendTxn(
 	ctx = metadata.AppendToOutgoingContext(ctx, "X-ReqUser", reqUser.Encode())
 	var reqActs []*pb.ActTxn
 	for _, act := range acts {
-		// DISCUSS
 		var curType pb.EditType
 		if act.Edit == TxnEditTypeAdd {
 			curType = pb.EditType_Add
