@@ -18,11 +18,11 @@ type CoreDeviceClient interface {
 	core.MyGrpc
 	GetStateMap(devices []string) (map[string]string, error)
 	Remote(deviceID string, device, address uint32, value float64) error
-	StartUpdateRawdataStream(recvHandler func(success bool, mac string, err string), log log.Logger) error
+	StartUpdateRawdataStream(recvHandler func(success bool, mac string, virtualID uint8, err string), log log.Logger) error
 	StopUpdateRawdataStream() error
-	UpdateRawdata(dataType RawdataType, mac, virtualID string, t time.Time, values SensorValuePool) error
+	UpdateRawdata(dataType RawdataType, mac string, virtualID uint8, t time.Time, values SensorValuePool) error
 	GetValueMap(dataType RawdataType, devices []string, recvHandler func(deviceID string, valuemap map[uint32]float64)) error
-	UpdateDeviceState(macList []string, state DeviceState, comment string, errorHandler func(mac string, err string), reqUser auth.ReqUser) error
+	UpdateDeviceState(devics DeviceAry, state DeviceState, comment string, errorHandler func(mac string, virtualID uint8, err string), reqUser auth.ReqUser) error
 }
 
 func NewGrpcClient(address string) (CoreDeviceClient, error) {
@@ -92,7 +92,7 @@ func (grpc *grpcClt) GetValueMap(dataType RawdataType, devices []string, recvHan
 	return nil
 }
 
-func (grpc *grpcClt) StartUpdateRawdataStream(recvHandler func(success bool, mac string, err string), log log.Logger) error {
+func (grpc *grpcClt) StartUpdateRawdataStream(recvHandler func(success bool, mac string, virtualID uint8, err string), log log.Logger) error {
 	clt := pb.NewCoreDeviceServiceClient(grpc)
 	stream, err := clt.UpdateRawdata(context.Background())
 	waitc := make(chan struct{})
@@ -110,7 +110,7 @@ func (grpc *grpcClt) StartUpdateRawdataStream(recvHandler func(success bool, mac
 			if err != nil {
 				log.Fatal(fmt.Sprintf("Failed to receive a note : %v", err))
 			}
-			recvHandler(in.Success, in.Mac, in.Error)
+			recvHandler(in.Success, in.Mac, uint8(in.VirtualID), in.Error)
 			log.Info(fmt.Sprintf("Get Message: %v, %s, %s", in.Success, in.Mac, in.Error))
 		}
 	}()
@@ -126,7 +126,7 @@ func (grpc *grpcClt) StopUpdateRawdataStream() error {
 	return grpc.updateRawdataStream.CloseSend()
 }
 
-func (grpc *grpcClt) UpdateRawdata(dataType RawdataType, mac, virtualID string, t time.Time, values SensorValuePool) error {
+func (grpc *grpcClt) UpdateRawdata(dataType RawdataType, mac string, virtualID uint8, t time.Time, values SensorValuePool) error {
 	if grpc.updateRawdataStream == nil {
 		return errors.New("StartUpdateRawdataStream first")
 	}
@@ -135,7 +135,7 @@ func (grpc *grpcClt) UpdateRawdata(dataType RawdataType, mac, virtualID string, 
 			Type: dataType.getRawdataRequestType(),
 			Data: &pb.Rawdata{
 				Mac:       mac,
-				VirtualID: virtualID,
+				VirtualID: uint32(virtualID),
 				Time:      t.Format(time.RFC3339),
 				Values:    values.getSensorValueMap(),
 			},
@@ -143,12 +143,15 @@ func (grpc *grpcClt) UpdateRawdata(dataType RawdataType, mac, virtualID string, 
 }
 
 func (grpc *grpcClt) UpdateDeviceState(
-	macList []string,
+	devics DeviceAry,
 	state DeviceState,
 	comment string,
-	errorHandler func(mac string, err string),
+	errorHandler func(mac string, virtualID uint8, err string),
 	reqUser auth.ReqUser,
 ) error {
+	if len(devics) == 0 {
+		return nil
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	ctx = metadata.AppendToOutgoingContext(ctx, "X-ReqUser", reqUser.Encode())
@@ -168,10 +171,17 @@ func (grpc *grpcClt) UpdateDeviceState(
 	default:
 		return errors.New("state must be [assigned, used, 2bRepaired]")
 	}
+	var sendDevices []*pb.CoreDevice
+	for _, d := range devics {
+		sendDevices = append(sendDevices, &pb.CoreDevice{
+			Mac:       d.Macaddress,
+			VirtualID: uint32(d.VirtualID),
+		})
+	}
 	stream, err := clt.UpdateDeviceState(ctx, &pb.UpdateDeviceStateRequest{
-		State:      updateState,
-		MacAddress: macList,
-		Comment:    comment,
+		State:   updateState,
+		Devices: sendDevices,
+		Comment: comment,
 	})
 	if err != nil {
 		return err
@@ -185,7 +195,7 @@ func (grpc *grpcClt) UpdateDeviceState(
 			return err
 		}
 		if !resp.Success {
-			errorHandler(resp.MacAddress, resp.Error)
+			errorHandler(resp.Mac, uint8(resp.VirtualID), resp.Error)
 		}
 	}
 	return nil
