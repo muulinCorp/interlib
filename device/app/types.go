@@ -61,6 +61,7 @@ const (
 )
 
 type DeviceInfo struct {
+	Id		  string
 	Mac       string
 	VirtualID string
 	Model     string
