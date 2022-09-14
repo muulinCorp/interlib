@@ -13,6 +13,13 @@ type Device struct {
 	VirtualID  uint8
 }
 
+type DeviceInfo struct {
+	Macaddress string
+	VirtualID  uint8
+	Model      string
+	State      string
+}
+
 type DeviceAry []*Device
 
 func (da DeviceAry) AddDevice(macaddress string, virtualID uint8) {
