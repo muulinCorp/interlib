@@ -75,10 +75,21 @@ message CoreDevice{
   uint32 virtualID = 2;
 }
 
+message CoreDeviceInfo{
+  string mac = 1;
+  uint32 virtualID = 2;
+  string model = 3;
+  string state = 4;
+}
+
 message UpdateDeviceStateRequest {
   DeviceState state = 1;
   repeated CoreDevice devices = 2;
   string comment = 3;
+}
+
+message GetInfoMapResponse {
+  map<string, CoreDeviceInfo> infoMap = 1;
 }
 
 service CoreDeviceService {
@@ -88,6 +99,8 @@ service CoreDeviceService {
   rpc GetStateMap(GetStateMapRequest) returns (GetStateMapResponse) {};
   // 取得裝置中所有欄位數值
   rpc GetValueMap(GetValueMapRequest) returns (stream GetValueMapResponse) {};
+  // 取得所有裝置資訊
+  rpc GetInfoMap(GetStateMapRequest) returns (GetInfoMapResponse) {};
   // 遠端指令至裝置
   rpc Remote(RemoteRequest) returns (RemoteResponse) {};
   // 更新裝置狀態

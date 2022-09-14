@@ -17,6 +17,7 @@ import (
 type CoreDeviceClient interface {
 	core.MyGrpc
 	GetStateMap(devices []string) (map[string]string, error)
+	GetInfoMap(devices []string) (map[string]*DeviceInfo, error)
 	Remote(deviceID string, device, address uint32, value float64) error
 	StartUpdateRawdataStream(recvHandler func(success bool, mac string, virtualID uint8, err string), log log.Logger) error
 	StopUpdateRawdataStream() error
@@ -68,6 +69,28 @@ func (grpc *grpcClt) GetStateMap(deviceIDs []string) (map[string]string, error) 
 		return nil, err
 	}
 	return resp.StateMap, nil
+}
+
+func (grpc *grpcClt) GetInfoMap(deviceIDs []string) (map[string]*DeviceInfo, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	clt := pb.NewCoreDeviceServiceClient(grpc)
+	resp, err := clt.GetInfoMap(ctx, &pb.GetStateMapRequest{
+		DeviceID: deviceIDs,
+	})
+	if err != nil {
+		return nil, err
+	}
+	result := map[string]*DeviceInfo{}
+	for k, v := range resp.InfoMap {
+		result[k] = &DeviceInfo{
+			Macaddress: v.Mac,
+			VirtualID:  uint8(v.VirtualID),
+			Model:      v.Model,
+			State:      v.State,
+		}
+	}
+	return result, nil
 }
 
 func (grpc *grpcClt) GetValueMap(dataType RawdataType, devices []string, recvHandler func(deviceID string, valuemap map[uint32]float64)) error {

@@ -28,6 +28,8 @@ type CoreDeviceServiceClient interface {
 	GetStateMap(ctx context.Context, in *GetStateMapRequest, opts ...grpc.CallOption) (*GetStateMapResponse, error)
 	// 取得裝置中所有欄位數值
 	GetValueMap(ctx context.Context, in *GetValueMapRequest, opts ...grpc.CallOption) (CoreDeviceService_GetValueMapClient, error)
+	// 取得所有裝置資訊
+	GetInfoMap(ctx context.Context, in *GetStateMapRequest, opts ...grpc.CallOption) (*GetInfoMapResponse, error)
 	// 遠端指令至裝置
 	Remote(ctx context.Context, in *RemoteRequest, opts ...grpc.CallOption) (*RemoteResponse, error)
 	// 更新裝置狀態
@@ -114,6 +116,15 @@ func (x *coreDeviceServiceGetValueMapClient) Recv() (*GetValueMapResponse, error
 	return m, nil
 }
 
+func (c *coreDeviceServiceClient) GetInfoMap(ctx context.Context, in *GetStateMapRequest, opts ...grpc.CallOption) (*GetInfoMapResponse, error) {
+	out := new(GetInfoMapResponse)
+	err := c.cc.Invoke(ctx, "/service.CoreDeviceService/GetInfoMap", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *coreDeviceServiceClient) Remote(ctx context.Context, in *RemoteRequest, opts ...grpc.CallOption) (*RemoteResponse, error) {
 	out := new(RemoteResponse)
 	err := c.cc.Invoke(ctx, "/service.CoreDeviceService/Remote", in, out, opts...)
@@ -165,6 +176,8 @@ type CoreDeviceServiceServer interface {
 	GetStateMap(context.Context, *GetStateMapRequest) (*GetStateMapResponse, error)
 	// 取得裝置中所有欄位數值
 	GetValueMap(*GetValueMapRequest, CoreDeviceService_GetValueMapServer) error
+	// 取得所有裝置資訊
+	GetInfoMap(context.Context, *GetStateMapRequest) (*GetInfoMapResponse, error)
 	// 遠端指令至裝置
 	Remote(context.Context, *RemoteRequest) (*RemoteResponse, error)
 	// 更新裝置狀態
@@ -184,6 +197,9 @@ func (UnimplementedCoreDeviceServiceServer) GetStateMap(context.Context, *GetSta
 }
 func (UnimplementedCoreDeviceServiceServer) GetValueMap(*GetValueMapRequest, CoreDeviceService_GetValueMapServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetValueMap not implemented")
+}
+func (UnimplementedCoreDeviceServiceServer) GetInfoMap(context.Context, *GetStateMapRequest) (*GetInfoMapResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetInfoMap not implemented")
 }
 func (UnimplementedCoreDeviceServiceServer) Remote(context.Context, *RemoteRequest) (*RemoteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Remote not implemented")
@@ -269,6 +285,24 @@ func (x *coreDeviceServiceGetValueMapServer) Send(m *GetValueMapResponse) error 
 	return x.ServerStream.SendMsg(m)
 }
 
+func _CoreDeviceService_GetInfoMap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetStateMapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoreDeviceServiceServer).GetInfoMap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.CoreDeviceService/GetInfoMap",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoreDeviceServiceServer).GetInfoMap(ctx, req.(*GetStateMapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _CoreDeviceService_Remote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RemoteRequest)
 	if err := dec(in); err != nil {
@@ -318,6 +352,10 @@ var CoreDeviceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetStateMap",
 			Handler:    _CoreDeviceService_GetStateMap_Handler,
+		},
+		{
+			MethodName: "GetInfoMap",
+			Handler:    _CoreDeviceService_GetInfoMap_Handler,
 		},
 		{
 			MethodName: "Remote",
