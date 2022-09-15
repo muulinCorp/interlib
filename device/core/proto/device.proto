@@ -68,6 +68,9 @@ enum DeviceState {
   Assigned = 2;
   Reserved = 3;
   Stock = 4;
+  Recycled = 5;
+  Repairing = 6;
+  Discard = 7;
 }
 
 message CoreDevice{

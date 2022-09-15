@@ -73,4 +73,8 @@ const (
 	Used = DeviceState("used")
 	// 待維修
 	ToBeRepaired = DeviceState("2bRepaired")
+	
+	Recycled = DeviceState("recycled")
+	Discard = DeviceState("discard")
+	Repairing = DeviceState("repairing")
 )
