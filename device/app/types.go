@@ -13,7 +13,7 @@ const (
 type Device struct {
 	Id        string
 	Mac       string
-	VirtualID string
+	VirtualID uint8
 	Model     string
 }
 
@@ -24,7 +24,7 @@ func (da DeviceAry) getDevices() (result []*pb.Device) {
 		result = append(result, &pb.Device{
 			Id:        d.Id,
 			Mac:       d.Mac,
-			VirtualID: d.VirtualID,
+			VirtualID: uint32(d.VirtualID),
 			Model:     d.Model,
 		})
 	}
@@ -63,7 +63,7 @@ const (
 type DeviceInfo struct {
 	Id		  string
 	Mac       string
-	VirtualID string
+	VirtualID uint8
 	Model     string
 	Desc      string
 }

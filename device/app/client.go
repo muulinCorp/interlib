@@ -74,7 +74,7 @@ func (gclt *grpcClt) CreateSendTxn(
 		}
 		recvHandler(resp.Success, &Device{
 			Mac:       resp.Device.Mac,
-			VirtualID: resp.Device.VirtualID,
+			VirtualID: uint8(resp.Device.VirtualID),
 			Model:     resp.Device.Model,
 		}, resp.Error)
 	}
@@ -98,9 +98,9 @@ func (gclt *grpcClt) ModifySendTxn(
 		reqActs = append(reqActs, &pb.ActTxn{
 			Act: curType,
 			Device: &pb.Device{
-				Id: 	   act.Device.Id,
+				Id:        act.Device.Id,
 				Mac:       act.Device.Mac,
-				VirtualID: act.Device.VirtualID,
+				VirtualID: uint32(act.Device.VirtualID),
 				Model:     act.Device.Model,
 			},
 		})
@@ -280,7 +280,7 @@ func (gclt *grpcClt) GetDevicesByEquips(
 		for _, d := range resp.Devices {
 			mydevices = append(mydevices, &Device{
 				Mac:       d.MacAddress,
-				VirtualID: d.VirtualID,
+				VirtualID: uint8(d.VirtualID),
 				Model:     d.Model,
 			})
 		}
