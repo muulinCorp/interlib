@@ -175,7 +175,7 @@ func (grpc *grpcClt) UpdateDeviceState(
 	if len(devics) == 0 {
 		return nil
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 	ctx = metadata.AppendToOutgoingContext(ctx, "X-ReqUser", reqUser.Encode())
 	clt := pb.NewCoreDeviceServiceClient(grpc)
@@ -184,13 +184,19 @@ func (grpc *grpcClt) UpdateDeviceState(
 	case Assigned:
 		updateState = pb.DeviceState_Assigned
 	case Used:
-		updateState = pb.DeviceState_Assigned
+		updateState = pb.DeviceState_Used
 	case ToBeRepaired:
 		updateState = pb.DeviceState_ToBeRepaired
 	case Sending:
 		updateState = pb.DeviceState_Reserved
 	case Stock:
 		updateState = pb.DeviceState_Stock
+	case Recycled:
+		updateState = pb.DeviceState_Recycled
+	case Discard:
+		updateState = pb.DeviceState_Discard
+	case Repairing:
+		updateState = pb.DeviceState_Repairing
 	default:
 		return errors.New("state must be [assigned, used, 2bRepaired]")
 	}
