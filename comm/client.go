@@ -17,11 +17,11 @@ import (
 
 type CommClient interface {
 	core.MyGrpc
-	StartIot627TimingStream(host string, recvHandler func(statusCode int, mac, virtualID, msg string)) error
+	StartIot627TimingStream(host string, recvHandler func(statusCode int, mac string, virtualID uint8, msg string)) error
 	StopIot627TimingStream() error
-	StreamIot627Timing(mac, virtualID, zone string) error
-	Iot627Remote(host, mac, virtualID, key string, val float64) error
-	Iot627GetControlValue(host, mac, virtualID string) error
+	StreamIot627Timing(mac string, virtualID uint8, zone string) error
+	Iot627Remote(host, mac string, virtualID uint8, key string, val float64) error
+	Iot627GetControlValue(host, mac string, virtualID uint8) error
 }
 
 func NewGrpcClient(address string, log log.Logger) (CommClient, error) {
@@ -38,7 +38,7 @@ type grpcClt struct {
 	log                log.Logger
 }
 
-func (gclt *grpcClt) StartIot627TimingStream(host string, recvHandler func(statusCode int, mac, virtualID, msg string)) error {
+func (gclt *grpcClt) StartIot627TimingStream(host string, recvHandler func(statusCode int, mac string, virtualID uint8, msg string)) error {
 	clt := pb.NewCommServiceClient(gclt)
 	ctx := metadata.AppendToOutgoingContext(context.Background(), "X-Channel", host)
 	stream, err := clt.Iot627Timing(ctx)
@@ -57,7 +57,7 @@ func (gclt *grpcClt) StartIot627TimingStream(host string, recvHandler func(statu
 			if err != nil {
 				gclt.log.Fatal(fmt.Sprintf("Failed to receive a note : %v", err))
 			}
-			recvHandler(int(in.StatusCode), in.Mac, in.VirtualID, in.Message)
+			recvHandler(int(in.StatusCode), in.Mac, uint8(in.VirtualID), in.Message)
 			gclt.log.Info(fmt.Sprintf("Get Message: %v, %s, %s, %s", in.StatusCode, in.Mac, in.VirtualID, in.Message))
 		}
 	}()
@@ -73,24 +73,24 @@ func (grpc *grpcClt) StopIot627TimingStream() error {
 	return grpc.iot627TimingStream.CloseSend()
 }
 
-func (grpc *grpcClt) StreamIot627Timing(mac, virtualID, zone string) error {
+func (grpc *grpcClt) StreamIot627Timing(mac string, virtualID uint8, zone string) error {
 	if grpc.iot627TimingStream == nil {
 		return errors.New("StartUpdateRawdataStream first")
 	}
 	return grpc.iot627TimingStream.Send(
 		&pb.Iot627TimingRequest{
 			Mac:       mac,
-			VirtualID: virtualID,
+			VirtualID: uint32(virtualID),
 			Zone:      zone,
 		})
 }
 
-func (grpc *grpcClt) Iot627Remote(host, mac, virtualID, key string, val float64) error {
+func (grpc *grpcClt) Iot627Remote(host, mac string, virtualID uint8, key string, val float64) error {
 	clt := pb.NewCommServiceClient(grpc)
 	ctx := metadata.AppendToOutgoingContext(context.Background(), "X-Channel", host)
 	resp, err := clt.Iot627Remote(ctx, &pb.Iot627RemoteRequest{
 		Mac:       mac,
-		VirtualID: virtualID,
+		VirtualID: uint32(virtualID),
 		Key:       key,
 		Value:     val,
 	})
@@ -102,15 +102,15 @@ func (grpc *grpcClt) Iot627Remote(host, mac, virtualID, key string, val float64)
 	}
 	return types.NewErrorWaper(
 		api.NewApiError(int(resp.StatusCode), resp.Message),
-		fmt.Sprintf("device [%s]-[%s] remote error: %s", resp.Mac, resp.VirtualID, resp.Message))
+		fmt.Sprintf("device [%s]-[%d] remote error: %s", resp.Mac, resp.VirtualID, resp.Message))
 }
 
-func (grpc *grpcClt) Iot627GetControlValue(host, mac, virtualID string) error {
+func (grpc *grpcClt) Iot627GetControlValue(host, mac string, virtualID uint8) error {
 	clt := pb.NewCommServiceClient(grpc)
 	ctx := metadata.AppendToOutgoingContext(context.Background(), "X-Channel", host)
 	resp, err := clt.Iot627GetControlValue(ctx, &pb.Iot627GetControlValueRequest{
 		Mac:       mac,
-		VirtualID: virtualID,
+		VirtualID: uint32(virtualID),
 	})
 	if err != nil {
 		return err
