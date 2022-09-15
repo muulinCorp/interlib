@@ -8,6 +8,24 @@ const (
 	RouterKey = "gRPC_Core_Device_Router"
 )
 
+type Device struct {
+	Macaddress string
+	VirtualID  uint8
+}
+
+type DeviceInfo struct {
+	Macaddress string
+	VirtualID  uint8
+	Model      string
+	State      string
+}
+
+type DeviceAry []*Device
+
+func (da DeviceAry) AddDevice(macaddress string, virtualID uint8) {
+	da = append(da, &Device{Macaddress: macaddress, VirtualID: virtualID})
+}
+
 type RawdataType string
 
 const (

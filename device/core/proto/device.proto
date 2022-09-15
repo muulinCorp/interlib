@@ -25,10 +25,11 @@ message SensorValue {
   uint32 dp = 2;
 }
 
-message UpdateRawdataResponse {
+message CoreDeviceUpdateResponse {
   bool success = 1;
   string mac = 2;
-  string error = 3;
+  uint32 virtualID = 3;
+  string error = 4;
 }
 
 message GetStateMapRequest {
@@ -69,27 +70,39 @@ enum DeviceState {
   Stock = 4;
 }
 
+message CoreDevice{
+  string mac = 1;
+  uint32 virtualID = 2;
+}
+
+message CoreDeviceInfo{
+  string mac = 1;
+  uint32 virtualID = 2;
+  string model = 3;
+  string state = 4;
+}
+
 message UpdateDeviceStateRequest {
   DeviceState state = 1;
-  repeated string macAddress = 2;
+  repeated CoreDevice devices = 2;
   string comment = 3;
 }
 
-message UpdateDeviceStateResponse {
-  bool success = 1;
-  string macAddress = 2;
-  string error = 3;
+message GetInfoMapResponse {
+  map<string, CoreDeviceInfo> infoMap = 1;
 }
 
 service CoreDeviceService {
   // 更新裝置上傳數據
-  rpc UpdateRawdata(stream UpdateRawdataRequest) returns (stream UpdateRawdataResponse) {};
+  rpc UpdateRawdata(stream UpdateRawdataRequest) returns (stream CoreDeviceUpdateResponse) {};
   // 取得所有裝置連線狀態
   rpc GetStateMap(GetStateMapRequest) returns (GetStateMapResponse) {};
   // 取得裝置中所有欄位數值
   rpc GetValueMap(GetValueMapRequest) returns (stream GetValueMapResponse) {};
+  // 取得所有裝置資訊
+  rpc GetInfoMap(GetStateMapRequest) returns (GetInfoMapResponse) {};
   // 遠端指令至裝置
   rpc Remote(RemoteRequest) returns (RemoteResponse) {};
   // 更新裝置狀態
-  rpc UpdateDeviceState(UpdateDeviceStateRequest) returns (stream UpdateDeviceStateResponse) {};
+  rpc UpdateDeviceState(UpdateDeviceStateRequest) returns (stream CoreDeviceUpdateResponse) {};
 }

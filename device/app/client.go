@@ -89,16 +89,21 @@ func (gclt *grpcClt) ModifySendTxn(
 	ctx = metadata.AppendToOutgoingContext(ctx, "X-ReqUser", reqUser.Encode())
 	var reqActs []*pb.ActTxn
 	for _, act := range acts {
+		var curType pb.EditType
 		if act.Edit == TxnEditTypeAdd {
-			reqActs = append(reqActs, &pb.ActTxn{
-				Act: pb.EditType_Add,
-				Device: &pb.Device{
-					Mac:       act.Device.Mac,
-					VirtualID: uint32(act.Device.VirtualID),
-					Model:     act.Device.Model,
-				},
-			})
+			curType = pb.EditType_Add
+		} else if act.Edit == TxnEditTypeDel {
+			curType = pb.EditType_Del
 		}
+		reqActs = append(reqActs, &pb.ActTxn{
+			Act: curType,
+			Device: &pb.Device{
+				Id:        act.Device.Id,
+				Mac:       act.Device.Mac,
+				VirtualID: uint32(act.Device.VirtualID),
+				Model:     act.Device.Model,
+			},
+		})
 	}
 	resp, err := clt.ModifySendTxn(ctx, &pb.ModifySendTxnRequest{
 		TransID: id,
