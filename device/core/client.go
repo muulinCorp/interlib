@@ -173,7 +173,7 @@ func (grpc *grpcClt) UpdateDeviceState(
 	reqUser auth.ReqUser,
 ) error {
 	if len(devics) == 0 {
-		return nil
+		return errors.New("(grpcClt) input's devices is empty")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
@@ -198,7 +198,7 @@ func (grpc *grpcClt) UpdateDeviceState(
 	case Repairing:
 		updateState = pb.DeviceState_Repairing
 	default:
-		return errors.New("state must be [assigned, used, 2bRepaired]")
+		return fmt.Errorf("state not allow: %v", state)
 	}
 	var sendDevices []*pb.CoreDevice
 	for _, d := range devics {

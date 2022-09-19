@@ -22,8 +22,8 @@ type DeviceInfo struct {
 
 type DeviceAry []*Device
 
-func (da DeviceAry) AddDevice(macaddress string, virtualID uint8) {
-	da = append(da, &Device{Macaddress: macaddress, VirtualID: virtualID})
+func (da *DeviceAry) AddDevice(macaddress string, virtualID uint8) {
+	*da = append(*da, &Device{Macaddress: macaddress, VirtualID: virtualID})
 }
 
 type RawdataType string
