@@ -178,8 +178,6 @@ func (grpc *grpcClt) UpdateDeviceState(
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
-	fmt.Printf("(grpcClt) host: %v", host)
-	ctx = metadata.AppendToOutgoingContext(ctx, "X-Channel", host)
 	ctx = metadata.AppendToOutgoingContext(ctx, "X-ReqUser", reqUser.Encode())
 	clt := pb.NewCoreDeviceServiceClient(grpc)
 	var updateState pb.DeviceState
