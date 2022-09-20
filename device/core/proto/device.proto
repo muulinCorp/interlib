@@ -89,6 +89,7 @@ message UpdateDeviceStateRequest {
   DeviceState state = 1;
   repeated CoreDevice devices = 2;
   string comment = 3;
+  string channel = 4;
 }
 
 message GetInfoMapResponse {
