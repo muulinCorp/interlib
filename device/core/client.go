@@ -23,7 +23,7 @@ type CoreDeviceClient interface {
 	StopUpdateRawdataStream() error
 	UpdateRawdata(dataType RawdataType, mac string, virtualID uint8, t time.Time, values SensorValuePool) error
 	GetValueMap(dataType RawdataType, devices []string, recvHandler func(deviceID string, valuemap map[uint32]float64)) error
-	UpdateDeviceState(devics DeviceAry, state DeviceState, comment string, errorHandler func(mac string, virtualID uint8, err string), reqUser auth.ReqUser) error
+	UpdateDeviceState(host string, devics DeviceAry, state DeviceState, comment string, errorHandler func(mac string, virtualID uint8, err string), reqUser auth.ReqUser) error
 }
 
 func NewGrpcClient(address string) (CoreDeviceClient, error) {
@@ -166,6 +166,7 @@ func (grpc *grpcClt) UpdateRawdata(dataType RawdataType, mac string, virtualID u
 }
 
 func (grpc *grpcClt) UpdateDeviceState(
+	host string,
 	devics DeviceAry,
 	state DeviceState,
 	comment string,
@@ -177,6 +178,8 @@ func (grpc *grpcClt) UpdateDeviceState(
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
+	fmt.Printf("(grpcClt) host: %v", host)
+	ctx = metadata.AppendToOutgoingContext(ctx, "X-Channel", host)
 	ctx = metadata.AppendToOutgoingContext(ctx, "X-ReqUser", reqUser.Encode())
 	clt := pb.NewCoreDeviceServiceClient(grpc)
 	var updateState pb.DeviceState
@@ -211,6 +214,7 @@ func (grpc *grpcClt) UpdateDeviceState(
 		State:   updateState,
 		Devices: sendDevices,
 		Comment: comment,
+		Channel: host,
 	})
 	if err != nil {
 		return err
