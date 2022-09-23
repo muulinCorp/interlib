@@ -1,11 +1,32 @@
 package plugin
 
+import (
+	"fmt"
+	"regexp"
+)
+
 type Channel string
 
 const (
 	Push = Channel("push")
 	Mail = Channel("mail")
 )
+
+var (
+	tplReqexp, _ = regexp.Compile("{{@([a-z_A-Z]+)}}")
+)
+
+func GetTemplateTag(tplName string) string {
+	return fmt.Sprintf("{{@%s}}", tplName)
+}
+
+func ParserTemplateName(c string) string {
+	return tplReqexp.FindString(c)
+}
+
+func ReplaceTemplateTag(c, replace string) string {
+	return tplReqexp.ReplaceAllString(c, replace)
+}
 
 type Message struct {
 	Channel   Channel
@@ -19,22 +40,27 @@ type Receiver struct {
 
 type PushMessage struct {
 	*Message `json:",inline"`
+	Title    string
 	Content  struct {
-		Title string
-		Body  string
+		Body string
+		Data map[string]any
 	}
+	Variables map[string]string
 }
 
 type MailMessage struct {
 	*Message `json:",inline"`
+	Title    string
 	Content  struct {
-		Title  string
 		Plaint string
 		Html   string
 	}
+	Variables map[string]string
 }
 
 type MqttMessage struct {
-	*Message `json:",inline"`
-	Content  map[string]any
+	*Message  `json:",inline"`
+	Content   map[string]any
+	IsUseTpl  bool
+	Variables map[string]string
 }
