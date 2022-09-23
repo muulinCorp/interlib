@@ -26,10 +26,12 @@ func (mr *MessageResponse) DecoreReponse() ([]byte, error) {
 }
 
 type MessageResponseWriter interface {
-	Encode() error
+	Encode(host string) error
 	Write(b []byte) (int, error)
-	AddPushMsg(m *Message, title, body string)
+	AddPushMsg(m *Message, title, body string, data map[string]any)
+	AddPushTplMsg(m *Message, title, bodyTplKey string, data map[string]any, variables map[string]string)
 	AddMailMsg(m *Message, title, plaint, html string)
+	AddMailTplMsg(m *Message, title, plaintTplKey, htmlTplKey string, variables map[string]string)
 }
 
 type msgResponseWriter struct {
@@ -39,7 +41,7 @@ type msgResponseWriter struct {
 	*MessageResponse
 }
 
-func (mr *msgResponseWriter) Encode() error {
+func (mr *msgResponseWriter) Encode(host string) error {
 	if mr.msgSize == 0 {
 		out, err := mr.DecoreReponse()
 		if err != nil {
@@ -50,6 +52,7 @@ func (mr *msgResponseWriter) Encode() error {
 	}
 	mr.rw.Header().Add("X-Message", strconv.Itoa(mr.msgSize))
 	mr.rw.Header().Set("Content-Type", "application/json")
+	mr.rw.Header().Add("X-Channel", host)
 	err := json.NewEncoder(mr.rw).Encode(mr.MessageResponse)
 	return err
 }
@@ -59,17 +62,34 @@ func (w *msgResponseWriter) Write(b []byte) (int, error) {
 	return 0, nil
 }
 
-func (w *msgResponseWriter) AddPushMsg(m *Message, title, body string) {
+func (w *msgResponseWriter) AddPushMsg(m *Message, title, body string, data map[string]any) {
 	w.msgSize++
 	w.PushMsgs = append(w.PushMsgs, &PushMessage{
 		Message: m,
+		Title:   title,
 		Content: struct {
-			Title string
-			Body  string
+			Body string
+			Data map[string]any
 		}{
-			Title: title,
-			Body:  body,
+			Body: body,
+			Data: data,
 		},
+	})
+}
+
+func (w *msgResponseWriter) AddPushTplMsg(m *Message, title, bodyTplKey string, data map[string]any, variables map[string]string) {
+	w.msgSize++
+	w.PushMsgs = append(w.PushMsgs, &PushMessage{
+		Message: m,
+		Title:   title,
+		Content: struct {
+			Body string
+			Data map[string]any
+		}{
+			Body: GetTemplateTag(bodyTplKey),
+			Data: data,
+		},
+		Variables: variables,
 	})
 }
 
@@ -77,14 +97,29 @@ func (w *msgResponseWriter) AddMailMsg(m *Message, title, plaint, html string) {
 	w.msgSize++
 	w.MailMsgs = append(w.MailMsgs, &MailMessage{
 		Message: m,
+		Title:   title,
 		Content: struct {
-			Title  string
 			Plaint string
 			Html   string
 		}{
-			Title:  title,
 			Plaint: plaint,
 			Html:   html,
 		},
+	})
+}
+
+func (w *msgResponseWriter) AddMailTplMsg(m *Message, title, plaintTplKey, htmlTplKey string, variables map[string]string) {
+	w.msgSize++
+	w.MailMsgs = append(w.MailMsgs, &MailMessage{
+		Message: m,
+		Title:   title,
+		Content: struct {
+			Plaint string
+			Html   string
+		}{
+			Plaint: GetTemplateTag(plaintTplKey),
+			Html:   GetTemplateTag(htmlTplKey),
+		},
+		Variables: variables,
 	})
 }

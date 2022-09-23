@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type MessageServiceClient interface {
 	MqttPublish(ctx context.Context, in *MqttPublishRequest, opts ...grpc.CallOption) (*MqttPublishResponse, error)
 	Push(ctx context.Context, in *PushRequest, opts ...grpc.CallOption) (*PushResponse, error)
-	Mail(ctx context.Context, in *MailRequest, opts ...grpc.CallOption) (MessageService_MailClient, error)
+	Mail(ctx context.Context, in *MailRequest, opts ...grpc.CallOption) (*MailResponse, error)
 }
 
 type messageServiceClient struct {
@@ -53,36 +53,13 @@ func (c *messageServiceClient) Push(ctx context.Context, in *PushRequest, opts .
 	return out, nil
 }
 
-func (c *messageServiceClient) Mail(ctx context.Context, in *MailRequest, opts ...grpc.CallOption) (MessageService_MailClient, error) {
-	stream, err := c.cc.NewStream(ctx, &MessageService_ServiceDesc.Streams[0], "/service.MessageService/Mail", opts...)
+func (c *messageServiceClient) Mail(ctx context.Context, in *MailRequest, opts ...grpc.CallOption) (*MailResponse, error) {
+	out := new(MailResponse)
+	err := c.cc.Invoke(ctx, "/service.MessageService/Mail", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &messageServiceMailClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type MessageService_MailClient interface {
-	Recv() (*MailResponse, error)
-	grpc.ClientStream
-}
-
-type messageServiceMailClient struct {
-	grpc.ClientStream
-}
-
-func (x *messageServiceMailClient) Recv() (*MailResponse, error) {
-	m := new(MailResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	return out, nil
 }
 
 // MessageServiceServer is the server API for MessageService service.
@@ -91,7 +68,7 @@ func (x *messageServiceMailClient) Recv() (*MailResponse, error) {
 type MessageServiceServer interface {
 	MqttPublish(context.Context, *MqttPublishRequest) (*MqttPublishResponse, error)
 	Push(context.Context, *PushRequest) (*PushResponse, error)
-	Mail(*MailRequest, MessageService_MailServer) error
+	Mail(context.Context, *MailRequest) (*MailResponse, error)
 	mustEmbedUnimplementedMessageServiceServer()
 }
 
@@ -105,8 +82,8 @@ func (UnimplementedMessageServiceServer) MqttPublish(context.Context, *MqttPubli
 func (UnimplementedMessageServiceServer) Push(context.Context, *PushRequest) (*PushResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Push not implemented")
 }
-func (UnimplementedMessageServiceServer) Mail(*MailRequest, MessageService_MailServer) error {
-	return status.Errorf(codes.Unimplemented, "method Mail not implemented")
+func (UnimplementedMessageServiceServer) Mail(context.Context, *MailRequest) (*MailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Mail not implemented")
 }
 func (UnimplementedMessageServiceServer) mustEmbedUnimplementedMessageServiceServer() {}
 
@@ -157,25 +134,22 @@ func _MessageService_Push_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MessageService_Mail_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(MailRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+func _MessageService_Mail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
 	}
-	return srv.(MessageServiceServer).Mail(m, &messageServiceMailServer{stream})
-}
-
-type MessageService_MailServer interface {
-	Send(*MailResponse) error
-	grpc.ServerStream
-}
-
-type messageServiceMailServer struct {
-	grpc.ServerStream
-}
-
-func (x *messageServiceMailServer) Send(m *MailResponse) error {
-	return x.ServerStream.SendMsg(m)
+	if interceptor == nil {
+		return srv.(MessageServiceServer).Mail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.MessageService/Mail",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageServiceServer).Mail(ctx, req.(*MailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 // MessageService_ServiceDesc is the grpc.ServiceDesc for MessageService service.
@@ -193,13 +167,11 @@ var MessageService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "Push",
 			Handler:    _MessageService_Push_Handler,
 		},
-	},
-	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "Mail",
-			Handler:       _MessageService_Mail_Handler,
-			ServerStreams: true,
+			MethodName: "Mail",
+			Handler:    _MessageService_Mail_Handler,
 		},
 	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "message/proto/message.proto",
 }
