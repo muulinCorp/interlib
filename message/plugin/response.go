@@ -16,9 +16,10 @@ func NewMessageResponseWriter(w http.ResponseWriter) MessageResponseWriter {
 }
 
 type MessageResponse struct {
-	PushMsgs []*PushMessage
-	MailMsgs []*MailMessage
-	Response string
+	PushMsgs    []*PushMessage
+	MailMsgs    []*MailMessage
+	Response    string
+	ContentType string
 }
 
 func (mr *MessageResponse) DecoreReponse() ([]byte, error) {
@@ -58,6 +59,11 @@ func (mr *msgResponseWriter) Encode(host string) error {
 }
 
 func (w *msgResponseWriter) Write(b []byte) (int, error) {
+	if ct := w.header.Get("Content-Type"); ct != "" {
+		w.ContentType = ct
+	} else {
+		w.ContentType = "text/plain"
+	}
 	w.Response = hex.EncodeToString(b)
 	return 0, nil
 }
