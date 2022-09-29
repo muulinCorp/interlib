@@ -9,17 +9,19 @@ import (
 
 func NewMessageResponseWriter(w http.ResponseWriter) MessageResponseWriter {
 	return &msgResponseWriter{
-		rw:              w,
-		header:          w.Header(),
-		MessageResponse: &MessageResponse{},
+		rw: w,
+		MessageResponse: &MessageResponse{
+			Header: http.Header{},
+		},
 	}
 }
 
 type MessageResponse struct {
-	PushMsgs    []*PushMessage
-	MailMsgs    []*MailMessage
-	Response    string
-	ContentType string
+	PushMsgs   []*PushMessage
+	MailMsgs   []*MailMessage
+	Response   string
+	Header     http.Header
+	StatusCode int
 }
 
 func (mr *MessageResponse) DecoreReponse() ([]byte, error) {
@@ -27,8 +29,8 @@ func (mr *MessageResponse) DecoreReponse() ([]byte, error) {
 }
 
 type MessageResponseWriter interface {
+	http.ResponseWriter
 	Encode(host string) error
-	Write(b []byte) (int, error)
 	AddPushMsg(m *Message, title, body string, data map[string]any)
 	AddPushTplMsg(m *Message, title, bodyTplKey string, data map[string]any, variables map[string]string)
 	AddMailMsg(m *Message, title, plaint, html string)
@@ -37,9 +39,16 @@ type MessageResponseWriter interface {
 
 type msgResponseWriter struct {
 	rw      http.ResponseWriter
-	header  http.Header
 	msgSize int
 	*MessageResponse
+}
+
+func (mr *msgResponseWriter) Header() http.Header {
+	return mr.MessageResponse.Header
+}
+
+func (mr *msgResponseWriter) WriteHeader(statusCode int) {
+	mr.StatusCode = statusCode
 }
 
 func (mr *msgResponseWriter) Encode(host string) error {
@@ -59,11 +68,6 @@ func (mr *msgResponseWriter) Encode(host string) error {
 }
 
 func (w *msgResponseWriter) Write(b []byte) (int, error) {
-	if ct := w.header.Get("Content-Type"); ct != "" {
-		w.ContentType = ct
-	} else {
-		w.ContentType = "text/plain"
-	}
 	w.Response = hex.EncodeToString(b)
 	return 0, nil
 }
