@@ -29,7 +29,7 @@ type grpcClt struct {
 
 func (gclt *grpcClt) ValidateToken(host, token string) (auth.ReqUser, error) {
 	clt := pb.NewAuthServiceClient(gclt)
-	ctx := metadata.AppendToOutgoingContext(context.Background(), "X-Host", host)
+	ctx := metadata.AppendToOutgoingContext(context.Background(), "X-Channel", host)
 	resp, err := clt.ValidateToken(ctx, &pb.ValidateTokenRequest{
 		Token: token,
 	})
@@ -42,7 +42,7 @@ func (gclt *grpcClt) ValidateToken(host, token string) (auth.ReqUser, error) {
 
 func (gclt *grpcClt) IsAccountsExist(host string, accounts []string) (notExistAccounts []string, err error) {
 	clt := pb.NewAuthServiceClient(gclt)
-	ctx := metadata.AppendToOutgoingContext(context.Background(), "X-Host", host)
+	ctx := metadata.AppendToOutgoingContext(context.Background(), "X-Channel", host)
 	resp, err := clt.IsAccountsExist(ctx, &pb.IsAccountsExistRequest{
 		Accounts: accounts,
 	})
