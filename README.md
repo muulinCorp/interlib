@@ -17,3 +17,10 @@
 | core-device | 9102  |
 | auth        | 9103  |
 | app-device  | 9150  |
+
+### Service
+|  服務名稱	    | 埠號  | 
+|---		  |---	  |
+| sso         | 8080  |
+| admin       | 8081  |
+| operator    | 8082  |

@@ -103,7 +103,6 @@ func (am *interAuthMiddle) Handler() gin.HandlerFunc {
 			host := util.GetHost(c.Request)
 			reqUser, err := am.clt.ValidateToken(host, authToken)
 			if err != nil {
-				fmt.Println("validate token fail")
 				api.GinOutputErr(c, types.NewErrorWaper(types.ErrInvalidToken, err.Error()))
 				c.Abort()
 				return
