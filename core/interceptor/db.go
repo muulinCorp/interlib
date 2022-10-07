@@ -3,6 +3,7 @@ package interceptor
 import (
 	"context"
 
+	"bitbucket.org/muulin/interlib/core/mid"
 	"github.com/94peter/sterna/db"
 	"github.com/94peter/sterna/log"
 	"github.com/google/uuid"
@@ -66,6 +67,7 @@ func UnaryServerDBInterceptor(di DBMidDI) grpc.UnaryServerInterceptor {
 		ctx = context.WithValue(ctx, db.CtxMongoKey, dbclt)
 		ctx = context.WithValue(ctx, log.CtxLogKey, l)
 		ctx = context.WithValue(ctx, db.CtxRedisKey, redisClt)
+		ctx = context.WithValue(ctx, mid.CtxServDiKey, di)
 		resp, err := handler(ctx, req)
 		return resp, err
 	})

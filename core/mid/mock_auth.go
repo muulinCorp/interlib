@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewMockAuthMid() mid.GinMiddle {
+func NewMockAuthMid() mid.AuthGinMidInter {
 	return &mockAuthMiddle{}
 }
 
@@ -18,6 +18,9 @@ type mockAuthMiddle struct {
 
 func (lm *mockAuthMiddle) GetName() string {
 	return "mockAuth"
+}
+
+func (am *mockAuthMiddle) AddAuthPath(path string, method string, isAuth bool, group []auth.UserPerm) {
 }
 
 func (am *mockAuthMiddle) Handler() gin.HandlerFunc {

@@ -14,6 +14,10 @@ import (
 	"github.com/google/uuid"
 )
 
+const (
+	CtxServDiKey = util.CtxKey("ServiceDI")
+)
+
 type DBMidDI interface {
 	log.LoggerDI
 	db.MongoDI
@@ -100,6 +104,7 @@ func (am *dbMiddle) Handler() gin.HandlerFunc {
 		c.Request = util.SetCtxKeyVal(c.Request, db.CtxMongoKey, dbclt)
 		c.Request = util.SetCtxKeyVal(c.Request, log.CtxLogKey, l)
 		c.Request = util.SetCtxKeyVal(c.Request, db.CtxRedisKey, redisClt)
+		c.Request = util.SetCtxKeyVal(c.Request, CtxServDiKey, am.di)
 		c.Next()
 
 		runtime.GC()
