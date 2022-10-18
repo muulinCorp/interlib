@@ -21,7 +21,8 @@ func GetTemplateTag(tplName string) string {
 }
 
 func ParserTemplateName(c string) string {
-	return tplReqexp.FindString(c)
+	s := tplReqexp.FindString(c)
+	return s[3 : len(s)-2]
 }
 
 func ReplaceTemplateTag(c, replace string) string {
