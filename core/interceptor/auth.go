@@ -30,7 +30,14 @@ func getReqUser(ctx context.Context) (auth.ReqUser, error) {
 	return nil, nil
 }
 
-func StreamServerAuthInterceptor() grpc.StreamServerInterceptor {
+func NewAuthInterceptor() Interceptor {
+	return &authInterceptor{}
+}
+
+type authInterceptor struct {
+}
+
+func (ai *authInterceptor) StreamServerInterceptor() grpc.StreamServerInterceptor {
 	return grpc.StreamServerInterceptor(func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
 		user, err := getReqUser(ss.Context())
 		if err != nil {
@@ -45,7 +52,7 @@ func StreamServerAuthInterceptor() grpc.StreamServerInterceptor {
 	})
 }
 
-func UnaryServerAuthInterceptor() grpc.UnaryServerInterceptor {
+func (ai *authInterceptor) UnaryServerInterceptor() grpc.UnaryServerInterceptor {
 	return grpc.UnaryServerInterceptor(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 		user, err := getReqUser(ctx)
 		if err != nil {
