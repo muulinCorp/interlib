@@ -14,9 +14,9 @@ import (
 
 type MessageClient interface {
 	core.MyGrpc
-	MqttPublish(host, topic string, msg []byte) error
-	Push(host string, msg *plugin.PushMessage) (errorTokens []string, err error)
-	Mail(host string, msg *plugin.MailMessage) error
+	MqttPublish(diKey, topic string, msg []byte) error
+	Push(diKey string, msg *plugin.PushMessage) (errorTokens []string, err error)
+	Mail(diKey string, msg *plugin.MailMessage) error
 }
 
 func NewGrpcClient(address string) (MessageClient, error) {
@@ -31,9 +31,9 @@ type grpcClt struct {
 	core.MyGrpc
 }
 
-func (grpc *grpcClt) MqttPublish(host string, topic string, msg []byte) error {
+func (grpc *grpcClt) MqttPublish(diKey string, topic string, msg []byte) error {
 	ctx, cancel := context.WithTimeout(
-		metadata.AppendToOutgoingContext(context.Background(), "X-Channel", host),
+		metadata.AppendToOutgoingContext(context.Background(), "X-Dikey", diKey),
 		time.Second)
 	defer cancel()
 	clt := pb.NewMessageServiceClient(grpc)
@@ -51,9 +51,9 @@ func (grpc *grpcClt) MqttPublish(host string, topic string, msg []byte) error {
 	return nil
 }
 
-func (grpc *grpcClt) Push(host string, msg *plugin.PushMessage) (errorTokens []string, err error) {
+func (grpc *grpcClt) Push(diKey string, msg *plugin.PushMessage) (errorTokens []string, err error) {
 	ctx, cancel := context.WithTimeout(
-		metadata.AppendToOutgoingContext(context.Background(), "X-Channel", host),
+		metadata.AppendToOutgoingContext(context.Background(), "X-Dikey", diKey),
 		time.Second)
 	defer cancel()
 	if len(msg.Receivers) == 0 {
@@ -82,13 +82,13 @@ func (grpc *grpcClt) Push(host string, msg *plugin.PushMessage) (errorTokens []s
 	return
 }
 
-func (grpc *grpcClt) Mail(host string, msg *plugin.MailMessage) error {
+func (grpc *grpcClt) Mail(diKey string, msg *plugin.MailMessage) error {
 	if len(msg.Receivers) == 0 {
 		return errors.New("no receivers")
 	}
 
 	ctx, cancel := context.WithTimeout(
-		metadata.AppendToOutgoingContext(context.Background(), "X-Channel", host),
+		metadata.AppendToOutgoingContext(context.Background(), "X-Dikey", diKey),
 		time.Second)
 	defer cancel()
 	clt := pb.NewMessageServiceClient(grpc)

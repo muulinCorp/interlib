@@ -51,7 +51,7 @@ func (mr *msgResponseWriter) WriteHeader(statusCode int) {
 	mr.StatusCode = statusCode
 }
 
-func (mr *msgResponseWriter) Encode(host string) error {
+func (mr *msgResponseWriter) Encode(diKey string) error {
 	if mr.msgSize == 0 {
 		out, err := mr.DecoreReponse()
 		if err != nil {
@@ -62,7 +62,7 @@ func (mr *msgResponseWriter) Encode(host string) error {
 	}
 	mr.rw.Header().Add("X-Message", strconv.Itoa(mr.msgSize))
 	mr.rw.Header().Set("Content-Type", "application/json")
-	mr.rw.Header().Add("X-Channel", host)
+	mr.rw.Header().Add("X-DiKey", diKey)
 	err := json.NewEncoder(mr.rw).Encode(mr.MessageResponse)
 	return err
 }
