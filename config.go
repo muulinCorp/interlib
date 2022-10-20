@@ -29,13 +29,12 @@ type GrpcRouterConf map[string]string
 func (conf *GrpcRouterConf) InitConfByFile(f string) {
 	yamlFile, err := ioutil.ReadFile(f)
 	if err != nil {
-		fmt.Println("load conf fail: " + f)
-		panic(err)
+		panic(fmt.Errorf("load conf %s fail: %s", f, err.Error()))
 	}
 
 	err = yaml.Unmarshal(yamlFile, conf)
 	if err != nil {
-		panic(err)
+		panic(fmt.Errorf("yaml unmarshal %s fail: %s", f, err.Error()))
 	}
 }
 
