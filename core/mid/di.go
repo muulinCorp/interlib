@@ -26,18 +26,24 @@ func NewDiMid(clt db.RedisClient, env string, di interface{}) mid.Middle {
 	}
 }
 
-func NewGinDiMid(clt db.RedisClient, env string, di interface{}) mid.GinMiddle {
+func NewGinDiMid(clt db.RedisClient, env string, di interface{}, service string) mid.GinMiddle {
 	return &diMiddle{
-		clt: clt,
-		env: env,
-		di:  di,
+		service: service,
+		clt:     clt,
+		env:     env,
+		di:      di,
 	}
 }
 
 type diMiddle struct {
-	clt db.RedisClient
-	env string
-	di  interface{}
+	service string
+	clt     db.RedisClient
+	env     string
+	di      interface{}
+}
+
+func (lm *diMiddle) outputErr(c *gin.Context, err error) {
+	api.GinOutputErr(c, lm.service, err)
 }
 
 func (lm *diMiddle) GetName() string {
@@ -50,7 +56,7 @@ func (am *diMiddle) GetMiddleWare() func(f http.HandlerFunc) http.HandlerFunc {
 	return func(f http.HandlerFunc) http.HandlerFunc {
 		// one time scope setup area for middleware
 		return func(w http.ResponseWriter, r *http.Request) {
-			key := r.Header.Get("X-Dikey")
+			key := r.Header.Get("X-DiKey")
 			if key == "" {
 				w.WriteHeader(http.StatusInternalServerError)
 				w.Write([]byte("missing X-Dikey"))
@@ -77,9 +83,9 @@ func (am *diMiddle) GetMiddleWare() func(f http.HandlerFunc) http.HandlerFunc {
 
 func (am *diMiddle) Handler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		key := c.GetHeader("X-Dikey")
+		key := c.GetHeader("X-DiKey")
 		if key == "" {
-			api.GinOutputErr(c, api.NewApiError(http.StatusInternalServerError, "missing X-Dikey"))
+			am.outputErr(c, api.NewApiError(http.StatusInternalServerError, "missing X-Dikey"))
 			c.Abort()
 			return
 		}
@@ -91,7 +97,7 @@ func (am *diMiddle) Handler() gin.HandlerFunc {
 		newValue := reflect.New(val.Type()).Interface()
 		confByte, err := am.clt.Get(key)
 		if err != nil {
-			api.GinOutputErr(c, api.NewApiError(http.StatusInternalServerError, err.Error()))
+			am.outputErr(c, api.NewApiError(http.StatusInternalServerError, err.Error()))
 			c.Abort()
 			return
 		}
