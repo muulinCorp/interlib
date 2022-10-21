@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 
+	"bitbucket.org/muulin/interlib"
 	interAuth "bitbucket.org/muulin/interlib/auth"
 	"bitbucket.org/muulin/interlib/types"
 	interlibUtil "bitbucket.org/muulin/interlib/util"
@@ -34,9 +35,9 @@ func NewInterAuthMid(authClt interAuth.AuthClient) sternaMid.AuthMidInter {
 	}
 }
 
-func NewGinInterAuthMid(authClt interAuth.AuthClient) sternaMid.AuthGinMidInter {
+func NewGinInterAuthMid(serviceName string) sternaMid.AuthGinMidInter {
 	return &interAuthMiddle{
-		clt:      authClt,
+		service:  serviceName,
 		authMap:  make(map[string]uint8),
 		groupMap: make(map[string][]auth.UserPerm),
 	}
@@ -47,9 +48,14 @@ func (lm *interAuthMiddle) GetName() string {
 }
 
 type interAuthMiddle struct {
-	clt      interAuth.AuthClient
+	service string
+	// clt      interAuth.AuthClient
 	authMap  map[string]uint8
 	groupMap map[string][]auth.UserPerm
+}
+
+func (am *interAuthMiddle) outputErr(c *gin.Context, err error) {
+	api.GinOutputErr(c, am.service, err)
 }
 
 func (am *interAuthMiddle) AddAuthPath(path string, method string, isAuth bool, group []auth.UserPerm) {
@@ -91,31 +97,39 @@ func (am *interAuthMiddle) Handler() gin.HandlerFunc {
 		if am.IsAuth(path, c.Request.Method) {
 			authToken := c.GetHeader(sternaMid.BearerAuthTokenKey)
 			if authToken == "" {
-				api.GinOutputErr(c, types.NewErrorWaper(types.ErrMissingToken, path))
+				am.outputErr(c, types.NewErrorWaper(types.ErrMissingToken, path))
 				c.Abort()
 				return
 			}
 			if !strings.HasPrefix(authToken, "Bearer ") {
-				api.GinOutputErr(c, types.NewErrorWaper(types.ErrInvalidToken, "not bearer token"))
+				am.outputErr(c, types.NewErrorWaper(types.ErrInvalidToken, "not bearer token"))
 				c.Abort()
 				return
 			}
 			host := util.GetHost(c.Request)
-			reqUser, err := am.clt.ValidateToken(host, authToken)
+			diKey := c.GetHeader("X-DiKey")
+			grpconf := interlib.GetGrpcConfByCtx(c.Request.Context())
+			authClt, err := grpconf.NewAuthClient()
 			if err != nil {
-				api.GinOutputErr(c, types.NewErrorWaper(types.ErrInvalidToken, err.Error()))
+				am.outputErr(c, types.NewErrorWaper(types.ErrAuthGrpcConnectFail, err.Error()))
+				c.Abort()
+				return
+			}
+			reqUser, err := authClt.ValidateToken(host, diKey, authToken)
+			if err != nil {
+				am.outputErr(c, types.NewErrorWaper(types.ErrInvalidToken, err.Error()))
 				c.Abort()
 				return
 			}
 
 			if reqUser.Host() != host {
-				api.GinOutputErr(c, types.NewErrorWaper(types.ErrHostNotMatch, "host not match"))
+				am.outputErr(c, types.NewErrorWaper(types.ErrHostNotMatch, "host not match"))
 				c.Abort()
 				return
 			}
 
 			if hasPerm := am.HasPerm(path, c.Request.Method, reqUser.GetPerm()); !hasPerm {
-				api.GinOutputErr(c, types.NewErrorWaper(types.ErrNoPermission, "perm not allow"))
+				am.outputErr(c, types.NewErrorWaper(types.ErrNoPermission, "perm not allow"))
 				c.Abort()
 				return
 			}
@@ -146,7 +160,14 @@ func (am *interAuthMiddle) GetMiddleWare() func(f http.HandlerFunc) http.Handler
 				}
 				// 打api取得token內容
 				host := util.GetHost(r)
-				reqUser, err := am.clt.ValidateToken(host, authToken)
+				diKey := r.Header.Get("X-DiKey")
+				grpconf := interlib.GetGrpcConfByCtx(r.Context())
+				authClt, err := grpconf.NewAuthClient()
+				if err != nil {
+					api.OutputErr(w, types.NewErrorWaper(types.ErrAuthGrpcConnectFail, err.Error()))
+					return
+				}
+				reqUser, err := authClt.ValidateToken(host, diKey, authToken)
 				if err != nil {
 					api.OutputErr(w, err)
 					return
