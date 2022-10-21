@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"runtime"
 
+	"github.com/94peter/sterna"
 	"github.com/94peter/sterna/api"
 	"github.com/94peter/sterna/api/mid"
 	"github.com/94peter/sterna/db"
@@ -48,7 +49,7 @@ func (am *dbMiddle) GetMiddleWare() func(f http.HandlerFunc) http.HandlerFunc {
 	return func(f http.HandlerFunc) http.HandlerFunc {
 		// one time scope setup area for middleware
 		return func(w http.ResponseWriter, r *http.Request) {
-			servDi := util.GetCtxVal(r, CtxServDiKey)
+			servDi := util.GetCtxVal(r, sterna.CtxServDiKey)
 			if servDi == nil {
 				api.OutputErr(w, api.NewApiError(http.StatusInternalServerError, "can not get di"))
 				return
@@ -87,7 +88,7 @@ func (am *dbMiddle) GetMiddleWare() func(f http.HandlerFunc) http.HandlerFunc {
 
 func (m *dbMiddle) Handler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		servDi := util.GetCtxVal(c.Request, CtxServDiKey)
+		servDi := util.GetCtxVal(c.Request, sterna.CtxServDiKey)
 		if servDi == nil {
 			m.outputErr(c, api.NewApiError(http.StatusInternalServerError, "can not get di"))
 			c.Abort()

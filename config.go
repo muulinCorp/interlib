@@ -1,9 +1,9 @@
 package interlib
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
-	"net/http"
 
 	"bitbucket.org/muulin/interlib/auth"
 	"bitbucket.org/muulin/interlib/channel"
@@ -11,20 +11,31 @@ import (
 	appDevice "bitbucket.org/muulin/interlib/device/app"
 	coreDevice "bitbucket.org/muulin/interlib/device/core"
 	"bitbucket.org/muulin/interlib/message"
-	"bitbucket.org/muulin/interlib/rawdata"
 	"github.com/94peter/sterna/log"
+	"github.com/94peter/sterna/util"
 	"gopkg.in/yaml.v2"
 )
 
-type Conf struct {
-	Url string
-}
+const (
+	CtxGrpcConfKey = util.CtxKey("gRPConf")
+)
 
-func (c *Conf) NewRawDataLib(clt *http.Client) rawdata.RawdataLib {
-	return rawdata.NewLib(clt, c.Url)
+func GetGrpcConfByCtx(ctx context.Context) GrpcRouterConf {
+	val := ctx.Value(CtxGrpcConfKey)
+	if conf, ok := val.(GrpcRouterConf); ok {
+		return conf
+	}
+	return nil
 }
 
 type GrpcRouterConf map[string]string
+
+func (conf *GrpcRouterConf) InitConfByByte(b []byte) {
+	err := yaml.Unmarshal(b, conf)
+	if err != nil {
+		panic(fmt.Errorf("yaml unmarshal %s fail: %s", string(b), err.Error()))
+	}
+}
 
 func (conf *GrpcRouterConf) InitConfByFile(f string) {
 	yamlFile, err := ioutil.ReadFile(f)

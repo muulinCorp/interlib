@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"reflect"
 
+	"bitbucket.org/muulin/interlib"
 	"github.com/94peter/sterna"
 	"github.com/94peter/sterna/api"
 	"github.com/94peter/sterna/api/mid"
@@ -12,34 +13,33 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const (
-	CtxServDiKey = util.CtxKey("ServiceDI")
-)
-
 type DIMiddle string
 
 func NewDiMid(clt db.RedisClient, env string, di interface{}) mid.Middle {
 	return &diMiddle{
-		clt: clt,
-		env: env,
-		di:  di,
+		clt:        clt,
+		env:        env,
+		di:         di,
+		routerConf: interlib.GrpcRouterConf{},
 	}
 }
 
 func NewGinDiMid(clt db.RedisClient, env string, di interface{}, service string) mid.GinMiddle {
 	return &diMiddle{
-		service: service,
-		clt:     clt,
-		env:     env,
-		di:      di,
+		service:    service,
+		clt:        clt,
+		env:        env,
+		di:         di,
+		routerConf: interlib.GrpcRouterConf{},
 	}
 }
 
 type diMiddle struct {
-	service string
-	clt     db.RedisClient
-	env     string
-	di      interface{}
+	service    string
+	clt        db.RedisClient
+	env        string
+	di         interface{}
+	routerConf interlib.GrpcRouterConf
 }
 
 func (lm *diMiddle) outputErr(c *gin.Context, err error) {
@@ -75,7 +75,7 @@ func (am *diMiddle) GetMiddleWare() func(f http.HandlerFunc) http.HandlerFunc {
 				return
 			}
 			sterna.InitConfByByte(confByte, newValue)
-			r = util.SetCtxKeyVal(r, CtxServDiKey, newValue)
+			r = util.SetCtxKeyVal(r, sterna.CtxServDiKey, newValue)
 			f(w, r)
 		}
 	}
@@ -86,6 +86,13 @@ func (am *diMiddle) Handler() gin.HandlerFunc {
 		key := c.GetHeader("X-DiKey")
 		if key == "" {
 			am.outputErr(c, api.NewApiError(http.StatusInternalServerError, "missing X-Dikey"))
+			c.Abort()
+			return
+		}
+
+		grpcKey := c.GetHeader("X-GrpcKey")
+		if grpcKey == "" {
+			am.outputErr(c, api.NewApiError(http.StatusInternalServerError, "missing X-GrpcKey"))
 			c.Abort()
 			return
 		}
@@ -102,7 +109,16 @@ func (am *diMiddle) Handler() gin.HandlerFunc {
 			return
 		}
 		sterna.InitConfByByte(confByte, newValue)
-		c.Request = util.SetCtxKeyVal(c.Request, CtxServDiKey, newValue)
+		c.Request = util.SetCtxKeyVal(c.Request, sterna.CtxServDiKey, newValue)
+
+		grpcConfByte, err := am.clt.Get(grpcKey)
+		if err != nil {
+			am.outputErr(c, api.NewApiError(http.StatusInternalServerError, err.Error()))
+			c.Abort()
+			return
+		}
+		am.routerConf.InitConfByByte(grpcConfByte)
+		c.Request = util.SetCtxKeyVal(c.Request, interlib.CtxGrpcConfKey, newValue)
 		c.Next()
 	}
 }

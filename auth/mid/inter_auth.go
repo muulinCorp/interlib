@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 
+	"bitbucket.org/muulin/interlib"
 	interAuth "bitbucket.org/muulin/interlib/auth"
 	"bitbucket.org/muulin/interlib/types"
 	interlibUtil "bitbucket.org/muulin/interlib/util"
@@ -34,10 +35,9 @@ func NewInterAuthMid(authClt interAuth.AuthClient) sternaMid.AuthMidInter {
 	}
 }
 
-func NewGinInterAuthMid(authClt interAuth.AuthClient, serviceName string) sternaMid.AuthGinMidInter {
+func NewGinInterAuthMid(serviceName string) sternaMid.AuthGinMidInter {
 	return &interAuthMiddle{
 		service:  serviceName,
-		clt:      authClt,
 		authMap:  make(map[string]uint8),
 		groupMap: make(map[string][]auth.UserPerm),
 	}
@@ -48,8 +48,8 @@ func (lm *interAuthMiddle) GetName() string {
 }
 
 type interAuthMiddle struct {
-	service  string
-	clt      interAuth.AuthClient
+	service string
+	// clt      interAuth.AuthClient
 	authMap  map[string]uint8
 	groupMap map[string][]auth.UserPerm
 }
@@ -108,7 +108,14 @@ func (am *interAuthMiddle) Handler() gin.HandlerFunc {
 			}
 			host := util.GetHost(c.Request)
 			diKey := c.GetHeader("X-DiKey")
-			reqUser, err := am.clt.ValidateToken(host, diKey, authToken)
+			grpconf := interlib.GetGrpcConfByCtx(c.Request.Context())
+			authClt, err := grpconf.NewAuthClient()
+			if err != nil {
+				am.outputErr(c, types.NewErrorWaper(types.ErrAuthGrpcConnectFail, err.Error()))
+				c.Abort()
+				return
+			}
+			reqUser, err := authClt.ValidateToken(host, diKey, authToken)
 			if err != nil {
 				am.outputErr(c, types.NewErrorWaper(types.ErrInvalidToken, err.Error()))
 				c.Abort()
@@ -154,7 +161,13 @@ func (am *interAuthMiddle) GetMiddleWare() func(f http.HandlerFunc) http.Handler
 				// 打api取得token內容
 				host := util.GetHost(r)
 				diKey := r.Header.Get("X-DiKey")
-				reqUser, err := am.clt.ValidateToken(host, diKey, authToken)
+				grpconf := interlib.GetGrpcConfByCtx(r.Context())
+				authClt, err := grpconf.NewAuthClient()
+				if err != nil {
+					api.OutputErr(w, types.NewErrorWaper(types.ErrAuthGrpcConnectFail, err.Error()))
+					return
+				}
+				reqUser, err := authClt.ValidateToken(host, diKey, authToken)
 				if err != nil {
 					api.OutputErr(w, err)
 					return

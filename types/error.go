@@ -8,9 +8,10 @@ import (
 )
 
 var (
-	ErrJsonEncodeFail = api.NewApiErrorWithKey(http.StatusInternalServerError, "json encdoe fail: %s", "500001")
-	ErrRequestGetFail = api.NewApiErrorWithKey(http.StatusBadGateway, "request fail: %s", "502001")
-	ErrPathNotFound   = api.NewApiErrorWithKey(http.StatusNotFound, "path not found: %s", "404001")
+	ErrJsonEncodeFail      = api.NewApiErrorWithKey(http.StatusInternalServerError, "json encdoe fail: %s", "500001")
+	ErrRequestGetFail      = api.NewApiErrorWithKey(http.StatusBadGateway, "request fail: %s", "502001")
+	ErrAuthGrpcConnectFail = api.NewApiErrorWithKey(http.StatusServiceUnavailable, "json encdoe fail: %s", "503001")
+	ErrPathNotFound        = api.NewApiErrorWithKey(http.StatusNotFound, "path not found: %s", "404001")
 )
 
 var (

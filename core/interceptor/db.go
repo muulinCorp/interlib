@@ -4,7 +4,8 @@ import (
 	"context"
 	"reflect"
 
-	"bitbucket.org/muulin/interlib/core/mid"
+	"bitbucket.org/muulin/interlib"
+	"github.com/94peter/sterna"
 	"github.com/94peter/sterna/db"
 	"github.com/94peter/sterna/log"
 	"github.com/google/uuid"
@@ -30,11 +31,7 @@ func (ss *serverStream) Context() context.Context {
 	return ss.ctx
 }
 
-func getDI(ctx context.Context, clt db.RedisClient, env string, di DBMidDI) (DBMidDI, error) {
-	md, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		return nil, status.Error(codes.InvalidArgument, "can not get metadata")
-	}
+func getDI(md metadata.MD, clt db.RedisClient, env string, di DBMidDI) (DBMidDI, error) {
 	hosts := md.Get("X-DiKey")
 	if len(hosts) != 1 {
 		return nil, status.Error(codes.InvalidArgument, "missing X-DiKey")
@@ -55,6 +52,22 @@ func getDI(ctx context.Context, clt db.RedisClient, env string, di DBMidDI) (DBM
 	}
 
 	return newValue.(DBMidDI), nil
+}
+
+func getGrpcConf(md metadata.MD, clt db.RedisClient, env string) (interlib.GrpcRouterConf, error) {
+	hosts := md.Get("X-GrpcKey")
+	if len(hosts) != 1 {
+		return nil, nil
+	}
+
+	confByte, err := clt.Get(hosts[0])
+	if err != nil {
+		return nil, err
+	}
+	grpConf := interlib.GrpcRouterConf{}
+	grpConf.InitConfByByte(confByte)
+
+	return grpConf, nil
 }
 
 func getContextWitchRsrc(ctx context.Context, di DBMidDI) (r *rsrc, err error) {
@@ -99,7 +112,11 @@ type redisInterceptor struct {
 func (ri *redisInterceptor) StreamServerInterceptor() grpc.StreamServerInterceptor {
 	return grpc.StreamServerInterceptor(func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
 		ctx := ss.Context()
-		di, err := getDI(ctx, ri.clt, ri.env, ri.di)
+		md, ok := metadata.FromIncomingContext(ctx)
+		if !ok {
+			return status.Error(codes.InvalidArgument, "can not get metadata")
+		}
+		di, err := getDI(md, ri.clt, ri.env, ri.di)
 		if err != nil {
 			return err
 		}
@@ -108,6 +125,13 @@ func (ri *redisInterceptor) StreamServerInterceptor() grpc.StreamServerIntercept
 			return err
 		}
 
+		grpc, err := getGrpcConf(md, ri.clt, ri.env)
+		if err != nil {
+			return err
+		}
+		if grpc != nil {
+			ctx = context.WithValue(ctx, interlib.CtxGrpcConfKey, grpc)
+		}
 		err = handler(srv, &serverStream{
 			ServerStream: ss,
 			ctx:          rsrc.setContext(ctx),
@@ -119,7 +143,11 @@ func (ri *redisInterceptor) StreamServerInterceptor() grpc.StreamServerIntercept
 
 func (ri *redisInterceptor) UnaryServerInterceptor() grpc.UnaryServerInterceptor {
 	return grpc.UnaryServerInterceptor(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-		di, err := getDI(ctx, ri.clt, ri.env, ri.di)
+		md, ok := metadata.FromIncomingContext(ctx)
+		if !ok {
+			return nil, status.Error(codes.InvalidArgument, "can not get metadata")
+		}
+		di, err := getDI(md, ri.clt, ri.env, ri.di)
 		if err != nil {
 			return nil, err
 		}
@@ -128,6 +156,14 @@ func (ri *redisInterceptor) UnaryServerInterceptor() grpc.UnaryServerInterceptor
 			return nil, err
 		}
 		resp, err := handler(r.setContext(ctx), req)
+
+		grpc, err := getGrpcConf(md, ri.clt, ri.env)
+		if err != nil {
+			return nil, err
+		}
+		if grpc != nil {
+			ctx = context.WithValue(ctx, interlib.CtxGrpcConfKey, grpc)
+		}
 		r.close()
 		return resp, err
 	})
@@ -185,7 +221,7 @@ func (i *localDBInterceptor) UnaryServerInterceptor() grpc.UnaryServerIntercepto
 		ctx = context.WithValue(ctx, db.CtxMongoKey, dbclt)
 		ctx = context.WithValue(ctx, log.CtxLogKey, l)
 		ctx = context.WithValue(ctx, db.CtxRedisKey, redisClt)
-		ctx = context.WithValue(ctx, mid.CtxServDiKey, i.di)
+		ctx = context.WithValue(ctx, sterna.CtxServDiKey, i.di)
 		resp, err := handler(ctx, req)
 		return resp, err
 	})
@@ -211,6 +247,6 @@ func (r *rsrc) setContext(ctx context.Context) context.Context {
 	ctx = context.WithValue(ctx, db.CtxMongoKey, r.dbclt)
 	ctx = context.WithValue(ctx, log.CtxLogKey, r.l)
 	ctx = context.WithValue(ctx, db.CtxRedisKey, r.redisClt)
-	ctx = context.WithValue(ctx, mid.CtxServDiKey, r.di)
+	ctx = context.WithValue(ctx, sterna.CtxServDiKey, r.di)
 	return ctx
 }
