@@ -5,6 +5,7 @@ import (
 	"reflect"
 
 	"bitbucket.org/muulin/interlib"
+	"bitbucket.org/muulin/interlib/channel"
 	"github.com/94peter/sterna"
 	"github.com/94peter/sterna/db"
 	"github.com/94peter/sterna/log"
@@ -77,15 +78,10 @@ func getContextWitchRsrc(ctx context.Context, di DBMidDI) (r *rsrc, err error) {
 	if err != nil {
 		return
 	}
-	redisClt, err := di.NewRedisClient(ctx)
-	if err != nil {
-		return
-	}
 	r = &rsrc{
-		l:        l,
-		dbclt:    dbclt,
-		redisClt: redisClt,
-		di:       di,
+		l:     l,
+		dbclt: dbclt,
+		di:    di,
 	}
 	return
 }
@@ -136,6 +132,9 @@ func (ri *redisInterceptor) StreamServerInterceptor() grpc.StreamServerIntercept
 			ServerStream: ss,
 			ctx:          rsrc.setContext(ctx),
 		})
+		if err != nil {
+			return err
+		}
 		rsrc.close()
 		return
 	})
@@ -155,8 +154,7 @@ func (ri *redisInterceptor) UnaryServerInterceptor() grpc.UnaryServerInterceptor
 		if err != nil {
 			return nil, err
 		}
-		resp, err := handler(r.setContext(ctx), req)
-
+		defer r.close()
 		grpc, err := getGrpcConf(md, ri.clt, ri.env)
 		if err != nil {
 			return nil, err
@@ -164,8 +162,7 @@ func (ri *redisInterceptor) UnaryServerInterceptor() grpc.UnaryServerInterceptor
 		if grpc != nil {
 			ctx = context.WithValue(ctx, interlib.CtxGrpcConfKey, grpc)
 		}
-		r.close()
-		return resp, err
+		return handler(r.setContext(ctx), req)
 	})
 }
 
@@ -188,19 +185,12 @@ func (i *localDBInterceptor) StreamServerInterceptor() grpc.StreamServerIntercep
 			return err
 		}
 		defer dbclt.Close()
-		redisClt, err := i.di.NewRedisClient(ss.Context())
-		if err != nil {
-			return err
-		}
-		defer redisClt.Close()
 		ctx := context.WithValue(ss.Context(), db.CtxMongoKey, dbclt)
 		ctx = context.WithValue(ctx, log.CtxLogKey, l)
-		ctx = context.WithValue(ctx, db.CtxRedisKey, redisClt)
-		err = handler(srv, &serverStream{
+		return handler(srv, &serverStream{
 			ServerStream: ss,
 			ctx:          ctx,
 		})
-		return
 	})
 }
 
@@ -213,40 +203,91 @@ func (i *localDBInterceptor) UnaryServerInterceptor() grpc.UnaryServerIntercepto
 			return nil, err
 		}
 		defer dbclt.Close()
-		redisClt, err := i.di.NewRedisClient(ctx)
-		if err != nil {
-			return nil, err
-		}
-		defer redisClt.Close()
 		ctx = context.WithValue(ctx, db.CtxMongoKey, dbclt)
 		ctx = context.WithValue(ctx, log.CtxLogKey, l)
-		ctx = context.WithValue(ctx, db.CtxRedisKey, redisClt)
 		ctx = context.WithValue(ctx, sterna.CtxServDiKey, i.di)
-		resp, err := handler(ctx, req)
-		return resp, err
+		return handler(ctx, req)
 	})
 }
 
 type rsrc struct {
-	dbclt    db.MongoDBClient
-	redisClt db.RedisClient
-	l        log.Logger
-	di       DBMidDI
+	dbclt db.MongoDBClient
+	l     log.Logger
+	di    DBMidDI
 }
 
 func (r *rsrc) close() {
 	if r.dbclt != nil {
 		r.dbclt.Close()
 	}
-	if r.redisClt != nil {
-		r.redisClt.Close()
-	}
 }
 
 func (r *rsrc) setContext(ctx context.Context) context.Context {
 	ctx = context.WithValue(ctx, db.CtxMongoKey, r.dbclt)
 	ctx = context.WithValue(ctx, log.CtxLogKey, r.l)
-	ctx = context.WithValue(ctx, db.CtxRedisKey, r.redisClt)
 	ctx = context.WithValue(ctx, sterna.CtxServDiKey, r.di)
 	return ctx
+}
+
+func NewFixedDBInterceptor(grpc channel.ChannelClient, host, env string, di DBMidDI) Interceptor {
+	return &fixedDBInterceptor{
+		host:    host,
+		env:     env,
+		di:      di,
+		chaGrpc: grpc,
+	}
+}
+
+type fixedDBInterceptor struct {
+	host, env string
+	di        DBMidDI
+	chaGrpc   channel.ChannelClient
+}
+
+func (f *fixedDBInterceptor) StreamServerInterceptor() grpc.StreamServerInterceptor {
+	return grpc.StreamServerInterceptor(func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
+		if f.di == nil {
+			conf, err := f.chaGrpc.GetConf(f.host, f.env)
+			if err != nil {
+				return err
+			}
+			sterna.InitConfByByte(conf, f.di)
+		}
+		uuid := uuid.New().String()
+		l := f.di.NewLogger(uuid)
+		dbclt, err := f.di.NewMongoDBClient(ss.Context(), "")
+		if err != nil {
+			return err
+		}
+		defer dbclt.Close()
+		ctx := context.WithValue(ss.Context(), db.CtxMongoKey, dbclt)
+		ctx = context.WithValue(ctx, log.CtxLogKey, l)
+		return handler(srv, &serverStream{
+			ServerStream: ss,
+			ctx:          ctx,
+		})
+	})
+}
+
+func (f *fixedDBInterceptor) UnaryServerInterceptor() grpc.UnaryServerInterceptor {
+	return grpc.UnaryServerInterceptor(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+		if f.di == nil {
+			conf, err := f.chaGrpc.GetConf(f.host, f.env)
+			if err != nil {
+				return nil, err
+			}
+			sterna.InitConfByByte(conf, f.di)
+		}
+		uuid := uuid.New().String()
+		l := f.di.NewLogger(uuid)
+		dbclt, err := f.di.NewMongoDBClient(ctx, "")
+		if err != nil {
+			return nil, err
+		}
+		defer dbclt.Close()
+		ctx = context.WithValue(ctx, db.CtxMongoKey, dbclt)
+		ctx = context.WithValue(ctx, log.CtxLogKey, l)
+		ctx = context.WithValue(ctx, sterna.CtxServDiKey, f.di)
+		return handler(ctx, req)
+	})
 }

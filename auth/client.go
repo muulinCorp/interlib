@@ -11,7 +11,7 @@ import (
 
 type AuthClient interface {
 	core.MyGrpc
-	ValidateToken(host, diKey, token string) (auth.ReqUser, error)
+	ValidateToken(host, diKey, token string) (auth.TargetReqUser, error)
 	IsAccountsExist(host string, accounts []string) (notExistAccounts []string, err error)
 }
 
@@ -27,7 +27,7 @@ type grpcClt struct {
 	core.MyGrpc
 }
 
-func (gclt *grpcClt) ValidateToken(host, diKey, token string) (auth.ReqUser, error) {
+func (gclt *grpcClt) ValidateToken(host, diKey, token string) (auth.TargetReqUser, error) {
 	clt := pb.NewAuthServiceClient(gclt)
 	ctx := metadata.AppendToOutgoingContext(context.Background(), "X-Channel", host)
 	ctx = metadata.AppendToOutgoingContext(ctx, "X-DiKey", diKey)
@@ -38,7 +38,7 @@ func (gclt *grpcClt) ValidateToken(host, diKey, token string) (auth.ReqUser, err
 	if err != nil {
 		return nil, err
 	}
-	return auth.NewReqUser(resp.Host, resp.Id, resp.Account, resp.Name, resp.Perms), nil
+	return auth.NewTargetReqUser(resp.Target, auth.NewReqUser(resp.Host, resp.Id, resp.Account, resp.Name, resp.Perms)), nil
 }
 
 func (gclt *grpcClt) IsAccountsExist(diKey string, accounts []string) (notExistAccounts []string, err error) {

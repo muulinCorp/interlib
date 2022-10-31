@@ -7,13 +7,16 @@ import (
 	"strings"
 
 	"bitbucket.org/muulin/interlib"
-	interAuth "bitbucket.org/muulin/interlib/auth"
+	"bitbucket.org/muulin/interlib/auth/dao"
+	"bitbucket.org/muulin/interlib/diutil"
 	"bitbucket.org/muulin/interlib/types"
 	interlibUtil "bitbucket.org/muulin/interlib/util"
 
 	"github.com/94peter/sterna/api"
 	sternaMid "github.com/94peter/sterna/api/mid"
 	"github.com/94peter/sterna/auth"
+	"github.com/94peter/sterna/db"
+	"github.com/94peter/sterna/model/cache"
 	"github.com/94peter/sterna/util"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/mux"
@@ -27,7 +30,7 @@ func getPathKey(path, method string) string {
 	return fmt.Sprintf("%s:%s", path, method)
 }
 
-func NewInterAuthMid(authClt interAuth.AuthClient) sternaMid.AuthMidInter {
+func NewInterAuthMid() sternaMid.AuthMidInter {
 	return &interAuthMiddle{
 
 		authMap:  make(map[string]uint8),
@@ -91,38 +94,68 @@ func (am *interAuthMiddle) HasPerm(path, method string, perm []string) bool {
 	return false
 }
 
+func getReqUserByAuthKey(c *gin.Context) auth.TargetReqUser {
+	authKey := c.GetHeader("X-AuthKey")
+	if authKey == "" {
+		return nil
+	}
+	result, err := diutil.RedisReqHandler(c.Request, types.Redis_DB_User, func(clt db.RedisClient) (any, error) {
+		sToken := dao.NewSerializationTokenByKey(authKey)
+		simpleCache := cache.NewCache(sToken, clt)
+		data, err := simpleCache.Get()
+		if err != nil {
+			return nil, err
+		}
+		err = sToken.Decode(data)
+		if err != nil {
+			return nil, err
+		}
+		pr := sToken.GetParseResult()
+
+		return auth.NewTargetReqUser(pr.Target(), auth.NewReqUser(pr.Host(), pr.Sub(), pr.Account(), pr.Name(), pr.Perms())), nil
+	})
+	if err != nil || result == nil {
+		return nil
+	}
+	return result.(auth.TargetReqUser)
+}
+
 func (am *interAuthMiddle) Handler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		path := c.Request.URL.Path
+		path := c.FullPath()
 		if am.IsAuth(path, c.Request.Method) {
-			authToken := c.GetHeader(sternaMid.BearerAuthTokenKey)
-			if authToken == "" {
-				am.outputErr(c, types.NewErrorWaper(types.ErrMissingToken, path))
-				c.Abort()
-				return
-			}
-			if !strings.HasPrefix(authToken, "Bearer ") {
-				am.outputErr(c, types.NewErrorWaper(types.ErrInvalidToken, "not bearer token"))
-				c.Abort()
-				return
-			}
+			reqUser := getReqUserByAuthKey(c)
 			host := util.GetHost(c.Request)
-			diKey := c.GetHeader("X-DiKey")
-			grpconf := interlib.GetGrpcConfByCtx(c.Request.Context())
-			authClt, err := grpconf.NewAuthClient()
-			if err != nil {
-				am.outputErr(c, types.NewErrorWaper(types.ErrAuthGrpcConnectFail, err.Error()))
-				c.Abort()
-				return
-			}
-			reqUser, err := authClt.ValidateToken(host, diKey, authToken)
-			if err != nil {
-				am.outputErr(c, types.NewErrorWaper(types.ErrInvalidToken, err.Error()))
-				c.Abort()
-				return
+			if reqUser == nil {
+				authToken := c.GetHeader(sternaMid.BearerAuthTokenKey)
+				if authToken == "" {
+					am.outputErr(c, types.NewErrorWaper(types.ErrMissingToken, path))
+					c.Abort()
+					return
+				}
+				if !strings.HasPrefix(authToken, "Bearer ") {
+					am.outputErr(c, types.NewErrorWaper(types.ErrInvalidToken, "not bearer token"))
+					c.Abort()
+					return
+				}
+
+				diKey := c.GetHeader("X-DiKey")
+				grpconf := interlib.GetGrpcConfByCtx(c.Request.Context())
+				authClt, err := grpconf.NewAuthClient()
+				if err != nil {
+					am.outputErr(c, types.NewErrorWaper(types.ErrAuthGrpcConnectFail, err.Error()))
+					c.Abort()
+					return
+				}
+				reqUser, err = authClt.ValidateToken(host, diKey, authToken)
+				if err != nil {
+					am.outputErr(c, types.NewErrorWaper(types.ErrInvalidToken, err.Error()))
+					c.Abort()
+					return
+				}
 			}
 
-			if reqUser.Host() != host {
+			if reqUser.Host() != host && reqUser.Target() != host {
 				am.outputErr(c, types.NewErrorWaper(types.ErrHostNotMatch, "host not match"))
 				c.Abort()
 				return
@@ -236,4 +269,8 @@ func (pr parseTokenResult) Perms() []string {
 
 func (pr parseTokenResult) Sub() string {
 	return pr["sub"].(string)
+}
+
+func (pr parseTokenResult) Target() string {
+	return pr["target"].(string)
 }

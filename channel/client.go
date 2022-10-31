@@ -10,6 +10,7 @@ import (
 type ChannelClient interface {
 	core.MyGrpc
 	GetConfCacheKey(host, env string) (string, error)
+	GetConf(host, env string) ([]byte, error)
 	IsExist(host string) (bool, error)
 }
 
@@ -23,6 +24,20 @@ func NewGrpcClient(address string) (ChannelClient, error) {
 
 type grpcClt struct {
 	core.MyGrpc
+}
+
+func (gclt *grpcClt) GetConf(host, env string) ([]byte, error) {
+	clt := pb.NewChannelConfClient(gclt)
+
+	resp, err := clt.GetConf(context.Background(), &pb.GetConfRequest{
+		Host: host,
+		Env:  env,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return resp.Config, nil
 }
 
 func (gclt *grpcClt) GetConfCacheKey(host, env string) (string, error) {
