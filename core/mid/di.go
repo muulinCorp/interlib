@@ -118,7 +118,7 @@ func (am *diMiddle) Handler() gin.HandlerFunc {
 			return
 		}
 		am.routerConf.InitConfByByte(grpcConfByte)
-		c.Request = util.SetCtxKeyVal(c.Request, interlib.CtxGrpcConfKey, newValue)
+		c.Request = util.SetCtxKeyVal(c.Request, interlib.CtxGrpcConfKey, am.routerConf)
 		c.Next()
 	}
 }

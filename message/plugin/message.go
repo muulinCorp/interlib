@@ -5,11 +5,11 @@ import (
 	"regexp"
 )
 
-type Channel string
+type MsgType string
 
 const (
-	Push = Channel("push")
-	Mail = Channel("mail")
+	Push = MsgType("push")
+	Mail = MsgType("mail")
 )
 
 var (
@@ -30,7 +30,7 @@ func ReplaceTemplateTag(c, replace string) string {
 }
 
 type Message struct {
-	Channel   Channel
+	MsgType   MsgType
 	Receivers []*Receiver
 }
 

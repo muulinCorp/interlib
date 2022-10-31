@@ -13,6 +13,7 @@ message ValidateTokenResponse {
   string account = 3;
   string name = 4;
   repeated string perms = 5;
+  string target = 6;
 }
 
 message IsAccountsExistRequest {
@@ -23,8 +24,13 @@ message IsAccountsExistResponse {
   repeated string NotExistAccounts = 1;
 }
 
+message GetUserCacheKeyResponse {
+  string key = 1;
+}
+
 service AuthService {
   rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse) {};
+  rpc GetUserCacheKey(ValidateTokenRequest) returns (GetUserCacheKeyResponse) {};
   rpc IsAccountsExist(IsAccountsExistRequest) returns (IsAccountsExistResponse) {};
 }
 

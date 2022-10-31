@@ -30,7 +30,7 @@ func (mr *MessageResponse) DecoreReponse() ([]byte, error) {
 
 type MessageResponseWriter interface {
 	http.ResponseWriter
-	Encode(host string) error
+	Encode(diKey string) error
 	AddPushMsg(m *Message, title, body string, data map[string]any)
 	AddPushTplMsg(m *Message, title, bodyTplKey string, data map[string]any, variables map[string]string)
 	AddMailMsg(m *Message, title, plaint, html string)

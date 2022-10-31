@@ -8,7 +8,7 @@ package service;
 // The greeting service definition.
 service ChannelConf {
   // Sends a greeting
-  // rpc GetConf (GetConfRequest) returns (GetConfReply) {}
+  rpc GetConf (GetConfRequest) returns (GetConfReply) {}
   rpc GetConfCacheKey(GetConfRequest) returns (GetConfCacheKeyReply) {}
   rpc IsExist (IsExistRequest) returns (IsExistReply) {}
 }
@@ -17,16 +17,14 @@ message GetConfCacheKeyReply {
   string key = 1;
 }
 
-// The request message containing the user's name.
 message GetConfRequest {
   string host = 1;
   string env = 2;
 }
 
-// The response message containing the greetings
-// message GetConfReply {
-//   bytes config = 1;
-// }
+message GetConfReply {
+  bytes config = 1;
+}
 
 message IsExistRequest {
   string host = 1;

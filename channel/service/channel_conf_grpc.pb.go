@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ChannelConfClient interface {
 	// Sends a greeting
-	// rpc GetConf (GetConfRequest) returns (GetConfReply) {}
+	GetConf(ctx context.Context, in *GetConfRequest, opts ...grpc.CallOption) (*GetConfReply, error)
 	GetConfCacheKey(ctx context.Context, in *GetConfRequest, opts ...grpc.CallOption) (*GetConfCacheKeyReply, error)
 	IsExist(ctx context.Context, in *IsExistRequest, opts ...grpc.CallOption) (*IsExistReply, error)
 }
@@ -34,6 +34,15 @@ type channelConfClient struct {
 
 func NewChannelConfClient(cc grpc.ClientConnInterface) ChannelConfClient {
 	return &channelConfClient{cc}
+}
+
+func (c *channelConfClient) GetConf(ctx context.Context, in *GetConfRequest, opts ...grpc.CallOption) (*GetConfReply, error) {
+	out := new(GetConfReply)
+	err := c.cc.Invoke(ctx, "/service.ChannelConf/GetConf", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *channelConfClient) GetConfCacheKey(ctx context.Context, in *GetConfRequest, opts ...grpc.CallOption) (*GetConfCacheKeyReply, error) {
@@ -59,7 +68,7 @@ func (c *channelConfClient) IsExist(ctx context.Context, in *IsExistRequest, opt
 // for forward compatibility
 type ChannelConfServer interface {
 	// Sends a greeting
-	// rpc GetConf (GetConfRequest) returns (GetConfReply) {}
+	GetConf(context.Context, *GetConfRequest) (*GetConfReply, error)
 	GetConfCacheKey(context.Context, *GetConfRequest) (*GetConfCacheKeyReply, error)
 	IsExist(context.Context, *IsExistRequest) (*IsExistReply, error)
 	mustEmbedUnimplementedChannelConfServer()
@@ -69,6 +78,9 @@ type ChannelConfServer interface {
 type UnimplementedChannelConfServer struct {
 }
 
+func (UnimplementedChannelConfServer) GetConf(context.Context, *GetConfRequest) (*GetConfReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetConf not implemented")
+}
 func (UnimplementedChannelConfServer) GetConfCacheKey(context.Context, *GetConfRequest) (*GetConfCacheKeyReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetConfCacheKey not implemented")
 }
@@ -86,6 +98,24 @@ type UnsafeChannelConfServer interface {
 
 func RegisterChannelConfServer(s grpc.ServiceRegistrar, srv ChannelConfServer) {
 	s.RegisterService(&ChannelConf_ServiceDesc, srv)
+}
+
+func _ChannelConf_GetConf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetConfRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChannelConfServer).GetConf(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.ChannelConf/GetConf",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChannelConfServer).GetConf(ctx, req.(*GetConfRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _ChannelConf_GetConfCacheKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -131,6 +161,10 @@ var ChannelConf_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "service.ChannelConf",
 	HandlerType: (*ChannelConfServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetConf",
+			Handler:    _ChannelConf_GetConf_Handler,
+		},
 		{
 			MethodName: "GetConfCacheKey",
 			Handler:    _ChannelConf_GetConfCacheKey_Handler,
