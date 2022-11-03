@@ -138,8 +138,6 @@ func (am *interAuthMiddle) Handler() gin.HandlerFunc {
 					c.Abort()
 					return
 				}
-
-				diKey := c.GetHeader("X-DiKey")
 				grpconf := interlib.GetGrpcConfByCtx(c.Request.Context())
 				authClt, err := grpconf.NewAuthClient()
 				if err != nil {
@@ -147,7 +145,7 @@ func (am *interAuthMiddle) Handler() gin.HandlerFunc {
 					c.Abort()
 					return
 				}
-				reqUser, err = authClt.ValidateToken(host, diKey, authToken)
+				reqUser, err = authClt.ValidateToken(host, authToken)
 				if err != nil {
 					am.outputErr(c, types.NewErrorWaper(types.ErrInvalidToken, err.Error()))
 					c.Abort()
@@ -193,14 +191,13 @@ func (am *interAuthMiddle) GetMiddleWare() func(f http.HandlerFunc) http.Handler
 				}
 				// 打api取得token內容
 				host := util.GetHost(r)
-				diKey := r.Header.Get("X-DiKey")
 				grpconf := interlib.GetGrpcConfByCtx(r.Context())
 				authClt, err := grpconf.NewAuthClient()
 				if err != nil {
 					api.OutputErr(w, types.NewErrorWaper(types.ErrAuthGrpcConnectFail, err.Error()))
 					return
 				}
-				reqUser, err := authClt.ValidateToken(host, diKey, authToken)
+				reqUser, err := authClt.ValidateToken(host, authToken)
 				if err != nil {
 					api.OutputErr(w, err)
 					return
