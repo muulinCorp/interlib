@@ -11,7 +11,7 @@ type Request interface {
 	Url(u string) Request
 	AddHeader(key, value string) Request
 	Body(b io.Reader) Request
-	AddQuery(key, value string) Request 
+	AddQuery(key, value string) Request
 
 	Get() (*response, error)
 	Post() (*response, error)
@@ -19,7 +19,7 @@ type Request interface {
 
 func NewRequest(clt *http.Client) Request {
 	return &myRequest{
-		clt: clt,
+		clt:   clt,
 		query: map[string]string{},
 	}
 }
@@ -76,7 +76,7 @@ func (r *myRequest) Get() (*response, error) {
 	if r.header != nil {
 		req.Header = r.header
 	}
-	
+
 	if len(r.query) != 0 {
 		q := req.URL.Query()
 		for k, v := range r.query {
@@ -128,4 +128,16 @@ func (r *myRequest) Post() (*response, error) {
 		Body:   data,
 		Header: res.Header,
 	}, nil
+}
+
+func GetTargetHost(req *http.Request) string {
+	host := req.Header.Get("X-Channel")
+	if host != "" {
+		return host
+	}
+	host = req.Header.Get("X-Forwarded-Host")
+	if host != "" {
+		return host
+	}
+	return req.Host
 }
