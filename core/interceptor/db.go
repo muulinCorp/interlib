@@ -21,6 +21,7 @@ type DBMidDI interface {
 	log.LoggerDI
 	db.MongoDI
 	db.RedisDI
+	IsEmpty() bool
 }
 
 type serverStream struct {
@@ -246,7 +247,7 @@ type fixedDBInterceptor struct {
 
 func (f *fixedDBInterceptor) StreamServerInterceptor() grpc.StreamServerInterceptor {
 	return grpc.StreamServerInterceptor(func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
-		if f.di == nil {
+		if f.di.IsEmpty() {
 			conf, err := f.chaGrpc.GetConf(f.host, f.env)
 			if err != nil {
 				return err
@@ -271,7 +272,7 @@ func (f *fixedDBInterceptor) StreamServerInterceptor() grpc.StreamServerIntercep
 
 func (f *fixedDBInterceptor) UnaryServerInterceptor() grpc.UnaryServerInterceptor {
 	return grpc.UnaryServerInterceptor(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-		if f.di == nil {
+		if f.di.IsEmpty() {
 			conf, err := f.chaGrpc.GetConf(f.host, f.env)
 			if err != nil {
 				return nil, err
