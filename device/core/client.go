@@ -72,7 +72,7 @@ func (grpc *grpcClt) GetStateMap(deviceIDs []string) (map[string]string, error) 
 }
 
 func (grpc *grpcClt) GetInfoMap(deviceIDs []string) (map[string]*DeviceInfo, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()
 	clt := pb.NewCoreDeviceServiceClient(grpc)
 	resp, err := clt.GetInfoMap(ctx, &pb.GetStateMapRequest{
