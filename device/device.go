@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"bitbucket.org/muulin/interlib/util"
-	"github.com/94peter/sterna/api"
+	apiErr "github.com/94peter/sterna/api/err"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -22,8 +22,8 @@ type DeviceLib interface {
 	CheckDvExist(oID primitive.ObjectID, channel string) (bool, error)
 	CreateDevice(channel string, inputDevice *NewDevice) error
 	GetChannel(mac, gwid string) (string, error)
-	UpsertSenValue(channelID string, inputData *UpsertData) api.ApiError
-	UpsertConValue(channelID string, inputData *UpsertData) api.ApiError
+	UpsertSenValue(channelID string, inputData *UpsertData) apiErr.ApiError
+	UpsertConValue(channelID string, inputData *UpsertData) apiErr.ApiError
 }
 
 type deviceImpl struct {
@@ -34,7 +34,7 @@ type deviceImpl struct {
 func (dv *deviceImpl) CheckDvExist(oID primitive.ObjectID, channel string) (bool, error) {
 	const (
 		errKey = "%v102"
-		path = "internal/v1/device/exist"
+		path   = "internal/v1/device/exist"
 	)
 
 	resp, err := util.NewRequest(dv.clt).
@@ -45,12 +45,12 @@ func (dv *deviceImpl) CheckDvExist(oID primitive.ObjectID, channel string) (bool
 	if resp.Status != http.StatusOK {
 		repErr := util.ParserErrorResp(resp)
 		key := fmt.Sprintf(errKey, repErr.Status)
-		return false, api.NewApiErrorWithKey(repErr.Status, repErr.Title, key)
+		return false, apiErr.NewWithKey(repErr.Status, repErr.Title, key)
 	}
 
 	var res bool
 	err = json.Unmarshal(resp.Body, &res)
-	if err != nil{
+	if err != nil {
 		return false, err
 	}
 
@@ -60,7 +60,7 @@ func (dv *deviceImpl) CheckDvExist(oID primitive.ObjectID, channel string) (bool
 func (dv *deviceImpl) CreateDevice(channel string, inputDevice *NewDevice) error {
 	const (
 		errKey = "%v100"
-		path = "/internal/v1/device"
+		path   = "/internal/v1/device"
 	)
 
 	err := inputDevice.Valid()
@@ -83,7 +83,7 @@ func (dv *deviceImpl) CreateDevice(channel string, inputDevice *NewDevice) error
 	if resp.Status != http.StatusOK {
 		repErr := util.ParserErrorResp(resp)
 		key := fmt.Sprintf(errKey, repErr.Status)
-		return api.NewApiErrorWithKey(repErr.Status, repErr.Title, key)
+		return apiErr.NewWithKey(repErr.Status, repErr.Title, key)
 	}
 
 	return nil
@@ -104,13 +104,13 @@ func (dv *deviceImpl) GetChannel(mac, gwid string) (string, error) {
 	if resp.Status != http.StatusOK {
 		repErr := util.ParserErrorResp(resp)
 		key := fmt.Sprintf("%v101", repErr.Status)
-		return "", api.NewApiErrorWithKey(repErr.Status, repErr.Title, key)
+		return "", apiErr.NewWithKey(repErr.Status, repErr.Title, key)
 	}
 
 	return string(resp.Body), nil
 }
 
-func (ct *deviceImpl) UpsertSenValue(channelID string, inputData *UpsertData) api.ApiError {
+func (ct *deviceImpl) UpsertSenValue(channelID string, inputData *UpsertData) apiErr.ApiError {
 	const (
 		path   = "/internal/v1/sensor"
 		errKey = "%v180"
@@ -120,7 +120,7 @@ func (ct *deviceImpl) UpsertSenValue(channelID string, inputData *UpsertData) ap
 	err := json.NewEncoder(&buf).Encode(inputData)
 	if err != nil {
 		key := fmt.Sprintf(errKey, http.StatusBadRequest)
-		return api.NewApiErrorWithKey(http.StatusBadRequest, err.Error(), key)
+		return apiErr.NewWithKey(http.StatusBadRequest, err.Error(), key)
 	}
 
 	resp, err := util.NewRequest(ct.clt).
@@ -128,18 +128,18 @@ func (ct *deviceImpl) UpsertSenValue(channelID string, inputData *UpsertData) ap
 		Body(&buf).Url(ct.url + path).Post()
 	if err != nil {
 		key := fmt.Sprintf(errKey, http.StatusInternalServerError)
-		return api.NewApiErrorWithKey(http.StatusInternalServerError, err.Error(), key)
+		return apiErr.NewWithKey(http.StatusInternalServerError, err.Error(), key)
 	}
 	if resp.Status != http.StatusOK {
 		repErr := util.ParserErrorResp(resp)
 		key := fmt.Sprintf(errKey, repErr.Status)
-		return api.NewApiErrorWithKey(repErr.Status, repErr.Title, key)
+		return apiErr.NewWithKey(repErr.Status, repErr.Title, key)
 	}
 
 	return nil
 }
 
-func (ct *deviceImpl) UpsertConValue(channelID string, inputData *UpsertData) api.ApiError {
+func (ct *deviceImpl) UpsertConValue(channelID string, inputData *UpsertData) apiErr.ApiError {
 	const (
 		path   = "/internal/v1/controller"
 		errKey = "%v160"
@@ -149,7 +149,7 @@ func (ct *deviceImpl) UpsertConValue(channelID string, inputData *UpsertData) ap
 	err := json.NewEncoder(&buf).Encode(inputData)
 	if err != nil {
 		key := fmt.Sprintf(errKey, http.StatusBadRequest)
-		return api.NewApiErrorWithKey(http.StatusBadRequest, err.Error(), key)
+		return apiErr.NewWithKey(http.StatusBadRequest, err.Error(), key)
 	}
 
 	resp, err := util.NewRequest(ct.clt).
@@ -157,12 +157,12 @@ func (ct *deviceImpl) UpsertConValue(channelID string, inputData *UpsertData) ap
 		Body(&buf).Url(ct.url + path).Post()
 	if err != nil {
 		key := fmt.Sprintf(errKey, http.StatusInternalServerError)
-		return api.NewApiErrorWithKey(http.StatusInternalServerError, err.Error(), key)
+		return apiErr.NewWithKey(http.StatusInternalServerError, err.Error(), key)
 	}
 	if resp.Status != http.StatusOK {
 		repErr := util.ParserErrorResp(resp)
 		key := fmt.Sprintf(errKey, repErr.Status)
-		return api.NewApiErrorWithKey(repErr.Status, repErr.Title, key)
+		return apiErr.NewWithKey(repErr.Status, repErr.Title, key)
 	}
 
 	return nil

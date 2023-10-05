@@ -5,7 +5,7 @@ import (
 	"runtime"
 
 	"github.com/94peter/sterna"
-	"github.com/94peter/sterna/api"
+	apiErr "github.com/94peter/sterna/api/err"
 	"github.com/94peter/sterna/api/mid"
 	"github.com/94peter/sterna/db"
 	"github.com/94peter/sterna/log"
@@ -42,7 +42,7 @@ func (lm *dbMiddle) GetName() string {
 }
 
 func (lm *dbMiddle) outputErr(c *gin.Context, err error) {
-	api.GinOutputErr(c, lm.service, err)
+	apiErr.GinOutputErr(c, lm.service, err)
 }
 
 func (am *dbMiddle) GetMiddleWare() func(f http.HandlerFunc) http.HandlerFunc {
@@ -51,7 +51,7 @@ func (am *dbMiddle) GetMiddleWare() func(f http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			servDi := util.GetCtxVal(r, sterna.CtxServDiKey)
 			if servDi == nil {
-				api.OutputErr(w, api.NewApiError(http.StatusInternalServerError, "can not get di"))
+				apiErr.OutputErr(w, apiErr.New(http.StatusInternalServerError, "can not get di"))
 				return
 			}
 
@@ -71,7 +71,7 @@ func (am *dbMiddle) GetMiddleWare() func(f http.HandlerFunc) http.HandlerFunc {
 				f(w, r)
 				runtime.GC()
 			} else {
-				api.OutputErr(w, api.NewApiError(http.StatusInternalServerError, "invalid di"))
+				apiErr.OutputErr(w, apiErr.New(http.StatusInternalServerError, "invalid di"))
 				return
 			}
 		}
@@ -82,7 +82,7 @@ func (m *dbMiddle) Handler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		servDi := util.GetCtxVal(c.Request, sterna.CtxServDiKey)
 		if servDi == nil {
-			m.outputErr(c, api.NewApiError(http.StatusInternalServerError, "can not get di"))
+			m.outputErr(c, apiErr.New(http.StatusInternalServerError, "can not get di"))
 			c.Abort()
 			return
 		}
@@ -93,7 +93,7 @@ func (m *dbMiddle) Handler() gin.HandlerFunc {
 
 			dbclt, err := dbdi.NewMongoDBClient(c.Request.Context(), "")
 			if err != nil {
-				m.outputErr(c, api.NewApiError(http.StatusInternalServerError, err.Error()))
+				m.outputErr(c, apiErr.New(http.StatusInternalServerError, err.Error()))
 				c.Abort()
 				return
 			}
@@ -105,7 +105,7 @@ func (m *dbMiddle) Handler() gin.HandlerFunc {
 			c.Next()
 			runtime.GC()
 		} else {
-			m.outputErr(c, api.NewApiError(http.StatusInternalServerError, "invalid di"))
+			m.outputErr(c, apiErr.New(http.StatusInternalServerError, "invalid di"))
 			c.Abort()
 			return
 		}
