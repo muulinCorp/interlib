@@ -1,0 +1,69 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "auth/pb";
+package auth;
+
+message GetUserInfoRequest {
+  string host = 1;
+  string token = 2;
+}
+
+message GetUserInfoResponse {
+  uint32 statusCode = 1;
+  string message = 2;
+  string sub = 3;
+  string account = 4;
+  string name = 5;
+  repeated string roles = 6;
+  repeated string channels = 7;
+}
+
+message GetAccountRequest {
+  string id = 1;
+}
+
+message GetAccountResponse {
+  string account = 1;
+}
+
+message IsAccountExistRequest {
+  string account = 1;
+}
+
+message IsAccountExistResponse {
+  bool exists = 1;
+}
+
+message CreateInvitationRequest {
+  string name = 1;
+	string email = 2;
+	string channel = 3;
+}
+
+message CreateInvitationResponse {
+  string id = 1;
+}
+
+message ForgetPasswordRequest {
+  string email = 1;
+  string host = 2;
+}
+
+message ForgetPasswordResponse {
+  string email = 1;
+  string name = 2;
+  string code = 3;
+}
+
+service AuthService {
+  // 取得使用者資訊
+  rpc GetUserInfo(GetUserInfoRequest) returns (GetUserInfoResponse) {};
+  // 取得帳號
+  rpc GetAccount(GetAccountRequest) returns (GetAccountResponse) {};
+  // 帳號是否存在
+  rpc IsAccountExist(IsAccountExistRequest) returns (IsAccountExistResponse) {};
+  // 建立使用者邀請信
+  rpc CreateInvitation(CreateInvitationRequest) returns (CreateInvitationResponse) {};
+  // 忘記密碼
+  rpc ForgetPassword(ForgetPasswordRequest) returns (ForgetPasswordResponse) {};
+}
