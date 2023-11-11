@@ -1,4 +1,4 @@
-package Client
+package client
 
 import (
 	"bitbucket.org/muulin/interlib/configuration/pb"
@@ -6,11 +6,11 @@ import (
 	"golang.org/x/net/context"
 )
 
-type Client interface {
+type ConfigurationClient interface {
 	GetChannelConf(ctx context.Context, req *pb.GetConfRequest) ([]byte, error)
 }
 
-func New(address string) (Client, error) {
+func New(address string) (ConfigurationClient, error) {
 	return &clientImpl{
 		address: address,
 	}, nil
