@@ -10,13 +10,13 @@ import (
 	"golang.org/x/net/context"
 )
 
-type DeviceSdk interface {
+type DeviceClient interface {
 	GetVirtualId(mac, gwid string) (uint8, error)
 	SetTime(mac string, virtualId uint8) error
 	Remote(mac string, virtualId uint8, deviceNo uint8, address uint8, val float64) *pb.RemoteResponse
 }
 
-func NewDeviceSdk(address string) DeviceSdk {
+func NewDeviceClient(address string) DeviceClient {
 	return &deviceSdkImpl{
 		address: address,
 	}

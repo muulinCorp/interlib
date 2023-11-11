@@ -12,7 +12,7 @@ import (
 	"golang.org/x/net/context"
 )
 
-type SdkV1 interface {
+type DeviceV1Client interface {
 	core.MyGrpc
 	StartCreateV1Stream() error
 	CreateV1(*pb.CreateDeviceV1Request) (*pb.CreateDeviceV1Response, error)
@@ -25,7 +25,7 @@ type SdkV1 interface {
 	StopRemoveStream() error
 }
 
-func NewSdkV1(address string) (SdkV1, error) {
+func NewDeviceClientV1(address string) (DeviceV1Client, error) {
 
 	return &sdkV1Impl{
 		address: address,

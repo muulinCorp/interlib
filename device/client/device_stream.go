@@ -12,7 +12,7 @@ import (
 	"golang.org/x/net/context"
 )
 
-type GetVirtualIdStreamSdk interface {
+type GetVirtualIdStreamClient interface {
 	core.MyGrpc
 
 	StartGetVirtualIdStream(resp chan *pb.GetVirtualIdStreamResponse)
@@ -20,7 +20,7 @@ type GetVirtualIdStreamSdk interface {
 	StopGetVirtualIdStream() error
 }
 
-func NewVirutalIdStreamSdk(address string, l log.Logger) (GetVirtualIdStreamSdk, error) {
+func NewVirutalIdStreamClient(address string, l log.Logger) (GetVirtualIdStreamClient, error) {
 
 	return &virtualIDStream{
 		AutoReConn: core.NewAutoReconn(address),

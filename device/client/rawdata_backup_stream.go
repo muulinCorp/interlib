@@ -1,4 +1,4 @@
-package sdk
+package client
 
 import (
 	"errors"
@@ -12,37 +12,37 @@ import (
 	"golang.org/x/net/context"
 )
 
-type UpdateRealtimeStreamSdk interface {
+type BackupRawdataStreamClient interface {
 	core.MyGrpc
-	StartUpdateRealtimeStream(resp chan *pb.Response)
-	UpdateRealtime(*pb.UpdateRawdataRequest) error
-	StopUpdateRealtimeStream() error
+	StartBackupRawdataStream(resp chan *pb.Response)
+	BackupRawdata(*pb.UpdateRawdataRequest) error
+	StopBackupRawdataStream() error
 }
 
-func NewUpdateRealtimeStreamSdk(address string, l log.Logger) (UpdateRealtimeStreamSdk, error) {
+func NewBackupRawdataStreamClient(address string, l log.Logger) (BackupRawdataStreamClient, error) {
 
-	return &updateRealtimeStreamSdkImpl{
+	return &backupRawdataStreamSdkImpl{
 		AutoReConn: core.NewAutoReconn(address),
 	}, nil
 }
 
-type updateRealtimeStreamSdkImpl struct {
+type backupRawdataStreamSdkImpl struct {
 	*core.AutoReConn
 
-	updateRealtimeStream pb.DeviceService_UpdateRawdataClient
+	backupRawdataStream pb.DeviceService_BackupRawdataClient
 }
 
-func (impl *updateRealtimeStreamSdkImpl) StartUpdateRealtimeStream(resp chan *pb.Response) {
+func (impl *backupRawdataStreamSdkImpl) StartBackupRawdataStream(resp chan *pb.Response) {
 	var err error
 	p := func(myGrpc core.MyGrpc) error {
 		clt := pb.NewDeviceServiceClient(impl)
-		impl.updateRealtimeStream, err = clt.UpdateRealtime(context.Background())
+		impl.backupRawdataStream, err = clt.BackupRawdata(context.Background())
 		if err != nil {
 			return err
 		}
 		impl.Ready <- true
 		for {
-			in, err := impl.updateRealtimeStream.Recv()
+			in, err := impl.backupRawdataStream.Recv()
 			if err == io.EOF {
 				impl.Done <- true
 				return nil
@@ -77,16 +77,16 @@ func (impl *updateRealtimeStreamSdkImpl) StartUpdateRealtimeStream(resp chan *pb
 	}
 }
 
-func (grpc *updateRealtimeStreamSdkImpl) StopUpdateRealtimeStream() error {
-	if grpc.updateRealtimeStream == nil {
-		return errors.New("StartUpdateRealtimeStream first")
+func (grpc *backupRawdataStreamSdkImpl) StopBackupRawdataStream() error {
+	if grpc.backupRawdataStream == nil {
+		return errors.New("StartUpdateRawdataStream first")
 	}
-	return grpc.updateRealtimeStream.CloseSend()
+	return grpc.backupRawdataStream.CloseSend()
 }
 
-func (grpc *updateRealtimeStreamSdkImpl) UpdateRealtime(req *pb.UpdateRawdataRequest) error {
-	if grpc.updateRealtimeStream == nil {
-		return errors.New("StartUpdateRealtimeStream first")
+func (grpc *backupRawdataStreamSdkImpl) BackupRawdata(req *pb.UpdateRawdataRequest) error {
+	if grpc.backupRawdataStream == nil {
+		return errors.New("StartUpdateRawdataStream first")
 	}
 	in := inputUpdateRawdataReq{
 		UpdateRawdataRequest: req,
@@ -95,5 +95,5 @@ func (grpc *updateRealtimeStreamSdkImpl) UpdateRealtime(req *pb.UpdateRawdataReq
 	if err != nil {
 		return err
 	}
-	return grpc.updateRealtimeStream.Send(req)
+	return grpc.backupRawdataStream.Send(req)
 }

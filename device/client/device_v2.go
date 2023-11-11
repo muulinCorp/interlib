@@ -7,12 +7,11 @@ import (
 	"golang.org/x/net/context"
 )
 
-type DeviceV2 interface {
+type DeviceV2Client interface {
 	CheckState([]*pb.Device) (map[string]*pb.DeviceState, error)
 }
 
-func NewDeviceV2(address string) (DeviceV2, error) {
-
+func NewDeviceV2Client(address string) (DeviceV2Client, error) {
 	return &deviceV2SdkImpl{
 		address: address,
 		// AutoReConn: core.NewAutoReconn(address),

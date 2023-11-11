@@ -12,14 +12,14 @@ import (
 	"golang.org/x/net/context"
 )
 
-type UpdateRawdataStreamSdk interface {
+type UpdateRawdataStreamClient interface {
 	core.MyGrpc
 	StartUpdateRawdataStream(resp chan *pb.Response)
 	UpdateRawdata(*pb.UpdateRawdataRequest) error
 	StopUpdateRawdataStream() error
 }
 
-func NewUpdateRawdataStreamSdk(address string, l log.Logger) (UpdateRawdataStreamSdk, error) {
+func NewUpdateRawdataStreamClient(address string, l log.Logger) (UpdateRawdataStreamClient, error) {
 
 	return &updateRawdataStreamSdkImpl{
 		AutoReConn: core.NewAutoReconn(address),
