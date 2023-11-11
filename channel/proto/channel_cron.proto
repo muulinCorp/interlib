@@ -1,0 +1,14 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+import "google/protobuf/empty.proto";
+
+option go_package = "channel/pb";
+package channel;
+
+
+
+
+service CronService {
+  // 案場預警檢檢
+  rpc WarningCheckingTask(google.protobuf.Empty) returns (google.protobuf.Empty) {};
+}

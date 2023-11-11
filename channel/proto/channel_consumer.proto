@@ -1,0 +1,81 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "channel/pb";
+package channel;
+
+import "google/protobuf/empty.proto";
+
+enum ValueType {
+  Sensor = 0;
+  Controller = 1;
+}
+
+
+message EquipValueReq {
+  string mac = 1;
+  uint32 virtualId = 2;
+  ValueType type = 3;
+  map<uint32,double> values = 4;
+  uint32 lastestTime = 5;
+  string onlineState = 6;
+  uint32 nowTime = 7;
+}
+
+message Frequency {
+  uint32 minutes = 1;
+  uint32 times = 2;
+}
+
+message ValConds {
+  string op = 1;
+  double value = 2;
+}
+
+message Conds {
+  string name = 1;
+  Frequency frequency = 2;
+  repeated ValConds valCons = 3;
+}
+
+message SensorObj {
+  string display = 1;
+  string unit = 2;
+  string type = 3;
+}
+
+message WarningConfigs {
+  string id = 1;
+  string type = 2;
+  repeated Conds conds = 3;
+  SensorObj sensor = 4;
+}
+
+message PermPool {
+  string account = 1;
+  string role = 2;
+}
+
+message Equip {
+  string id = 1;
+  string name = 2;
+  repeated PermPool permPool = 3;
+  repeated WarningConfigs warnings = 4;
+}
+
+message Project {
+  string id = 1;
+  string name = 2;
+}
+
+message WarningCheckingReq {
+  Project project = 1;
+  repeated Equip equips = 2;
+}
+
+
+service ComsumerService {
+  // 更新設備即時數據
+  rpc EquipRawdata(EquipValueReq) returns (google.protobuf.Empty) {};
+  // 預警檢查
+  rpc WarningChecking(WarningCheckingReq) returns (google.protobuf.Empty) {};
+}

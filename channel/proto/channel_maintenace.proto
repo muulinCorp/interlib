@@ -1,0 +1,89 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+import "google/protobuf/empty.proto";
+
+option go_package = "channel/pb";
+package channel;
+
+message EquipInfoRequest {
+	string equipId = 1;
+	string sensorId = 2;
+}
+
+message EquipInfoResponse {
+	string id = 1;
+	string name = 2;
+	string model = 3;
+	EquipInfoProject project = 4;
+	EquipInfoSensor sensor =5;
+}
+
+message EquipInfoProject {
+	string id = 1;
+	string name = 2;
+	string address = 3;
+	string contactName = 4;
+	string contactPhone = 5;
+}
+
+message EquipInfoSensor {
+	string id = 1;
+	string display = 2;
+}
+
+message GetEquipIdsByAccountRequest {
+	string account = 1;
+}
+
+message GetEquipIdsByAccountResponse {
+	repeated string equipIds = 1;
+}
+
+message MaintenanceEventReq {
+    message Obj {
+        // Define the fields of the ProjectObj struct here
+		string id = 1;
+		string name = 2;
+    }
+
+    enum TypeOfMaintenance {
+        MAINTENANCE = 0;
+        PRE_REPAIR = 1;
+        REPAIR = 2;
+        OTHER = 3;
+    }
+
+    message MaintenanceInfo {
+        int64 time = 1;
+        string user = 2;
+        string email =3;
+    }
+
+    enum StateOfMaintenance {
+      PENDING = 0;
+      IN_PROGRESS = 1;
+      COMPLETE = 2;
+    }
+
+    Obj project_obj = 1;
+    Obj equip_obj = 2;
+    Obj sensor_obj = 3;
+    TypeOfMaintenance type = 4;
+    string other_desc = 5;
+    StateOfMaintenance state = 6;
+    string reporter = 7;
+    MaintenanceInfo create_info = 8;
+    MaintenanceInfo arrival_info = 9;
+    MaintenanceInfo complete_info = 10;
+    bool is_mistake = 11;
+    string description = 12;
+}
+
+service MaintenaceService {
+  // 設得設備資訊
+  rpc GetEquipInfo(EquipInfoRequest) returns (EquipInfoResponse) {};
+  // 取得使用者設備Id清單
+  rpc GetEquipIdsByAccount(GetEquipIdsByAccountRequest) returns (GetEquipIdsByAccountResponse) {};
+  // 維修事件
+  rpc EmitEvent(MaintenanceEventReq) returns (google.protobuf.Empty) {};
+}
