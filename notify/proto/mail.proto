@@ -1,0 +1,21 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "notify/pb";
+package notify;
+
+import "google/protobuf/empty.proto";
+
+message SingleMailRequest {
+  string key = 1;
+  string mail = 2;
+  string name = 3;
+  string subject = 4;
+  string html = 5;
+  string text = 6;
+}
+
+
+service MailService {
+  // 寄信
+  rpc SingleMail(SingleMailRequest) returns (google.protobuf.Empty) {};
+}

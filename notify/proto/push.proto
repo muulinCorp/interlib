@@ -1,0 +1,19 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "notify/pb";
+package notify;
+
+import "google/protobuf/empty.proto";
+
+message SimplePushRequest {
+  string key = 1;
+  repeated string tokens = 2;
+  string title = 3;
+  string content = 4;
+  map<string, string> data = 5;
+}
+
+service PushService {
+  // 推播
+  rpc SimplePush(SimplePushRequest) returns (google.protobuf.Empty) {};
+}
