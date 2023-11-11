@@ -19,11 +19,10 @@ type UpdateRealtimeStreamClient interface {
 	StopUpdateRealtimeStream() error
 }
 
-func NewUpdateRealtimeStreamClient(address string, l log.Logger) (UpdateRealtimeStreamClient, error) {
-
+func NewUpdateRealtimeStreamClient(address string, l log.Logger) UpdateRealtimeStreamClient {
 	return &updateRealtimeStreamSdkImpl{
 		AutoReConn: core.NewAutoReconn(address),
-	}, nil
+	}
 }
 
 type updateRealtimeStreamSdkImpl struct {

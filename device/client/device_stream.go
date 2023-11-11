@@ -20,11 +20,10 @@ type GetVirtualIdStreamClient interface {
 	StopGetVirtualIdStream() error
 }
 
-func NewVirutalIdStreamClient(address string, l log.Logger) (GetVirtualIdStreamClient, error) {
-
+func NewVirutalIdStreamClient(address string, l log.Logger) GetVirtualIdStreamClient {
 	return &virtualIDStream{
 		AutoReConn: core.NewAutoReconn(address),
-	}, nil
+	}
 }
 
 type virtualIDStream struct {

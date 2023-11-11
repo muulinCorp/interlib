@@ -19,11 +19,11 @@ type UpdateRawdataStreamClient interface {
 	StopUpdateRawdataStream() error
 }
 
-func NewUpdateRawdataStreamClient(address string, l log.Logger) (UpdateRawdataStreamClient, error) {
+func NewUpdateRawdataStreamClient(address string, l log.Logger) UpdateRawdataStreamClient {
 
 	return &updateRawdataStreamSdkImpl{
 		AutoReConn: core.NewAutoReconn(address),
-	}, nil
+	}
 }
 
 type updateRawdataStreamSdkImpl struct {

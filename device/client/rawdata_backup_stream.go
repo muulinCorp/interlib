@@ -19,11 +19,11 @@ type BackupRawdataStreamClient interface {
 	StopBackupRawdataStream() error
 }
 
-func NewBackupRawdataStreamClient(address string, l log.Logger) (BackupRawdataStreamClient, error) {
+func NewBackupRawdataStreamClient(address string, l log.Logger) BackupRawdataStreamClient {
 
 	return &backupRawdataStreamSdkImpl{
 		AutoReConn: core.NewAutoReconn(address),
-	}, nil
+	}
 }
 
 type backupRawdataStreamSdkImpl struct {

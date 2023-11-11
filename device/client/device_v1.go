@@ -25,12 +25,11 @@ type DeviceV1Client interface {
 	StopRemoveStream() error
 }
 
-func NewDeviceClientV1(address string) (DeviceV1Client, error) {
-
+func NewDeviceClientV1(address string) DeviceV1Client {
 	return &sdkV1Impl{
 		address: address,
 		// AutoReConn: core.NewAutoReconn(address),
-	}, nil
+	}
 }
 
 type sdkV1Impl struct {

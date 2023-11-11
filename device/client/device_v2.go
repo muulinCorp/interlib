@@ -11,11 +11,10 @@ type DeviceV2Client interface {
 	CheckState([]*pb.Device) (map[string]*pb.DeviceState, error)
 }
 
-func NewDeviceV2Client(address string) (DeviceV2Client, error) {
+func NewDeviceV2Client(address string) DeviceV2Client {
 	return &deviceV2SdkImpl{
 		address: address,
-		// AutoReConn: core.NewAutoReconn(address),
-	}, nil
+	}
 }
 
 type deviceV2SdkImpl struct {
