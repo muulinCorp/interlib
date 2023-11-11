@@ -1,0 +1,89 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "device/pb";
+package device;
+
+enum DataType {
+  Sensor = 0;
+  Controller = 1;
+}
+
+message Response {
+  uint32 statusCode = 1;
+  string message = 2;
+}
+
+message UpdateRawdataRequest {
+  DataType type = 1;
+  Rawdata data = 2;
+}
+
+message Rawdata {
+  string mac = 1;
+  uint32 virtualID = 2;
+  string time = 3;
+  map<uint32, SensorValue> values = 4;
+  string gwID = 5;
+  uint32 sendDuration = 6;
+}
+
+message GetVirtualIdRequest {
+  string mac = 1;
+  string gwID = 2;
+}
+
+message GetVirtualIdResponse {
+  uint32 virtualID = 1;
+}
+
+message GetVirtualIdStreamResponse {
+  uint32 statusCode = 1;
+  string message = 2;
+  uint32 virtualID = 3;
+}
+
+message SensorValue {
+  double value = 1;
+  uint32 dp = 2;
+}
+
+message Device {
+  string mac = 1;
+  uint32 virtualID = 2;
+}
+
+message RemoteRequest {
+  Device device = 1;
+  uint32 deviceNo = 2;
+  uint32 address = 3;
+  double value = 4;
+}
+
+message RemoteResponse {
+  uint32 statusCode = 1;
+  string message = 2;
+  double originValue =3;
+}
+
+service DeviceService {
+  // 更新裝置上傳數據
+  rpc UpdateRawdata(stream UpdateRawdataRequest) returns (stream Response) {};
+
+  // 更新即時設定值
+  rpc UpdateRealtime(stream UpdateRawdataRequest) returns (stream Response) {};
+
+  // Get VirtualId by stream
+  rpc GetVritualIdStream(stream GetVirtualIdRequest) returns (stream GetVirtualIdStreamResponse) {};
+
+  // BackupData
+  rpc BackupRawdata(stream UpdateRawdataRequest) returns (stream Response) {};
+
+  // Get VirtualId
+  rpc GetVritualId(GetVirtualIdRequest) returns (GetVirtualIdResponse) {};
+
+  // Set Time 校時
+  rpc SetTime(Device) returns (Response){};
+
+  // 遠端控制
+  rpc Remote(RemoteRequest) returns (RemoteResponse){};
+}

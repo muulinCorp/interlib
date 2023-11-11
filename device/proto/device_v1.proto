@@ -1,0 +1,61 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+import "device/proto/device.proto";
+
+option go_package = "device/pb";
+package device;
+
+
+
+message CreateDeviceV1Request {
+  string name = 1;
+  string mac = 2;
+  string gwid = 3;
+  string channel = 4;
+  int32 timezone = 5;
+}
+
+message CreateDeviceV1Response {
+  uint32 statusCode = 1;
+  string message = 2;
+  string id = 3;
+  uint32 virtualID = 4;
+}
+
+message CheckExistRequest {
+  repeated DeviceV1 devices = 1;
+}
+
+message DeviceV1 {
+  string mac = 1;
+  string gwid = 2;
+}
+
+message CheckExistResponse {
+	map<string, bool> existMap = 1;
+}
+
+message RemoveDeviceV1Request {
+  string mac = 1;
+  uint32 virtualID = 2;
+  string channel =3;
+}
+
+message GetStateRequest {
+  repeated Device devices = 1;
+}
+
+message GetStateResponse {
+  map<string, string> stateMap = 1;
+}
+
+service DeviceV1Service {
+  // 建立v1裝置
+  rpc CreateV1(stream CreateDeviceV1Request) returns (stream CreateDeviceV1Response) {};
+  // 檢查裝置是否存在
+  rpc CheckExist(CheckExistRequest) returns (CheckExistResponse) {};
+  // 刪除裝置
+  rpc Delete(stream RemoveDeviceV1Request) returns (stream Response) {};
+  // 查看裝置連線狀態
+  rpc CheckState(GetStateRequest) returns (GetStateResponse) {};
+}
