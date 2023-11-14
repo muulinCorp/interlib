@@ -1,0 +1,18 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "channel/pb";
+package channel;
+
+
+message CountSensorWarningRequest {
+	repeated string sensorIds = 1;	
+}
+
+message CountSensorWarningResponse {
+	map<string,int64> result = 1;
+}
+
+service ReportService {
+	// 計算設備預警次數
+	rpc CountSensorsWarning(CountSensorWarningRequest) returns (CountSensorWarningResponse) {};
+  }
