@@ -45,7 +45,7 @@ func (ss *serverStream) Context() context.Context {
 
 func (ri *interConfInterceptor) getDI(ctx context.Context, channel string) (dbMidDI, error) {
 
-	if cache, ok := ri.confCache[channel]; ok && cache.exp.Sub(time.Now()) > 0 {
+	if cache, ok := ri.confCache[channel]; ok && time.Until(cache.exp) > 0 {
 		return cache.di, nil
 	}
 
@@ -106,7 +106,6 @@ func NewInterConfInterceptor(address string, di dbMidDI) (coreInterceptor.Interc
 
 type interConfInterceptor struct {
 	confSDK   client.ConfigurationClient
-	env       string
 	di        dbMidDI
 	confCache map[string]*cacheData
 }
@@ -122,6 +121,9 @@ func getChannel(md metadata.MD) string {
 
 func (ri *interConfInterceptor) StreamServerInterceptor() grpc.StreamServerInterceptor {
 	return grpc.StreamServerInterceptor(func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
+		if isReflectMethod(info.FullMethod) {
+			return handler(srv, ss)
+		}
 		ctx := ss.Context()
 		md, ok := metadata.FromIncomingContext(ctx)
 		if !ok {
@@ -202,4 +204,8 @@ func (r *rsrc) setContext(ctx context.Context) context.Context {
 	ctx = context.WithValue(ctx, log.CtxLogKey, r.l)
 	ctx = context.WithValue(ctx, sterna.CtxServDiKey, r.di)
 	return ctx
+}
+
+func isReflectMethod(m string) bool {
+	return m == "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo"
 }
