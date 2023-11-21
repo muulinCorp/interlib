@@ -1,0 +1,23 @@
+
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "report/pb";
+package report;
+
+import "google/protobuf/empty.proto";
+
+message GenerateReportReq {
+	string taskId = 1;
+	bool isCustmized = 2;
+	string endDate = 3;
+	string startDate = 4;
+	string interval = 5;
+	bool showDetail =6;
+	bool showCompany = 7;
+	repeated string sensors =8;
+}
+
+service ComsumerService {
+	// 產生報表
+	rpc GenerateReport(GenerateReportReq) returns (google.protobuf.Empty) {};
+}
