@@ -4,7 +4,7 @@ option go_package = "channel/pb";
 package channel;
 
 
-message CountSensorWarningRequest {
+message SensorIdsRequest {
 	repeated string sensorIds = 1;	
 }
 
@@ -12,7 +12,40 @@ message CountSensorWarningResponse {
 	map<string,int64> result = 1;
 }
 
+message GetSensorsReportInfoResponse {
+	message Warning {
+		bool enable =1;
+		double upper =2;
+		double lower =3;
+		int32 minutes =4;
+		int32 times =5;
+	}
+
+	enum TypeOfDisplay {
+        REALTIME = 0;
+        ACCUMULATION = 1;
+        STATE = 2;
+    }
+
+	message SensorInfo {
+		string id = 1;
+		string name = 2;
+		string unit = 3;
+		string type = 4;
+		string equip =5;
+		TypeOfDisplay displayType = 6;
+		uint32 dp =7;
+		map<string,string> transMap = 8;
+		Warning warningConf =9;
+	}
+
+	string project = 1;
+	repeated SensorInfo sensors = 2;
+}
+
 service ReportService {
 	// 計算設備預警次數
-	rpc CountSensorsWarning(CountSensorWarningRequest) returns (CountSensorWarningResponse) {};
-  }
+	rpc CountSensorsWarning(SensorIdsRequest) returns (CountSensorWarningResponse) {};
+	// 取得報備資訊
+	rpc GetSensorReportInfo(SensorIdsRequest) returns (GetSensorsReportInfoResponse) {};
+}

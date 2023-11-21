@@ -23,7 +23,9 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ReportServiceClient interface {
 	// 計算設備預警次數
-	CountSensorsWarning(ctx context.Context, in *CountSensorWarningRequest, opts ...grpc.CallOption) (*CountSensorWarningResponse, error)
+	CountSensorsWarning(ctx context.Context, in *SensorIdsRequest, opts ...grpc.CallOption) (*CountSensorWarningResponse, error)
+	// 取得報備資訊
+	GetSensorReportInfo(ctx context.Context, in *SensorIdsRequest, opts ...grpc.CallOption) (*GetSensorsReportInfoResponse, error)
 }
 
 type reportServiceClient struct {
@@ -34,9 +36,18 @@ func NewReportServiceClient(cc grpc.ClientConnInterface) ReportServiceClient {
 	return &reportServiceClient{cc}
 }
 
-func (c *reportServiceClient) CountSensorsWarning(ctx context.Context, in *CountSensorWarningRequest, opts ...grpc.CallOption) (*CountSensorWarningResponse, error) {
+func (c *reportServiceClient) CountSensorsWarning(ctx context.Context, in *SensorIdsRequest, opts ...grpc.CallOption) (*CountSensorWarningResponse, error) {
 	out := new(CountSensorWarningResponse)
 	err := c.cc.Invoke(ctx, "/channel.ReportService/CountSensorsWarning", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *reportServiceClient) GetSensorReportInfo(ctx context.Context, in *SensorIdsRequest, opts ...grpc.CallOption) (*GetSensorsReportInfoResponse, error) {
+	out := new(GetSensorsReportInfoResponse)
+	err := c.cc.Invoke(ctx, "/channel.ReportService/GetSensorReportInfo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +59,9 @@ func (c *reportServiceClient) CountSensorsWarning(ctx context.Context, in *Count
 // for forward compatibility
 type ReportServiceServer interface {
 	// 計算設備預警次數
-	CountSensorsWarning(context.Context, *CountSensorWarningRequest) (*CountSensorWarningResponse, error)
+	CountSensorsWarning(context.Context, *SensorIdsRequest) (*CountSensorWarningResponse, error)
+	// 取得報備資訊
+	GetSensorReportInfo(context.Context, *SensorIdsRequest) (*GetSensorsReportInfoResponse, error)
 	mustEmbedUnimplementedReportServiceServer()
 }
 
@@ -56,8 +69,11 @@ type ReportServiceServer interface {
 type UnimplementedReportServiceServer struct {
 }
 
-func (UnimplementedReportServiceServer) CountSensorsWarning(context.Context, *CountSensorWarningRequest) (*CountSensorWarningResponse, error) {
+func (UnimplementedReportServiceServer) CountSensorsWarning(context.Context, *SensorIdsRequest) (*CountSensorWarningResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CountSensorsWarning not implemented")
+}
+func (UnimplementedReportServiceServer) GetSensorReportInfo(context.Context, *SensorIdsRequest) (*GetSensorsReportInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSensorReportInfo not implemented")
 }
 func (UnimplementedReportServiceServer) mustEmbedUnimplementedReportServiceServer() {}
 
@@ -73,7 +89,7 @@ func RegisterReportServiceServer(s grpc.ServiceRegistrar, srv ReportServiceServe
 }
 
 func _ReportService_CountSensorsWarning_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CountSensorWarningRequest)
+	in := new(SensorIdsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -85,7 +101,25 @@ func _ReportService_CountSensorsWarning_Handler(srv interface{}, ctx context.Con
 		FullMethod: "/channel.ReportService/CountSensorsWarning",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ReportServiceServer).CountSensorsWarning(ctx, req.(*CountSensorWarningRequest))
+		return srv.(ReportServiceServer).CountSensorsWarning(ctx, req.(*SensorIdsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ReportService_GetSensorReportInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SensorIdsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReportServiceServer).GetSensorReportInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/channel.ReportService/GetSensorReportInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReportServiceServer).GetSensorReportInfo(ctx, req.(*SensorIdsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -100,6 +134,10 @@ var ReportService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CountSensorsWarning",
 			Handler:    _ReportService_CountSensorsWarning_Handler,
+		},
+		{
+			MethodName: "GetSensorReportInfo",
+			Handler:    _ReportService_GetSensorReportInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
