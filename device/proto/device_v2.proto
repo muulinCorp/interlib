@@ -10,7 +10,7 @@ message DeviceState {
   string state = 1;
   bool offlineNotify = 2;
   string onlineState = 3;
-  uint32 uploadDuration = 4;
+  int64 uploadDuration = 4;
 }
 
 message GetStateV2Response {
