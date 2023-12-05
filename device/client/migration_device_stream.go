@@ -6,20 +6,20 @@ import (
 	"net/http"
 
 	"bitbucket.org/muulin/interlib/device/pb"
+	"google.golang.org/grpc/metadata"
 
 	"bitbucket.org/muulin/interlib/core"
-	"github.com/94peter/sterna/log"
 	"golang.org/x/net/context"
 )
 
 type MigrationDeviceStreamClient interface {
 	core.MyGrpc
-	StartMigrationStream(resp chan *pb.Response)
+	StartMigrationStream(channel string, resp chan *pb.Response)
 	Migration(*pb.MigrationDeviceRequest) error
 	StopMigrationStream() error
 }
 
-func NewMigrationStreamClient(address string, l log.Logger) MigrationDeviceStreamClient {
+func NewMigrationStreamClient(address string) MigrationDeviceStreamClient {
 	return &migrationDeviceStreamImpl{
 		AutoReConn: core.NewAutoReconn(address),
 	}
@@ -32,12 +32,14 @@ type migrationDeviceStreamImpl struct {
 	migrationStream pb.DeviceMigrationService_MigrationDeviceClient
 }
 
-func (impl *migrationDeviceStreamImpl) StartMigrationStream(resp chan *pb.Response) {
+func (impl *migrationDeviceStreamImpl) StartMigrationStream(channel string, resp chan *pb.Response) {
 	var err error
 	impl.resp = resp
 	p := func(myGrpc core.MyGrpc) error {
+		md := metadata.New(map[string]string{"X-Channel": channel})
+		ctx := metadata.NewOutgoingContext(context.Background(), md)
 		clt := pb.NewDeviceMigrationServiceClient(impl)
-		impl.migrationStream, err = clt.MigrationDevice(context.Background())
+		impl.migrationStream, err = clt.MigrationDevice(ctx)
 		if err != nil {
 			return err
 		}
@@ -82,7 +84,12 @@ func (grpc *migrationDeviceStreamImpl) StopMigrationStream() error {
 	if grpc.migrationStream == nil {
 		return errors.New("StartMigrationStream first")
 	}
-	return grpc.migrationStream.CloseSend()
+	err := grpc.migrationStream.CloseSend()
+	if err != nil {
+		return err
+	}
+	grpc.migrationStream = nil
+	return nil
 }
 
 func (grpc *migrationDeviceStreamImpl) Migration(req *pb.MigrationDeviceRequest) error {

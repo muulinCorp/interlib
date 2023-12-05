@@ -3,7 +3,7 @@ module bitbucket.org/muulin/interlib
 go 1.19
 
 require (
-	github.com/94peter/sterna v0.19.6
+	github.com/94peter/sterna v1.5.2
 	github.com/gin-gonic/gin v1.8.1
 	github.com/google/uuid v1.3.0
 	golang.org/x/net v0.12.0
@@ -54,5 +54,3 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230717213848-3f92550aa753 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/94peter/sterna => ../sterna
