@@ -1,0 +1,20 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "migration/pb";
+package migration;
+
+message Response {
+  uint32 statusCode = 1;
+  string message = 2;
+}
+
+message UniversalMigrationRequest {
+  string taskId = 1;
+  string db = 2;
+  string type = 3;
+}
+
+service ComsumerService {
+  // 更新設備即時數據
+  rpc UniversalMigration(UniversalMigrationRequest) returns (Response) {};
+}

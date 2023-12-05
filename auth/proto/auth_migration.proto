@@ -1,0 +1,31 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "auth/pb";
+package auth;
+
+message MigrationUserInfoRequest {
+	message Perm {
+		string syscode = 1;
+		string group =2;
+	}
+	message ProjectFolder {
+		string name = 1;
+		repeated string projectIds = 2;
+	}
+	string account = 1;
+	string email = 2;
+    string pwd = 3;
+    string name = 4;
+    repeated Perm perms = 5;
+	repeated ProjectFolder folders = 6;
+}
+
+message MigrationResponse {
+	uint32 statusCode = 1;
+	string message = 2;
+}
+
+service AuthMigrationService {
+	// 搬移使用者資訊
+	rpc MigrationUserInfo(stream MigrationUserInfoRequest) returns (stream MigrationResponse) {};
+}
