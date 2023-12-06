@@ -1,0 +1,33 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "auth/pb";
+package auth;
+
+message MigrationProjecyRequest {
+	message Contact {
+        string name=1;
+        string phone=2;
+    }
+    message Box {
+        string mac=1;
+        string gwid=2;
+    }
+    string id=1;
+    string name=2;
+    double longitude=3;
+    double latitude=4;
+    string address=5;
+    Contact contact=6;
+    repeated Box boxes=7;
+    string ownerAccount=8;
+}
+
+message MigrationResponse {
+	uint32 statusCode = 1;
+	string message = 2;
+}
+
+service AuthMigrationService {
+	// 搬移案場資訊
+	rpc MigrationProject(stream MigrationProjecyRequest) returns (stream MigrationResponse) {};
+}
