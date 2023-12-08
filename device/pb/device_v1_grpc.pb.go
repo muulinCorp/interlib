@@ -30,6 +30,8 @@ type DeviceV1ServiceClient interface {
 	Delete(ctx context.Context, opts ...grpc.CallOption) (DeviceV1Service_DeleteClient, error)
 	// 查看裝置連線狀態
 	CheckState(ctx context.Context, in *GetStateRequest, opts ...grpc.CallOption) (*GetStateResponse, error)
+	// 取得裝置資訊
+	GetDeviceInfo(ctx context.Context, in *DeviceV1, opts ...grpc.CallOption) (*DeviceInfoResponse, error)
 }
 
 type deviceV1ServiceClient struct {
@@ -120,6 +122,15 @@ func (c *deviceV1ServiceClient) CheckState(ctx context.Context, in *GetStateRequ
 	return out, nil
 }
 
+func (c *deviceV1ServiceClient) GetDeviceInfo(ctx context.Context, in *DeviceV1, opts ...grpc.CallOption) (*DeviceInfoResponse, error) {
+	out := new(DeviceInfoResponse)
+	err := c.cc.Invoke(ctx, "/device.DeviceV1Service/GetDeviceInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DeviceV1ServiceServer is the server API for DeviceV1Service service.
 // All implementations must embed UnimplementedDeviceV1ServiceServer
 // for forward compatibility
@@ -132,6 +143,8 @@ type DeviceV1ServiceServer interface {
 	Delete(DeviceV1Service_DeleteServer) error
 	// 查看裝置連線狀態
 	CheckState(context.Context, *GetStateRequest) (*GetStateResponse, error)
+	// 取得裝置資訊
+	GetDeviceInfo(context.Context, *DeviceV1) (*DeviceInfoResponse, error)
 	mustEmbedUnimplementedDeviceV1ServiceServer()
 }
 
@@ -150,6 +163,9 @@ func (UnimplementedDeviceV1ServiceServer) Delete(DeviceV1Service_DeleteServer) e
 }
 func (UnimplementedDeviceV1ServiceServer) CheckState(context.Context, *GetStateRequest) (*GetStateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckState not implemented")
+}
+func (UnimplementedDeviceV1ServiceServer) GetDeviceInfo(context.Context, *DeviceV1) (*DeviceInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDeviceInfo not implemented")
 }
 func (UnimplementedDeviceV1ServiceServer) mustEmbedUnimplementedDeviceV1ServiceServer() {}
 
@@ -252,6 +268,24 @@ func _DeviceV1Service_CheckState_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DeviceV1Service_GetDeviceInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeviceV1)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DeviceV1ServiceServer).GetDeviceInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/device.DeviceV1Service/GetDeviceInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DeviceV1ServiceServer).GetDeviceInfo(ctx, req.(*DeviceV1))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DeviceV1Service_ServiceDesc is the grpc.ServiceDesc for DeviceV1Service service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -266,6 +300,10 @@ var DeviceV1Service_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckState",
 			Handler:    _DeviceV1Service_CheckState_Handler,
+		},
+		{
+			MethodName: "GetDeviceInfo",
+			Handler:    _DeviceV1Service_GetDeviceInfo_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

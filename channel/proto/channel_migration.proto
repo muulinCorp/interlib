@@ -1,17 +1,19 @@
 syntax = "proto3";  // 定義要使用的 protocol buffer 版本
 
-option go_package = "auth/pb";
-package auth;
+option go_package = "channel/pb";
+package channel;
 
-message MigrationProjecyRequest {
+message Box {
+    string mac=1;
+    string gwid=2;
+}
+
+message MigrationProjectRequest {
 	message Contact {
         string name=1;
         string phone=2;
     }
-    message Box {
-        string mac=1;
-        string gwid=2;
-    }
+    
     string id=1;
     string name=2;
     double longitude=3;
@@ -27,7 +29,42 @@ message MigrationResponse {
 	string message = 2;
 }
 
-service AuthMigrationService {
+message MigrationEquipmentRequest {
+    message Folder {
+        string name = 1;
+        repeated string ids = 2;
+    }
+    message Sensor {
+        int32 device = 1;
+        int32 address = 2;
+        string display = 3;
+        string stype = 4;
+        string unit = 5;
+        bool disablealert = 6;
+        double upper = 7;
+        double lower = 8;
+        int32 minutes = 9;
+        int32 times = 10;
+        bool ownerHide = 11;
+        int32 sort = 12;
+    }
+    string id = 1;
+    string name = 2;
+    string code = 3;
+    string emsid = 4;
+    Box box = 5;
+    string projectId = 6;
+    bool ownerHide = 7;
+    repeated Folder sensorFolders = 8;
+    repeated Folder controllerFolders = 9;
+    bool disablePush =10;
+    repeated Sensor sensors = 11;
+    repeated Sensor controllers = 12;
+}
+
+service ChannelMigrationService {
 	// 搬移案場資訊
-	rpc MigrationProject(stream MigrationProjecyRequest) returns (stream MigrationResponse) {};
+	rpc MigrationProject(stream MigrationProjectRequest) returns (stream MigrationResponse) {};
+    // 搬移設備資訊
+    rpc MigrationEquipment(stream MigrationEquipmentRequest) returns (stream MigrationResponse) {};
 }

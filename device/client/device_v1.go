@@ -19,6 +19,7 @@ type DeviceV1Client interface {
 	StopCreateV1Stream() error
 	CheckExist([]*pb.DeviceV1) (map[string]bool, error)
 	CheckState([]*pb.Device) (map[string]string, error)
+	GetDeviceInfo(mac, gwid string) (*pb.DeviceInfoResponse, error)
 
 	StartRemoveStream() error
 	Remove(*pb.RemoveDeviceV1Request) error
@@ -132,6 +133,21 @@ func (grpc *sdkV1Impl) CheckState(devices []*pb.Device) (map[string]string, erro
 		return nil, err
 	}
 	return resp.StateMap, nil
+}
+
+func (grpc *sdkV1Impl) GetDeviceInfo(mac, gwid string) (*pb.DeviceInfoResponse, error) {
+	var err error
+	grpc.MyGrpc, err = core.NewMyGrpc(grpc.address)
+	if err != nil {
+		return nil, err
+	}
+	defer grpc.Close()
+	clt := pb.NewDeviceV1ServiceClient(grpc)
+	resp, err := clt.GetDeviceInfo(context.Background(), &pb.DeviceV1{Mac: mac, Gwid: gwid})
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }
 
 func (impl *sdkV1Impl) StartRemoveStream() error {

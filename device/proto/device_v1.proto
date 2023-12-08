@@ -49,6 +49,18 @@ message GetStateResponse {
   map<string, string> stateMap = 1;
 }
 
+message DeviceInfoResponse {
+  string id = 1;
+  string description = 2;
+  string mac = 3;
+  string gwid = 4;
+  uint32 virtualID = 5;
+  string channel = 6;
+  int32 timezone =7;
+  string state = 8;
+  string model = 9;
+}
+
 service DeviceV1Service {
   // 建立v1裝置
   rpc CreateV1(stream CreateDeviceV1Request) returns (stream CreateDeviceV1Response) {};
@@ -58,4 +70,6 @@ service DeviceV1Service {
   rpc Delete(stream RemoveDeviceV1Request) returns (stream Response) {};
   // 查看裝置連線狀態
   rpc CheckState(GetStateRequest) returns (GetStateResponse) {};
+  // 取得裝置資訊
+  rpc GetDeviceInfo(DeviceV1) returns (DeviceInfoResponse) {};
 }
