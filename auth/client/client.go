@@ -7,11 +7,12 @@ import (
 )
 
 type AuthClient interface {
-	GetUserInfo(ctx context.Context, resp *pb.GetUserInfoRequest) (*pb.GetUserInfoResponse, error)
+	GetTokenInfo(ctx context.Context, resp *pb.GetTokenInfoRequest) (*pb.GetTokenInfoResponse, error)
 	GetAccount(ctx context.Context, id string) (string, error)
 	AccountExist(ctx context.Context, acc string) (bool, error)
 	CreateInvitation(ctx context.Context, email, name, channel string) (string, error)
 	ForgetPwd(ctx context.Context, host, email string) (*pb.ForgetPasswordResponse, error)
+	GetUserInfo(ctx context.Context, accoutOrEmail string) (*pb.GetUserInfoResponse, error)
 }
 
 func New(address string) AuthClient {
@@ -24,14 +25,15 @@ type authClientImpl struct {
 	address string
 }
 
-func (impl *authClientImpl) GetUserInfo(ctx context.Context, req *pb.GetUserInfoRequest) (*pb.GetUserInfoResponse, error) {
+func (impl *authClientImpl) GetTokenInfo(ctx context.Context, req *pb.GetTokenInfoRequest) (*pb.GetTokenInfoResponse, error) {
 	grpc, err := core.NewMyGrpc(impl.address)
 	if err != nil {
 		return nil, err
 	}
 	defer grpc.Close()
 	clt := pb.NewAuthServiceClient(grpc)
-	return clt.GetUserInfo(ctx, req)
+
+	return clt.GetTokenInfo(ctx, req)
 }
 
 func (impl *authClientImpl) GetAccount(ctx context.Context, id string) (string, error) {
@@ -94,5 +96,17 @@ func (impl *authClientImpl) ForgetPwd(ctx context.Context, host, email string) (
 	return clt.ForgetPassword(ctx, &pb.ForgetPasswordRequest{
 		Host:  host,
 		Email: email,
+	})
+}
+
+func (impl *authClientImpl) GetUserInfo(ctx context.Context, accoutOrEmail string) (*pb.GetUserInfoResponse, error) {
+	grpc, err := core.NewMyGrpc(impl.address)
+	if err != nil {
+		return nil, err
+	}
+	defer grpc.Close()
+	clt := pb.NewAuthServiceClient(grpc)
+	return clt.GetUserInfoByAccount(ctx, &pb.GetUserInfoRequest{
+		EmailOrAccount: accoutOrEmail,
 	})
 }

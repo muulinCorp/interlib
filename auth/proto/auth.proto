@@ -3,19 +3,19 @@ syntax = "proto3";  // 定義要使用的 protocol buffer 版本
 option go_package = "auth/pb";
 package auth;
 
-message GetUserInfoRequest {
+message GetTokenInfoRequest {
   string host = 1;
   string token = 2;
 }
 
-message GetUserInfoResponse {
+message GetTokenInfoResponse {
   uint32 statusCode = 1;
   string message = 2;
   string sub = 3;
   string account = 4;
   string name = 5;
-  repeated string roles = 6;
-  repeated string channels = 7;
+  repeated string roles = 7;
+  repeated string channels = 8;
 }
 
 message GetAccountRequest {
@@ -55,9 +55,20 @@ message ForgetPasswordResponse {
   string code = 3;
 }
 
+message GetUserInfoRequest {
+  string emailOrAccount = 1;
+}
+
+message GetUserInfoResponse {
+  string id = 1;
+  string account = 2;
+  string name = 3;
+  string email = 4;
+}
+
 service AuthService {
   // 取得使用者資訊
-  rpc GetUserInfo(GetUserInfoRequest) returns (GetUserInfoResponse) {};
+  rpc GetTokenInfo(GetTokenInfoRequest) returns (GetTokenInfoResponse) {};
   // 取得帳號
   rpc GetAccount(GetAccountRequest) returns (GetAccountResponse) {};
   // 帳號是否存在
@@ -66,4 +77,6 @@ service AuthService {
   rpc CreateInvitation(CreateInvitationRequest) returns (CreateInvitationResponse) {};
   // 忘記密碼
   rpc ForgetPassword(ForgetPasswordRequest) returns (ForgetPasswordResponse) {};
+  // 依使用者帳號取得使用者資訊
+  rpc GetUserInfoByAccount(GetUserInfoRequest) returns (GetUserInfoResponse) {};
 }

@@ -7,7 +7,6 @@ package channel;
 
 message EquipInfoRequest {
 	string equipId = 1;
-	string sensorId = 2;
 }
 
 message EquipInfoResponse {
@@ -15,7 +14,7 @@ message EquipInfoResponse {
 	string name = 2;
 	string model = 3;
 	EquipInfoProject project = 4;
-	EquipInfoSensor sensor =5;
+	repeated EquipInfoSensor sensor =5;
 }
 
 message EquipInfoProject {
@@ -29,6 +28,11 @@ message EquipInfoProject {
 message EquipInfoSensor {
 	string id = 1;
 	string display = 2;
+  uint32 deviceIndex = 3;
+  uint32 deviceNo = 4;
+  uint32 address = 5;
+  string unit =6;
+  string type = 7;
 }
 
 message GetEquipIdsByAccountRequest {

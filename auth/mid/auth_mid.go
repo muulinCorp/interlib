@@ -102,7 +102,7 @@ func (am *interAuthMiddle) Handler() gin.HandlerFunc {
 				return
 			}
 
-			user, err := am.authSDK.GetUserInfo(c, &pb.GetUserInfoRequest{
+			user, err := am.authSDK.GetTokenInfo(c, &pb.GetTokenInfoRequest{
 				Host: host, Token: authToken[7:],
 			})
 			if err != nil {

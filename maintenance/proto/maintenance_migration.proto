@@ -1,0 +1,47 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "maintenance/pb";
+package maintenance;
+
+
+message MigrationResponse {
+	uint32 statusCode = 1;
+	string message = 2;
+}
+
+
+message MigrationMaintenanceRequest {
+    message Sensor {
+        int32 deviceNo = 1;
+        int32 address = 2;
+    }
+    message User {
+        string name = 1;
+        string account =2;
+        string email = 3;
+    }
+    message Comment {
+        int64 dateUnix = 1;
+        string message = 2;
+        User user = 3;
+    }
+    string id = 1;
+    string type = 2;
+    string otherDesc =3;
+    string reportor = 4;
+    int64 createTime = 5;
+    User createUser = 6;
+    int64 arrivalTime = 7;
+    int64 completeTime = 8;
+    User completeUser = 9;
+    bool isMistake = 10;
+    string state = 11;
+    string equipId = 12;    
+    Sensor sensor = 13;
+    repeated Comment comments = 14;
+}
+
+service MaintenanceMigrationService {
+	// 搬移維護資訊
+	rpc MigrationMaintenance(stream MigrationMaintenanceRequest) returns (stream MigrationResponse) {};
+}

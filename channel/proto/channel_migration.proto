@@ -48,18 +48,35 @@ message MigrationEquipmentRequest {
         bool ownerHide = 11;
         int32 sort = 12;
     }
+    message Perm {
+        string account = 1;
+        string permission = 2;
+    }
     string id = 1;
     string name = 2;
     string code = 3;
-    string emsid = 4;
-    Box box = 5;
-    string projectId = 6;
-    bool ownerHide = 7;
-    repeated Folder sensorFolders = 8;
-    repeated Folder controllerFolders = 9;
-    bool disablePush =10;
-    repeated Sensor sensors = 11;
-    repeated Sensor controllers = 12;
+    string model =4;
+    uint32 emsid = 5;
+    Box box = 6;
+    string projectId = 7;
+    bool ownerHide = 8;
+    repeated Folder sensorFolders = 9;
+    repeated Folder controllerFolders = 10;
+    bool disablePush =11;
+    repeated Sensor sensors = 12;
+    repeated Sensor controllers = 13;
+    repeated Perm permissions = 14;
+    uint32 sort = 15;
+}
+
+message MigrationLogRequest {
+    string tag = 1;
+    int64 timestamp =2;
+    string equipid = 3;
+    string content = 4;
+    string formatType = 5;
+    string value = 6;
+    repeated string detail = 7;
 }
 
 service ChannelMigrationService {
@@ -67,4 +84,6 @@ service ChannelMigrationService {
 	rpc MigrationProject(stream MigrationProjectRequest) returns (stream MigrationResponse) {};
     // 搬移設備資訊
     rpc MigrationEquipment(stream MigrationEquipmentRequest) returns (stream MigrationResponse) {};
+    // 搬移設備log
+    rpc MigrationEquipmentLog(stream MigrationLogRequest) returns (stream MigrationResponse) {};
 }

@@ -10,7 +10,7 @@ import (
 )
 
 type MaintenaceGrpcClient interface {
-	GetEquipInfo(equipId, sensorId string) (*pb.EquipInfoResponse, error)
+	GetEquipInfo(equipId string) (*pb.EquipInfoResponse, error)
 	GetEquipIdsByAccount(acc string) ([]string, error)
 	EmitEvent(*pb.MaintenanceEventReq) error
 }
@@ -27,7 +27,7 @@ type maintenaceGrpcClientImpl struct {
 	address string
 }
 
-func (c *maintenaceGrpcClientImpl) GetEquipInfo(equipId, sensorId string) (*pb.EquipInfoResponse, error) {
+func (c *maintenaceGrpcClientImpl) GetEquipInfo(equipId string) (*pb.EquipInfoResponse, error) {
 	var err error
 	md := metadata.New(map[string]string{"X-Channel": c.channel})
 	ctx := metadata.NewOutgoingContext(context.Background(), md)
@@ -39,8 +39,7 @@ func (c *maintenaceGrpcClientImpl) GetEquipInfo(equipId, sensorId string) (*pb.E
 	clt := pb.NewMaintenaceServiceClient(grpcClt)
 
 	resp, err := clt.GetEquipInfo(ctx, &pb.EquipInfoRequest{
-		EquipId:  equipId,
-		SensorId: sensorId,
+		EquipId: equipId,
 	})
 	if err != nil {
 		return nil, err
