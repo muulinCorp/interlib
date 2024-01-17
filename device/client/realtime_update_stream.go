@@ -1,14 +1,14 @@
 package client
 
 import (
-	"errors"
 	"io"
 	"net/http"
 
-	"bitbucket.org/muulin/interlib/device/pb"
+	"github.com/pkg/errors"
 
-	"bitbucket.org/muulin/interlib/core"
-	"github.com/94peter/sterna/log"
+	"github.com/muulinCorp/interlib/device/pb"
+
+	"github.com/muulinCorp/interlib/core"
 	"golang.org/x/net/context"
 )
 
@@ -19,7 +19,7 @@ type UpdateRealtimeStreamClient interface {
 	StopUpdateRealtimeStream() error
 }
 
-func NewUpdateRealtimeStreamClient(address string, l log.Logger) UpdateRealtimeStreamClient {
+func NewUpdateRealtimeStreamClient(address string) UpdateRealtimeStreamClient {
 	return &updateRealtimeStreamSdkImpl{
 		AutoReConn: core.NewAutoReconn(address),
 	}

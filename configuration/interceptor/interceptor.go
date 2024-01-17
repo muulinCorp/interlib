@@ -5,14 +5,15 @@ import (
 	"reflect"
 	"time"
 
-	"bitbucket.org/muulin/interlib/configuration/client"
-	coreInterceptor "bitbucket.org/muulin/interlib/core/interceptor"
+	"github.com/muulinCorp/interlib/channel"
+	"github.com/muulinCorp/interlib/configuration/client"
+	coreInterceptor "github.com/muulinCorp/interlib/core/interceptor"
 
-	"bitbucket.org/muulin/interlib/configuration/pb"
+	"github.com/muulinCorp/interlib/configuration/pb"
 
-	"github.com/94peter/sterna"
-	"github.com/94peter/sterna/db"
-	"github.com/94peter/sterna/log"
+	"github.com/94peter/di"
+	"github.com/94peter/log"
+	"github.com/94peter/morm/conn"
 	"github.com/google/uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -22,11 +23,8 @@ import (
 
 type dbMidDI interface {
 	log.LoggerDI
-	db.MongoDI
-	db.RedisDI
-	sterna.CommonDI
-	SetChannel(string)
-	GetChannel() string
+	conn.MongoDI
+	channel.DI
 }
 
 type cacheData struct {
@@ -43,14 +41,14 @@ func (ss *serverStream) Context() context.Context {
 	return ss.ctx
 }
 
-func (ri *interConfInterceptor) getDI(ctx context.Context, channel string) (dbMidDI, error) {
+func (ri *interConfInterceptor) getDI(ctx context.Context, ch string) (dbMidDI, error) {
 
-	if cache, ok := ri.confCache[channel]; ok && time.Until(cache.exp) > 0 {
+	if cache, ok := ri.confCache[ch]; ok && time.Until(cache.exp) > 0 {
 		return cache.di, nil
 	}
 
 	confByte, err := ri.confSDK.GetChannelConf(ctx, &pb.GetConfRequest{
-		ChannelName: channel,
+		ChannelName: ch,
 		Version:     "latest",
 	})
 	if err != nil {
@@ -61,28 +59,31 @@ func (ri *interConfInterceptor) getDI(ctx context.Context, channel string) (dbMi
 	if val.Kind() == reflect.Ptr {
 		val = reflect.Indirect(val)
 	}
-	newValue := reflect.New(val.Type()).Interface()
-	sterna.InitConfByByte(confByte, newValue)
+	newValue := reflect.New(val.Type()).Interface().(channel.DI)
+	di.InitConfByByte(confByte, newValue)
 	dbdi := newValue.(dbMidDI)
-	if _, ok := ri.confCache[channel]; ok {
-		ri.confCache[channel].di = dbdi
-		ri.confCache[channel].exp = time.Now().Add(time.Hour)
+	if _, ok := ri.confCache[ch]; ok {
+		ri.confCache[ch].di = dbdi
+		ri.confCache[ch].exp = time.Now().Add(time.Hour)
 	} else {
-		ri.confCache[channel] = &cacheData{
+		ri.confCache[ch] = &cacheData{
 			di:  dbdi,
 			exp: time.Now().Add(time.Hour),
 		}
 	}
-	dbdi.SetChannel(channel)
+	dbdi.SetChannel(ch)
 	return dbdi, nil
 }
 
-func getContextWitchRsrc(ctx context.Context, di dbMidDI, backDb string) (r *rsrc, err error) {
+func getContextWitchRsrc(ctx context.Context, di dbMidDI, service string) (r *rsrc, err error) {
 	uuid := uuid.New().String()
-	l := di.NewLogger(uuid)
-	dbclt, err := di.NewMongoDBClient(ctx, backDb)
+	l, err := di.NewLogger(service, uuid)
 	if err != nil {
-		return
+		return nil, err
+	}
+	dbclt, err := di.NewDbConn(ctx, di.GetDb())
+	if err != nil {
+		return nil, err
 	}
 	r = &rsrc{
 		l:     l,
@@ -107,6 +108,7 @@ func NewInterConfInterceptor(address string, di dbMidDI) (coreInterceptor.Interc
 type interConfInterceptor struct {
 	confSDK   client.ConfigurationClient
 	di        dbMidDI
+	service   string
 	confCache map[string]*cacheData
 }
 
@@ -143,8 +145,8 @@ func (ri *interConfInterceptor) StreamServerInterceptor() grpc.StreamServerInter
 
 			return status.Error(codes.InvalidArgument, "can not get di")
 		}
-		backDb := di.GetDb() + "-back"
-		rsrc, err := getContextWitchRsrc(ctx, di, backDb)
+
+		rsrc, err := getContextWitchRsrc(ctx, di, ri.service)
 		if err != nil {
 			return err
 		}
@@ -188,7 +190,7 @@ func (ri *interConfInterceptor) UnaryServerInterceptor() grpc.UnaryServerInterce
 }
 
 type rsrc struct {
-	dbclt db.MongoDBClient
+	dbclt conn.MongoDBConn
 	l     log.Logger
 	di    dbMidDI
 }
@@ -200,9 +202,10 @@ func (r *rsrc) close() {
 }
 
 func (r *rsrc) setContext(ctx context.Context) context.Context {
-	ctx = context.WithValue(ctx, db.CtxMongoKey, r.dbclt)
-	ctx = context.WithValue(ctx, log.CtxLogKey, r.l)
-	ctx = context.WithValue(ctx, sterna.CtxServDiKey, r.di)
+
+	ctx = conn.SetMgoDbConnToCtx(ctx, r.dbclt)
+	ctx = log.SetByCtx(ctx, r.l)
+	ctx = di.SetDiToCtx(ctx, r.di)
 	return ctx
 }
 

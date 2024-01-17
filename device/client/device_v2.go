@@ -1,9 +1,9 @@
 package client
 
 import (
-	"bitbucket.org/muulin/interlib/device/pb"
+	"github.com/muulinCorp/interlib/device/pb"
 
-	"bitbucket.org/muulin/interlib/core"
+	"github.com/muulinCorp/interlib/core"
 	"golang.org/x/net/context"
 )
 

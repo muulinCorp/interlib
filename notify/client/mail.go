@@ -1,8 +1,8 @@
 package sdk
 
 import (
-	"bitbucket.org/muulin/interlib/core"
-	"bitbucket.org/muulin/interlib/notify/pb"
+	"github.com/muulinCorp/interlib/core"
+	"github.com/muulinCorp/interlib/notify/pb"
 	"golang.org/x/net/context"
 )
 

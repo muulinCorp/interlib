@@ -3,9 +3,9 @@ package client
 import (
 	"context"
 
-	"bitbucket.org/muulin/interlib/channel/pb"
+	"github.com/muulinCorp/interlib/channel/pb"
 
-	"bitbucket.org/muulin/interlib/core"
+	"github.com/muulinCorp/interlib/core"
 	"google.golang.org/grpc/metadata"
 )
 

@@ -5,10 +5,9 @@ import (
 	"io"
 	"net/http"
 
-	"bitbucket.org/muulin/interlib/device/pb"
+	"github.com/muulinCorp/interlib/device/pb"
 
-	"bitbucket.org/muulin/interlib/core"
-	"github.com/94peter/sterna/log"
+	"github.com/muulinCorp/interlib/core"
 	"golang.org/x/net/context"
 )
 
@@ -20,7 +19,7 @@ type GetVirtualIdStreamClient interface {
 	StopGetVirtualIdStream() error
 }
 
-func NewVirutalIdStreamClient(address string, l log.Logger) GetVirtualIdStreamClient {
+func NewVirutalIdStreamClient(address string) GetVirtualIdStreamClient {
 	return &virtualIDStream{
 		AutoReConn: core.NewAutoReconn(address),
 	}

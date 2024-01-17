@@ -1,14 +1,13 @@
 package client
 
 import (
-	"errors"
 	"io"
 	"net/http"
 
-	"bitbucket.org/muulin/interlib/device/pb"
+	"github.com/muulinCorp/interlib/device/pb"
 
-	"bitbucket.org/muulin/interlib/core"
-	"github.com/94peter/sterna/log"
+	"github.com/muulinCorp/interlib/core"
+	"github.com/pkg/errors"
 	"golang.org/x/net/context"
 )
 
@@ -19,8 +18,7 @@ type UpdateRawdataStreamClient interface {
 	StopUpdateRawdataStream() error
 }
 
-func NewUpdateRawdataStreamClient(address string, l log.Logger) UpdateRawdataStreamClient {
-
+func NewUpdateRawdataStreamClient(address string) UpdateRawdataStreamClient {
 	return &updateRawdataStreamSdkImpl{
 		AutoReConn: core.NewAutoReconn(address),
 	}

@@ -5,10 +5,10 @@ import (
 	"io"
 	"net/http"
 
-	"bitbucket.org/muulin/interlib/device/pb"
+	"github.com/muulinCorp/interlib/device/pb"
 
-	"bitbucket.org/muulin/interlib/core"
-	apiErr "github.com/94peter/sterna/api/err"
+	apiErr "github.com/94peter/api-toolkit/errors"
+	"github.com/muulinCorp/interlib/core"
 	"golang.org/x/net/context"
 )
 

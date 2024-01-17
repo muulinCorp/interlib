@@ -5,10 +5,9 @@ import (
 	"io"
 	"net/http"
 
-	"bitbucket.org/muulin/interlib/device/pb"
+	"github.com/muulinCorp/interlib/device/pb"
 
-	"bitbucket.org/muulin/interlib/core"
-	"github.com/94peter/sterna/log"
+	"github.com/muulinCorp/interlib/core"
 	"golang.org/x/net/context"
 )
 
@@ -19,7 +18,7 @@ type BackupRawdataStreamClient interface {
 	StopBackupRawdataStream() error
 }
 
-func NewBackupRawdataStreamClient(address string, l log.Logger) BackupRawdataStreamClient {
+func NewBackupRawdataStreamClient(address string) BackupRawdataStreamClient {
 
 	return &backupRawdataStreamSdkImpl{
 		AutoReConn: core.NewAutoReconn(address),

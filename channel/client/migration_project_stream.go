@@ -5,10 +5,10 @@ import (
 	"io"
 	"net/http"
 
-	"bitbucket.org/muulin/interlib/channel/pb"
+	"github.com/muulinCorp/interlib/channel/pb"
 	"google.golang.org/grpc/metadata"
 
-	"bitbucket.org/muulin/interlib/core"
+	"github.com/muulinCorp/interlib/core"
 	"golang.org/x/net/context"
 )
 
