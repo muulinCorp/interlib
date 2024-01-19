@@ -7,5 +7,6 @@ import (
 const (
 	PermGuest  = apiAuth.ApiPerm("guest")
 	PermAdmin  = apiAuth.ApiPerm("admin")
+	PermOwner  = apiAuth.ApiPerm("owner")
 	PermEditor = apiAuth.ApiPerm("editor")
 )
