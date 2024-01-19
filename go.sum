@@ -1,5 +1,13 @@
-github.com/94peter/morm v0.0.0-20240112023437-120a84367e67 h1:WKQhWoYiYiD3XAouHRW29CHFmkCUOyuzVoMTl9ZPhFo=
-github.com/94peter/morm v0.0.0-20240112023437-120a84367e67/go.mod h1:m8/S0P6qsNFmTWOK2sqSjYZuVucfGccG8ayiVjG1fZ8=
+github.com/94peter/api-toolkit v1.0.0 h1:7Uto6jlNHzclOm6Ds1AACRc6hALZNY41PJ/gFrGfuxo=
+github.com/94peter/api-toolkit v1.0.0/go.mod h1:sh1265u4Z2/Q6M2fNE0v/Pm7MHzB9Z9pyWZxzjVSV1U=
+github.com/94peter/cache v1.0.0 h1:hoNY+MYgQ3b1fF49fi4ACmsECVvthK/cRgCiXm5ANPo=
+github.com/94peter/cache v1.0.0/go.mod h1:ZQK3I7JRnqSkrR0XLZo6tyEa613rw3rTVdZ9kz/W4R4=
+github.com/94peter/di v1.0.0 h1:VviR++niaPF1/2L1rray3nSVfz58haR//l8DRSEtj+A=
+github.com/94peter/di v1.0.0/go.mod h1:jBw8DszzEVMiTzXNMFPwU0LtMDoPpoivfIWhFORJG6o=
+github.com/94peter/log v1.0.1 h1:NVSr/rwxE4nMab2LCizUUM0fuMxe03i4L9tvYnCL/uM=
+github.com/94peter/log v1.0.1/go.mod h1:m1o6Rv8RXqDex0cfplDLMdJ3EGAPUDmJE8983jOtpG8=
+github.com/94peter/morm v1.0.0 h1:Xp6UreKlcUjJuayq+P9xU+2OEiH2I3yICzuul5bnCns=
+github.com/94peter/morm v1.0.0/go.mod h1:m8/S0P6qsNFmTWOK2sqSjYZuVucfGccG8ayiVjG1fZ8=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869 h1:DDGfHa7BWjL4YnC6+E63dPcxHo2sUxDIu8g3QgEJdRY=

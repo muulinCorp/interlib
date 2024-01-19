@@ -2,20 +2,12 @@ module github.com/muulinCorp/interlib
 
 go 1.19
 
-replace github.com/94peter/di => ../../94peter/di
-
-replace github.com/94peter/api-toolkit => ../../94peter/api-toolkit
-
-replace github.com/94peter/cache => ../../94peter/cache
-
-replace github.com/94peter/log => ../../94peter/log
-
 require (
-	github.com/94peter/api-toolkit v0.0.0-20240115013617-8e35567b881b
-	github.com/94peter/cache v0.0.0-00010101000000-000000000000
-	github.com/94peter/di v0.0.0-00010101000000-000000000000
-	github.com/94peter/log v0.0.0-00010101000000-000000000000
-	github.com/94peter/morm v0.0.0-20240112023437-120a84367e67
+	github.com/94peter/api-toolkit v1.0.0
+	github.com/94peter/cache v1.0.0
+	github.com/94peter/di v1.0.0
+	github.com/94peter/log v1.0.1
+	github.com/94peter/morm v1.0.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.3.0
 	github.com/pkg/errors v0.9.1
