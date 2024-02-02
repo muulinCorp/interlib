@@ -108,7 +108,6 @@ func NewInterConfInterceptor(address string, di dbMidDI) (coreInterceptor.Interc
 type interConfInterceptor struct {
 	confSDK   client.ConfigurationClient
 	di        dbMidDI
-	service   string
 	confCache map[string]*cacheData
 }
 
@@ -146,7 +145,7 @@ func (ri *interConfInterceptor) StreamServerInterceptor() grpc.StreamServerInter
 			return status.Error(codes.InvalidArgument, "can not get di")
 		}
 
-		rsrc, err := getContextWitchRsrc(ctx, di, ri.service)
+		rsrc, err := getContextWitchRsrc(ctx, di, di.GetService())
 		if err != nil {
 			return err
 		}
