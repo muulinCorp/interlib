@@ -19,6 +19,7 @@ message EquipValueReq {
   uint32 lastestTime = 5;
   string onlineState = 6;
   uint32 nowTime = 7;
+  uint32 uploadDuration = 8;
 }
 
 message Frequency {

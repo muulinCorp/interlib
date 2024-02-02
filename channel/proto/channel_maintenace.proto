@@ -28,7 +28,7 @@ message EquipInfoProject {
 message EquipInfoSensor {
 	string id = 1;
 	string display = 2;
-  uint32 deviceIndex = 3;
+  string dataSourceId = 3;
   uint32 deviceNo = 4;
   uint32 address = 5;
   string unit =6;
