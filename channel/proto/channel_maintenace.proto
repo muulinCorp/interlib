@@ -72,15 +72,16 @@ message MaintenanceEventReq {
     Obj project_obj = 1;
     Obj equip_obj = 2;
     Obj sensor_obj = 3;
-    TypeOfMaintenance type = 4;
-    string other_desc = 5;
-    StateOfMaintenance state = 6;
-    string reporter = 7;
-    MaintenanceInfo create_info = 8;
-    MaintenanceInfo arrival_info = 9;
-    MaintenanceInfo complete_info = 10;
-    bool is_mistake = 11;
-    string description = 12;
+    string id = 4;
+    TypeOfMaintenance type = 5;
+    string other_desc = 6;
+    StateOfMaintenance state = 7;
+    string reporter = 8;
+    MaintenanceInfo create_info = 9;
+    MaintenanceInfo arrival_info = 10;
+    MaintenanceInfo complete_info = 11;
+    bool is_mistake = 12;
+    string description = 13;
 }
 
 service MaintenaceService {
