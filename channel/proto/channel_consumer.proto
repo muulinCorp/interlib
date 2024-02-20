@@ -11,7 +11,7 @@ enum ValueType {
 }
 
 
-message EquipValueReq {
+message DataSourceValueReq {
   string mac = 1;
   uint32 virtualId = 2;
   ValueType type = 3;
@@ -76,7 +76,11 @@ message WarningCheckingReq {
 
 service ComsumerService {
   // 更新設備即時數據
-  rpc EquipRawdata(EquipValueReq) returns (google.protobuf.Empty) {};
+  rpc DataSourceRawdata(DataSourceValueReq) returns (google.protobuf.Empty) {};
   // 預警檢查
   rpc WarningChecking(WarningCheckingReq) returns (google.protobuf.Empty) {};
+  // 更新控制數據
+  rpc DataSourceRealtime(DataSourceValueReq) returns (google.protobuf.Empty) {};
+  // 資料備份
+  rpc DataSourceBackup(DataSourceValueReq) returns (google.protobuf.Empty) {};
 }

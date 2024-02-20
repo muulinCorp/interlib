@@ -24,9 +24,13 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ComsumerServiceClient interface {
 	// 更新設備即時數據
-	EquipRawdata(ctx context.Context, in *EquipValueReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DataSourceRawdata(ctx context.Context, in *DataSourceValueReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// 預警檢查
 	WarningChecking(ctx context.Context, in *WarningCheckingReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// 更新控制數據
+	DataSourceRealtime(ctx context.Context, in *DataSourceValueReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// 資料備份
+	DataSourceBackup(ctx context.Context, in *DataSourceValueReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type comsumerServiceClient struct {
@@ -37,9 +41,9 @@ func NewComsumerServiceClient(cc grpc.ClientConnInterface) ComsumerServiceClient
 	return &comsumerServiceClient{cc}
 }
 
-func (c *comsumerServiceClient) EquipRawdata(ctx context.Context, in *EquipValueReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *comsumerServiceClient) DataSourceRawdata(ctx context.Context, in *DataSourceValueReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/channel.ComsumerService/EquipRawdata", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/channel.ComsumerService/DataSourceRawdata", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -55,14 +59,36 @@ func (c *comsumerServiceClient) WarningChecking(ctx context.Context, in *Warning
 	return out, nil
 }
 
+func (c *comsumerServiceClient) DataSourceRealtime(ctx context.Context, in *DataSourceValueReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/channel.ComsumerService/DataSourceRealtime", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *comsumerServiceClient) DataSourceBackup(ctx context.Context, in *DataSourceValueReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/channel.ComsumerService/DataSourceBackup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ComsumerServiceServer is the server API for ComsumerService service.
 // All implementations must embed UnimplementedComsumerServiceServer
 // for forward compatibility
 type ComsumerServiceServer interface {
 	// 更新設備即時數據
-	EquipRawdata(context.Context, *EquipValueReq) (*emptypb.Empty, error)
+	DataSourceRawdata(context.Context, *DataSourceValueReq) (*emptypb.Empty, error)
 	// 預警檢查
 	WarningChecking(context.Context, *WarningCheckingReq) (*emptypb.Empty, error)
+	// 更新控制數據
+	DataSourceRealtime(context.Context, *DataSourceValueReq) (*emptypb.Empty, error)
+	// 資料備份
+	DataSourceBackup(context.Context, *DataSourceValueReq) (*emptypb.Empty, error)
 	mustEmbedUnimplementedComsumerServiceServer()
 }
 
@@ -70,11 +96,17 @@ type ComsumerServiceServer interface {
 type UnimplementedComsumerServiceServer struct {
 }
 
-func (UnimplementedComsumerServiceServer) EquipRawdata(context.Context, *EquipValueReq) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method EquipRawdata not implemented")
+func (UnimplementedComsumerServiceServer) DataSourceRawdata(context.Context, *DataSourceValueReq) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DataSourceRawdata not implemented")
 }
 func (UnimplementedComsumerServiceServer) WarningChecking(context.Context, *WarningCheckingReq) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WarningChecking not implemented")
+}
+func (UnimplementedComsumerServiceServer) DataSourceRealtime(context.Context, *DataSourceValueReq) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DataSourceRealtime not implemented")
+}
+func (UnimplementedComsumerServiceServer) DataSourceBackup(context.Context, *DataSourceValueReq) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DataSourceBackup not implemented")
 }
 func (UnimplementedComsumerServiceServer) mustEmbedUnimplementedComsumerServiceServer() {}
 
@@ -89,20 +121,20 @@ func RegisterComsumerServiceServer(s grpc.ServiceRegistrar, srv ComsumerServiceS
 	s.RegisterService(&ComsumerService_ServiceDesc, srv)
 }
 
-func _ComsumerService_EquipRawdata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EquipValueReq)
+func _ComsumerService_DataSourceRawdata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DataSourceValueReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ComsumerServiceServer).EquipRawdata(ctx, in)
+		return srv.(ComsumerServiceServer).DataSourceRawdata(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/channel.ComsumerService/EquipRawdata",
+		FullMethod: "/channel.ComsumerService/DataSourceRawdata",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ComsumerServiceServer).EquipRawdata(ctx, req.(*EquipValueReq))
+		return srv.(ComsumerServiceServer).DataSourceRawdata(ctx, req.(*DataSourceValueReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -125,6 +157,42 @@ func _ComsumerService_WarningChecking_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ComsumerService_DataSourceRealtime_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DataSourceValueReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComsumerServiceServer).DataSourceRealtime(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/channel.ComsumerService/DataSourceRealtime",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComsumerServiceServer).DataSourceRealtime(ctx, req.(*DataSourceValueReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ComsumerService_DataSourceBackup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DataSourceValueReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComsumerServiceServer).DataSourceBackup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/channel.ComsumerService/DataSourceBackup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComsumerServiceServer).DataSourceBackup(ctx, req.(*DataSourceValueReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ComsumerService_ServiceDesc is the grpc.ServiceDesc for ComsumerService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -133,12 +201,20 @@ var ComsumerService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ComsumerServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "EquipRawdata",
-			Handler:    _ComsumerService_EquipRawdata_Handler,
+			MethodName: "DataSourceRawdata",
+			Handler:    _ComsumerService_DataSourceRawdata_Handler,
 		},
 		{
 			MethodName: "WarningChecking",
 			Handler:    _ComsumerService_WarningChecking_Handler,
+		},
+		{
+			MethodName: "DataSourceRealtime",
+			Handler:    _ComsumerService_DataSourceRealtime_Handler,
+		},
+		{
+			MethodName: "DataSourceBackup",
+			Handler:    _ComsumerService_DataSourceBackup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
