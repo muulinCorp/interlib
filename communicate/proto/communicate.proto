@@ -9,7 +9,27 @@ message RemoteRequest {
   map<string, double> values = 1;
 }
 
+message GetSensorsRequest {
+  repeated string name = 1;
+}
+
+message GetSensorsResponse {
+  message Sensor {
+    string name = 1;
+    double value = 2;
+    bool is_conn_err = 3;
+    string error = 4;
+    string error_detail = 5;
+    bool isFilter =6;
+    repeated double value_list = 7;
+    bytes data = 8;
+  }
+  repeated Sensor sensors = 1;
+}
+
 service CommunicateService {
   // remote
   rpc Remote(RemoteRequest) returns (google.protobuf.Empty) {};
+  // get sensors infor
+  rpc GetSensors(GetSensorsRequest) returns (GetSensorsResponse) {};
 }
