@@ -1,6 +1,6 @@
 module github.com/muulinCorp/interlib
 
-go 1.19
+go 1.21
 
 require (
 	github.com/94peter/api-toolkit v1.0.0
