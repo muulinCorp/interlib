@@ -25,6 +25,7 @@ message GetSensorsResponse {
     bytes data = 8;
   }
   repeated Sensor sensors = 1;
+  repeated string missing_fields = 2;
 }
 
 service CommunicateService {
