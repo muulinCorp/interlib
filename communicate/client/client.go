@@ -10,6 +10,7 @@ import (
 
 type CommunicateClient interface {
 	Remote(ctx context.Context, data map[string]float64) error
+	GetSensors(ctx context.Context, names []string) (*pb.GetSensorsResponse, error)
 }
 
 func New(address string) CommunicateClient {
@@ -34,4 +35,15 @@ func (impl *clientImpl) Remote(ctx context.Context, data map[string]float64) err
 		return errors.Wrap(err, "remote error")
 	}
 	return nil
+}
+
+func (impl *clientImpl) GetSensors(ctx context.Context, names []string) (*pb.GetSensorsResponse, error) {
+	grpc, err := core.NewMyGrpc(impl.address)
+	if err != nil {
+		return nil, errors.Wrap(err, "new grpc fail")
+	}
+	defer grpc.Close()
+	clt := pb.NewCommunicateServiceClient(grpc)
+
+	return clt.GetSensors(ctx, &pb.GetSensorsRequest{Name: names})
 }
