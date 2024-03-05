@@ -25,6 +25,8 @@ const _ = grpc.SupportPackageIsVersion7
 type DeviceCronServiceClient interface {
 	// 發佈設備資料
 	PublishDeviceData(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Response, error)
+	// 設備控制欄位數值更新
+	UpdateDeviceRealtime(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Response, error)
 }
 
 type deviceCronServiceClient struct {
@@ -44,12 +46,23 @@ func (c *deviceCronServiceClient) PublishDeviceData(ctx context.Context, in *emp
 	return out, nil
 }
 
+func (c *deviceCronServiceClient) UpdateDeviceRealtime(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/device.DeviceCronService/UpdateDeviceRealtime", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DeviceCronServiceServer is the server API for DeviceCronService service.
 // All implementations must embed UnimplementedDeviceCronServiceServer
 // for forward compatibility
 type DeviceCronServiceServer interface {
 	// 發佈設備資料
 	PublishDeviceData(context.Context, *emptypb.Empty) (*Response, error)
+	// 設備控制欄位數值更新
+	UpdateDeviceRealtime(context.Context, *emptypb.Empty) (*Response, error)
 	mustEmbedUnimplementedDeviceCronServiceServer()
 }
 
@@ -59,6 +72,9 @@ type UnimplementedDeviceCronServiceServer struct {
 
 func (UnimplementedDeviceCronServiceServer) PublishDeviceData(context.Context, *emptypb.Empty) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PublishDeviceData not implemented")
+}
+func (UnimplementedDeviceCronServiceServer) UpdateDeviceRealtime(context.Context, *emptypb.Empty) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateDeviceRealtime not implemented")
 }
 func (UnimplementedDeviceCronServiceServer) mustEmbedUnimplementedDeviceCronServiceServer() {}
 
@@ -91,6 +107,24 @@ func _DeviceCronService_PublishDeviceData_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DeviceCronService_UpdateDeviceRealtime_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DeviceCronServiceServer).UpdateDeviceRealtime(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/device.DeviceCronService/UpdateDeviceRealtime",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DeviceCronServiceServer).UpdateDeviceRealtime(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DeviceCronService_ServiceDesc is the grpc.ServiceDesc for DeviceCronService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -101,6 +135,10 @@ var DeviceCronService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PublishDeviceData",
 			Handler:    _DeviceCronService_PublishDeviceData_Handler,
+		},
+		{
+			MethodName: "UpdateDeviceRealtime",
+			Handler:    _DeviceCronService_UpdateDeviceRealtime_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

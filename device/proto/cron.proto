@@ -13,4 +13,7 @@ service DeviceCronService {
   
   // 發佈設備資料
   rpc PublishDeviceData(google.protobuf.Empty) returns (Response) {};
+
+  // 設備控制欄位數值更新
+  rpc UpdateDeviceRealtime(google.protobuf.Empty) returns (Response) {};
 }
