@@ -11,6 +11,13 @@ type Interceptor interface {
 	UnaryServerInterceptor() grpc.UnaryServerInterceptor
 }
 
+func NewServerStream(ctx context.Context, stream grpc.ServerStream) grpc.ServerStream {
+	return &serverStream{
+		ServerStream: stream,
+		ctx:          stream.Context(),
+	}
+}
+
 type serverStream struct {
 	grpc.ServerStream
 	ctx context.Context
