@@ -10,6 +10,7 @@ require (
 	github.com/94peter/morm v1.0.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.3.0
+	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/pkg/errors v0.9.1
 	golang.org/x/net v0.17.0
 	google.golang.org/grpc v1.56.2
