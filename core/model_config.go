@@ -68,7 +68,7 @@ func NewFixModelCfgGinMid[T ModelCfg](cfg T) ModelCfgMgr {
 func (m *modelCfgMgr[T]) Handler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		data := m.cfg.Copy()
-		servDi := di.GetDiFromGin(c)
+		servDi := di.GetDiFromGin[di.DI](c)
 		if servDi == nil {
 			m.GinApiErrorHandler(c, pkgErr.New("can not get di"))
 			c.Abort()
@@ -99,7 +99,7 @@ func (m *modelCfgMgr[T]) StreamServerInterceptor() grpc.StreamServerInterceptor 
 		}
 		ctx := ss.Context()
 		data := m.cfg.Copy()
-		servDi := di.GetDiFromCtx(ctx)
+		servDi := di.GetDiFromCtx[di.DI](ctx)
 		if servDi == nil {
 			return pkgErr.New("can not get di")
 		}
@@ -124,7 +124,7 @@ func (m *modelCfgMgr[T]) StreamServerInterceptor() grpc.StreamServerInterceptor 
 func (m *modelCfgMgr[T]) UnaryServerInterceptor() grpc.UnaryServerInterceptor {
 	return grpc.UnaryServerInterceptor(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 		data := m.cfg.Copy()
-		servDi := di.GetDiFromCtx(ctx)
+		servDi := di.GetDiFromCtx[di.DI](ctx)
 		if servDi == nil {
 			return nil, pkgErr.New("can not get di")
 		}

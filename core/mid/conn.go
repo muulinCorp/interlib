@@ -33,7 +33,7 @@ type connMiddle struct {
 
 func (m *connMiddle) Handler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		servDi := di.GetDiFromGin(c)
+		servDi := di.GetDiFromGin[ConnMidDI](c)
 		if servDi == nil {
 			m.GinApiErrorHandler(c, pkgErr.New("can not get di"))
 			c.Abort()
