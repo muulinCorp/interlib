@@ -15,7 +15,7 @@ func (m TestModel) Close() error {
 	return nil
 }
 
-func (m TestModel) Init(ctx context.Context, uuid string, di di.DI) error {
+func (m TestModel) Init(uuid string, di di.DI) error {
 	return nil
 }
 

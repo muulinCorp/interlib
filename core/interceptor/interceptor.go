@@ -11,6 +11,28 @@ type Interceptor interface {
 	UnaryServerInterceptor() grpc.UnaryServerInterceptor
 }
 
+func NewSimpleInterceptor(
+	stream grpc.StreamServerInterceptor,
+	unary grpc.UnaryServerInterceptor) Interceptor {
+	return &simpleInterceptor{
+		stream: stream,
+		unary:  unary,
+	}
+}
+
+type simpleInterceptor struct {
+	stream grpc.StreamServerInterceptor
+	unary  grpc.UnaryServerInterceptor
+}
+
+func (i *simpleInterceptor) StreamServerInterceptor() grpc.StreamServerInterceptor {
+	return i.stream
+}
+
+func (i *simpleInterceptor) UnaryServerInterceptor() grpc.UnaryServerInterceptor {
+	return i.unary
+}
+
 func NewServerStream(ctx context.Context, stream grpc.ServerStream) grpc.ServerStream {
 	return &serverStream{
 		ServerStream: stream,
