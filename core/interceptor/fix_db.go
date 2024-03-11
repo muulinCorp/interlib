@@ -28,6 +28,9 @@ type fixDBInterceptor struct {
 
 func (i *fixDBInterceptor) StreamServerInterceptor() grpc.StreamServerInterceptor {
 	return grpc.StreamServerInterceptor(func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
+		if IsReflectMethod(info.FullMethod) {
+			return handler(srv, ss)
+		}
 		uuid := uuid.New().String()
 		l, err := i.NewLogger(i.GetService(), uuid)
 		if err != nil {

@@ -122,7 +122,7 @@ func getChannel(md metadata.MD) string {
 
 func (ri *interConfInterceptor) StreamServerInterceptor() grpc.StreamServerInterceptor {
 	return grpc.StreamServerInterceptor(func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
-		if isReflectMethod(info.FullMethod) {
+		if coreInterceptor.IsReflectMethod(info.FullMethod) {
 			return handler(srv, ss)
 		}
 		ctx := ss.Context()
@@ -206,8 +206,4 @@ func (r *rsrc) setContext(ctx context.Context) context.Context {
 	ctx = log.SetByCtx(ctx, r.l)
 	ctx = di.SetDiToCtx(ctx, r.di)
 	return ctx
-}
-
-func isReflectMethod(m string) bool {
-	return m == "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo"
 }
