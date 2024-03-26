@@ -10,9 +10,9 @@ import (
 )
 
 type MaintenaceGrpcClient interface {
-	GetEquipInfo(equipId string) (*pb.EquipInfoResponse, error)
-	GetEquipIdsByAccount(acc string) ([]string, error)
-	EmitEvent(*pb.MaintenanceEventReq) error
+	GetEquipInfo(ctx context.Context, equipId string) (*pb.EquipInfoResponse, error)
+	GetEquipIdsByAccount(ctx context.Context, acc string) ([]string, error)
+	EmitEvent(context.Context, *pb.MaintenanceEventReq) error
 }
 
 func NewMaintenaceGrpcClient(address string, channel string) MaintenaceGrpcClient {
@@ -27,11 +27,11 @@ type maintenaceGrpcClientImpl struct {
 	address string
 }
 
-func (c *maintenaceGrpcClientImpl) GetEquipInfo(equipId string) (*pb.EquipInfoResponse, error) {
+func (c *maintenaceGrpcClientImpl) GetEquipInfo(ctx context.Context, equipId string) (*pb.EquipInfoResponse, error) {
 	var err error
 	md := metadata.New(map[string]string{"X-Channel": c.channel})
-	ctx := metadata.NewOutgoingContext(context.Background(), md)
-	grpcClt, err := core.NewMyGrpc(c.address)
+	ctx = metadata.NewOutgoingContext(ctx, md)
+	grpcClt, err := core.NewMyGrpc(ctx, c.address)
 	if err != nil {
 		return nil, err
 	}
@@ -47,11 +47,11 @@ func (c *maintenaceGrpcClientImpl) GetEquipInfo(equipId string) (*pb.EquipInfoRe
 	return resp, nil
 }
 
-func (c *maintenaceGrpcClientImpl) GetEquipIdsByAccount(acc string) ([]string, error) {
+func (c *maintenaceGrpcClientImpl) GetEquipIdsByAccount(ctx context.Context, acc string) ([]string, error) {
 	var err error
 	md := metadata.New(map[string]string{"X-Channel": c.channel})
-	ctx := metadata.NewOutgoingContext(context.Background(), md)
-	grpcClt, err := core.NewMyGrpc(c.address)
+	ctx = metadata.NewOutgoingContext(ctx, md)
+	grpcClt, err := core.NewMyGrpc(ctx, c.address)
 	if err != nil {
 		return nil, err
 	}
@@ -67,11 +67,11 @@ func (c *maintenaceGrpcClientImpl) GetEquipIdsByAccount(acc string) ([]string, e
 	return resp.EquipIds, nil
 }
 
-func (c *maintenaceGrpcClientImpl) EmitEvent(req *pb.MaintenanceEventReq) error {
+func (c *maintenaceGrpcClientImpl) EmitEvent(ctx context.Context, req *pb.MaintenanceEventReq) error {
 	var err error
 	md := metadata.New(map[string]string{"X-Channel": c.channel})
-	ctx := metadata.NewOutgoingContext(context.Background(), md)
-	grpcClt, err := core.NewMyGrpc(c.address)
+	ctx = metadata.NewOutgoingContext(ctx, md)
+	grpcClt, err := core.NewMyGrpc(ctx, c.address)
 	if err != nil {
 		return err
 	}

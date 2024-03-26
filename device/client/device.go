@@ -11,9 +11,9 @@ import (
 )
 
 type DeviceClient interface {
-	GetVirtualId(mac, gwid string) (uint8, error)
-	SetTime(mac string, virtualId uint8) error
-	Remote(mac string, virtualId uint8, deviceNo uint8, address uint8, val float64) *pb.RemoteResponse
+	GetVirtualId(ctx context.Context, mac, gwid string) (uint8, error)
+	SetTime(ctx context.Context, mac string, virtualId uint8) error
+	Remote(ctx context.Context, mac string, virtualId uint8, deviceNo uint8, address uint8, val float64) *pb.RemoteResponse
 }
 
 func NewDeviceClient(address string) DeviceClient {
@@ -26,10 +26,10 @@ type deviceSdkImpl struct {
 	address string
 }
 
-func (grpc *deviceSdkImpl) GetVirtualId(mac, gwid string) (uint8, error) {
+func (grpc *deviceSdkImpl) GetVirtualId(ctx context.Context, mac, gwid string) (uint8, error) {
 	var err error
 
-	grpcClt, err := core.NewMyGrpc(grpc.address)
+	grpcClt, err := core.NewMyGrpc(ctx, grpc.address)
 	if err != nil {
 		return 0, err
 	}
@@ -45,10 +45,10 @@ func (grpc *deviceSdkImpl) GetVirtualId(mac, gwid string) (uint8, error) {
 	return uint8(resp.VirtualID), nil
 }
 
-func (grpc *deviceSdkImpl) SetTime(mac string, virtualId uint8) error {
+func (grpc *deviceSdkImpl) SetTime(ctx context.Context, mac string, virtualId uint8) error {
 	var err error
 
-	grpcClt, err := core.NewMyGrpc(grpc.address)
+	grpcClt, err := core.NewMyGrpc(ctx, grpc.address)
 	if err != nil {
 		return err
 	}
@@ -67,10 +67,10 @@ func (grpc *deviceSdkImpl) SetTime(mac string, virtualId uint8) error {
 	return nil
 }
 
-func (grpc *deviceSdkImpl) Remote(mac string, virtualId uint8, deviceNo uint8, address uint8, val float64) *pb.RemoteResponse {
+func (grpc *deviceSdkImpl) Remote(ctx context.Context, mac string, virtualId uint8, deviceNo uint8, address uint8, val float64) *pb.RemoteResponse {
 	var err error
 
-	grpcClt, err := core.NewMyGrpc(grpc.address)
+	grpcClt, err := core.NewMyGrpc(ctx, grpc.address)
 	if err != nil {
 		return &pb.RemoteResponse{
 			StatusCode: http.StatusInternalServerError,

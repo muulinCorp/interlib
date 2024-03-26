@@ -18,10 +18,10 @@ type BackupRawdataStreamClient interface {
 	StopBackupRawdataStream() error
 }
 
-func NewBackupRawdataStreamClient(address string) BackupRawdataStreamClient {
+func NewBackupRawdataStreamClient(ctx context.Context, address string) BackupRawdataStreamClient {
 
 	return &backupRawdataStreamSdkImpl{
-		AutoReConn: core.NewAutoReconn(address),
+		AutoReConn: core.NewAutoReconn(ctx, address),
 	}
 }
 

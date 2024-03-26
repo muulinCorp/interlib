@@ -19,9 +19,9 @@ type MigrationEquipLogStreamClient interface {
 	StopMigrationStream() error
 }
 
-func NewMigrationEquipLogStreamClient(address string) MigrationEquipLogStreamClient {
+func NewMigrationEquipLogStreamClient(ctx context.Context, address string) MigrationEquipLogStreamClient {
 	return &migrationEquipLogStreamImpl{
-		AutoReConn: core.NewAutoReconn(address),
+		AutoReConn: core.NewAutoReconn(ctx, address),
 	}
 }
 

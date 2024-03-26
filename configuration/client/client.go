@@ -21,7 +21,7 @@ type clientImpl struct {
 }
 
 func (impl *clientImpl) GetChannelConf(ctx context.Context, req *pb.GetConfRequest) ([]byte, error) {
-	grpc, err := core.NewMyGrpc(impl.address)
+	grpc, err := core.NewMyGrpc(ctx, impl.address)
 	if err != nil {
 		return nil, err
 	}

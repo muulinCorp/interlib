@@ -19,9 +19,9 @@ type UpdateRealtimeStreamClient interface {
 	StopUpdateRealtimeStream() error
 }
 
-func NewUpdateRealtimeStreamClient(address string) UpdateRealtimeStreamClient {
+func NewUpdateRealtimeStreamClient(ctx context.Context, address string) UpdateRealtimeStreamClient {
 	return &updateRealtimeStreamSdkImpl{
-		AutoReConn: core.NewAutoReconn(address),
+		AutoReConn: core.NewAutoReconn(ctx, address),
 	}
 }
 

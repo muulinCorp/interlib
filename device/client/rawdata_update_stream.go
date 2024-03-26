@@ -18,9 +18,9 @@ type UpdateRawdataStreamClient interface {
 	StopUpdateRawdataStream() error
 }
 
-func NewUpdateRawdataStreamClient(address string) UpdateRawdataStreamClient {
+func NewUpdateRawdataStreamClient(ctx context.Context, address string) UpdateRawdataStreamClient {
 	return &updateRawdataStreamSdkImpl{
-		AutoReConn: core.NewAutoReconn(address),
+		AutoReConn: core.NewAutoReconn(ctx, address),
 	}
 }
 
