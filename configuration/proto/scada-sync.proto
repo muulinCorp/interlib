@@ -1,0 +1,58 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "configuration/pb";
+package configuration;
+
+import "google/protobuf/empty.proto";
+
+message SyncConfigReq {
+    string configToken = 1;
+    string version = 2;
+}
+
+message SyncConfigResp {
+  oneof msg {
+    UpdateMsg update_msg = 1;
+    DebugMsg  debug_msg = 2;
+  }
+
+  message UpdateMsg {
+    string version = 1;
+    string url = 2;
+    string accessToken = 3;
+  }
+
+  message DebugMsg {
+    bytes configBinaryData = 1;
+  }
+}
+
+message ReportProgressReq {
+  ConfigSyncMethod state = 1;
+
+  enum ConfigSyncMethod {
+    ConfigFileReady = 0;
+    Restarting = 1;
+    RestartDone = 2;
+  }
+}
+
+message DebugResultReq {
+  map<string,ValueDetail> values = 1;
+
+  message ValueDetail {
+    double value = 1;
+    string err_msg = 2;
+  }
+}
+
+service ScadaSyncService {
+    // 建立雙向stream連綫
+    rpc SyncConfigStream(SyncConfigReq) returns (stream SyncConfigResp) {};
+    
+    // 告知sync進度
+    rpc ReportProgress(ReportProgressReq) returns (google.protobuf.Empty) {};
+
+    // 從comm回傳log
+    rpc CommDebugLogReturn(DebugResultReq) returns(google.protobuf.Empty) {};
+  }

@@ -25,8 +25,10 @@ const _ = grpc.SupportPackageIsVersion7
 type CommunicateServiceClient interface {
 	// remote
 	Remote(ctx context.Context, in *RemoteRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// get sensors infor
+	// get sensors info
 	GetSensors(ctx context.Context, in *GetSensorsRequest, opts ...grpc.CallOption) (*GetSensorsResponse, error)
+	// 對單一config做一次性debug
+	ConfigDebug(ctx context.Context, in *ConfigDebugRequest, opts ...grpc.CallOption) (*ConfigDebugResponse, error)
 }
 
 type communicateServiceClient struct {
@@ -55,14 +57,25 @@ func (c *communicateServiceClient) GetSensors(ctx context.Context, in *GetSensor
 	return out, nil
 }
 
+func (c *communicateServiceClient) ConfigDebug(ctx context.Context, in *ConfigDebugRequest, opts ...grpc.CallOption) (*ConfigDebugResponse, error) {
+	out := new(ConfigDebugResponse)
+	err := c.cc.Invoke(ctx, "/communicate.CommunicateService/ConfigDebug", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CommunicateServiceServer is the server API for CommunicateService service.
 // All implementations must embed UnimplementedCommunicateServiceServer
 // for forward compatibility
 type CommunicateServiceServer interface {
 	// remote
 	Remote(context.Context, *RemoteRequest) (*emptypb.Empty, error)
-	// get sensors infor
+	// get sensors info
 	GetSensors(context.Context, *GetSensorsRequest) (*GetSensorsResponse, error)
+	// 對單一config做一次性debug
+	ConfigDebug(context.Context, *ConfigDebugRequest) (*ConfigDebugResponse, error)
 	mustEmbedUnimplementedCommunicateServiceServer()
 }
 
@@ -75,6 +88,9 @@ func (UnimplementedCommunicateServiceServer) Remote(context.Context, *RemoteRequ
 }
 func (UnimplementedCommunicateServiceServer) GetSensors(context.Context, *GetSensorsRequest) (*GetSensorsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSensors not implemented")
+}
+func (UnimplementedCommunicateServiceServer) ConfigDebug(context.Context, *ConfigDebugRequest) (*ConfigDebugResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfigDebug not implemented")
 }
 func (UnimplementedCommunicateServiceServer) mustEmbedUnimplementedCommunicateServiceServer() {}
 
@@ -125,6 +141,24 @@ func _CommunicateService_GetSensors_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CommunicateService_ConfigDebug_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConfigDebugRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommunicateServiceServer).ConfigDebug(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/communicate.CommunicateService/ConfigDebug",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommunicateServiceServer).ConfigDebug(ctx, req.(*ConfigDebugRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CommunicateService_ServiceDesc is the grpc.ServiceDesc for CommunicateService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -139,6 +173,10 @@ var CommunicateService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSensors",
 			Handler:    _CommunicateService_GetSensors_Handler,
+		},
+		{
+			MethodName: "ConfigDebug",
+			Handler:    _CommunicateService_ConfigDebug_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
