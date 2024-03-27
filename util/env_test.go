@@ -67,3 +67,17 @@ func TestGetFromEnv(t *testing.T) {
 		t.Error("Expected error for unsupported type environmental variable")
 	}
 }
+
+func TestGetFromEnvOpt(t *testing.T) {
+	type testStruct struct {
+		StringField string `env:"STRING_ENV_VAR"`
+		OptionField int    `env:"INT_ENV_VAR,opt"`
+	}
+
+	os.Setenv("STRING_ENV_VAR", "string")
+	// Test for missing environmental variable
+	err := util.GetFromEnv(&testStruct{})
+	if err != nil {
+		t.Error("Expected no error for missing environmental variable")
+	}
+}

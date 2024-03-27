@@ -2,11 +2,15 @@ package util
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"reflect"
 	"strconv"
+	"strings"
 	"time"
 )
+
+const _OPTIONAL = "opt"
 
 func GetFromEnv(obj any) error {
 	// check obj is pointer
@@ -23,8 +27,20 @@ func GetFromEnv(obj any) error {
 		if envTag == "" {
 			continue
 		}
+		var isOptional bool
+		if strings.Contains(envTag, ",") {
+			envTagSlice := strings.Split(envTag, ",")
+			envTag = envTagSlice[0]
+			isOptional = (strings.ToLower(envTagSlice[1]) == _OPTIONAL)
+		}
+		if isOptional {
+			fmt.Println("optional", envTag)
+		}
 
 		envValue := os.Getenv(envTag)
+		if envValue == "" && isOptional {
+			continue
+		}
 		if envValue == "" {
 			return errors.New("environmental variable " + envTag + " must not be blank")
 		}
