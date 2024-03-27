@@ -28,9 +28,24 @@ message GetSensorsResponse {
   repeated string missing_fields = 2;
 }
 
+message ConfigDebugRequest {
+  bytes configBinaryData = 1;
+}
+
+message ConfigDebugResponse {
+  map<string,ValueDetail> values = 1;
+
+  message ValueDetail {
+    double value = 1;
+    string err_msg = 2;
+  }
+}
+
 service CommunicateService {
   // remote
   rpc Remote(RemoteRequest) returns (google.protobuf.Empty) {};
-  // get sensors infor
+  // get sensors info
   rpc GetSensors(GetSensorsRequest) returns (GetSensorsResponse) {};
+  // 對單一config做一次性debug
+  rpc ConfigDebug(ConfigDebugRequest) returns (ConfigDebugResponse) {};
 }

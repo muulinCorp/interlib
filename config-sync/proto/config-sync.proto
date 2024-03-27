@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option go_package = "config-sync/pb";
+package config_sync;
+
+import "google/protobuf/empty.proto";
+
+service ConfigSyncService {
+    // 通知服務已完成重新啟動
+    rpc ServiceStarted(ServiceStartedRequest) returns (google.protobuf.Empty) {};
+
+    // 取得目前版本的config檔
+    rpc GetConfigFiles(GetConfigFilesReq) returns (stream GetConfigFilesResp) {};
+}
+
+message ServiceStartedRequest {
+    string service = 1;
+}
+
+message GetConfigFilesReq {
+    string service = 1;
+}
+
+message GetConfigFilesResp {
+    string fileName = 1;
+    bytes data = 2;
+}
