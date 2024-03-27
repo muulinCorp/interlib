@@ -8,7 +8,7 @@ import (
 )
 
 type DeviceV2Client interface {
-	CheckState([]*pb.Device) (map[string]*pb.DeviceState, error)
+	CheckState(context.Context, []*pb.Device) (map[string]*pb.DeviceState, error)
 }
 
 func NewDeviceV2Client(address string) DeviceV2Client {
@@ -21,9 +21,9 @@ type deviceV2SdkImpl struct {
 	address string
 }
 
-func (impl *deviceV2SdkImpl) CheckState(devices []*pb.Device) (map[string]*pb.DeviceState, error) {
+func (impl *deviceV2SdkImpl) CheckState(ctx context.Context, devices []*pb.Device) (map[string]*pb.DeviceState, error) {
 	var err error
-	mygrpc, err := core.NewMyGrpc(impl.address)
+	mygrpc, err := core.NewMyGrpc(ctx, impl.address)
 	if err != nil {
 		return nil, err
 	}

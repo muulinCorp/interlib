@@ -24,7 +24,7 @@ type clientImpl struct {
 }
 
 func (impl *clientImpl) Remote(ctx context.Context, data map[string]float64) error {
-	grpc, err := core.NewMyGrpc(impl.address)
+	grpc, err := core.NewMyGrpc(ctx, impl.address)
 	if err != nil {
 		return errors.Wrap(err, "new grpc fail")
 	}
@@ -38,7 +38,7 @@ func (impl *clientImpl) Remote(ctx context.Context, data map[string]float64) err
 }
 
 func (impl *clientImpl) GetSensors(ctx context.Context, names []string) (*pb.GetSensorsResponse, error) {
-	grpc, err := core.NewMyGrpc(impl.address)
+	grpc, err := core.NewMyGrpc(ctx, impl.address)
 	if err != nil {
 		return nil, errors.Wrap(err, "new grpc fail")
 	}

@@ -19,9 +19,9 @@ type GetVirtualIdStreamClient interface {
 	StopGetVirtualIdStream() error
 }
 
-func NewVirutalIdStreamClient(address string) GetVirtualIdStreamClient {
+func NewVirutalIdStreamClient(ctx context.Context, address string) GetVirtualIdStreamClient {
 	return &virtualIDStream{
-		AutoReConn: core.NewAutoReconn(address),
+		AutoReConn: core.NewAutoReconn(ctx, address),
 	}
 }
 

@@ -11,6 +11,7 @@ import (
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
+	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
 )
 
@@ -21,12 +22,11 @@ type MyGrpc interface {
 	WaitUntilReady() bool
 }
 
-func NewMyGrpc(address string) (MyGrpc, error) {
+func NewMyGrpc(ctx context.Context, address string) (MyGrpc, error) {
 
-	conn, err := grpc.Dial(address,
-		grpc.WithInsecure(),
+	conn, err := grpc.DialContext(ctx, address,
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithBlock(),
-		grpc.WithTimeout(time.Second*10),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("address [%s] error: %s", address, err.Error())
@@ -64,8 +64,9 @@ func (my *myGrpcImpl) WaitUntilReady() bool {
 	return my.WaitForStateChange(ctx, connectivity.Ready)
 }
 
-func NewAutoReconn(address string) *AutoReConn {
+func NewAutoReconn(ctx context.Context, address string) *AutoReConn {
 	return &AutoReConn{
+		ctx:       ctx,
 		address:   address,
 		Ready:     make(chan bool),
 		Done:      make(chan bool),
@@ -75,6 +76,8 @@ func NewAutoReconn(address string) *AutoReConn {
 
 type AutoReConn struct {
 	MyGrpc
+
+	ctx context.Context
 
 	address string
 
@@ -86,7 +89,7 @@ type AutoReConn struct {
 type GetGrpcFunc func(myGrpc MyGrpc) error
 
 func (my *AutoReConn) Connect() (MyGrpc, error) {
-	return NewMyGrpc(my.address)
+	return NewMyGrpc(my.ctx, my.address)
 }
 
 func (my *AutoReConn) IsValid() bool {
@@ -98,16 +101,20 @@ func (my *AutoReConn) IsValid() bool {
 
 func (my *AutoReConn) Process(f GetGrpcFunc) {
 	var err error
+	ticker := time.NewTicker(time.Second)
 	for {
-		defer time.Sleep(time.Second)
-		my.MyGrpc, err = my.Connect()
-		if err != nil {
-			continue
+		select {
+		case <-my.ctx.Done():
+			return
+		case <-ticker.C:
+			my.MyGrpc, err = my.Connect()
+			if err != nil {
+				continue
+			}
+			if err = f(my.MyGrpc); err != nil {
+				continue
+			}
 		}
-		if err = f(my.MyGrpc); err != nil {
-			continue
-		}
-		break
 	}
 }
 

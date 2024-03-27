@@ -19,9 +19,9 @@ type MigrationUserStreamClient interface {
 	StopMigrationStream() error
 }
 
-func NewMigrationStreamClient(address string) MigrationUserStreamClient {
+func NewMigrationStreamClient(ctx context.Context, address string) MigrationUserStreamClient {
 	return &migrationUserStreamImpl{
-		AutoReConn: core.NewAutoReconn(address),
+		AutoReConn: core.NewAutoReconn(ctx, address),
 	}
 }
 

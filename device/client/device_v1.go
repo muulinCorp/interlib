@@ -14,14 +14,14 @@ import (
 
 type DeviceV1Client interface {
 	core.MyGrpc
-	StartCreateV1Stream() error
+	StartCreateV1Stream(context.Context) error
 	CreateV1(*pb.CreateDeviceV1Request) (*pb.CreateDeviceV1Response, error)
 	StopCreateV1Stream() error
-	CheckExist([]*pb.DeviceV1) (map[string]bool, error)
-	CheckState([]*pb.Device) (map[string]string, error)
-	GetDeviceInfo(mac, gwid string) (*pb.DeviceInfoResponse, error)
+	CheckExist(context.Context, []*pb.DeviceV1) (map[string]bool, error)
+	CheckState(context.Context, []*pb.Device) (map[string]string, error)
+	GetDeviceInfo(ctx context.Context, mac, gwid string) (*pb.DeviceInfoResponse, error)
 
-	StartRemoveStream() error
+	StartRemoveStream(context.Context) error
 	Remove(*pb.RemoveDeviceV1Request) error
 	StopRemoveStream() error
 }
@@ -41,9 +41,9 @@ type sdkV1Impl struct {
 	removeV1Stream pb.DeviceV1Service_DeleteClient
 }
 
-func (impl *sdkV1Impl) StartCreateV1Stream() error {
+func (impl *sdkV1Impl) StartCreateV1Stream(ctx context.Context) error {
 	var err error
-	impl.MyGrpc, err = core.NewMyGrpc(impl.address)
+	impl.MyGrpc, err = core.NewMyGrpc(ctx, impl.address)
 	if err != nil {
 		return err
 	}
@@ -103,9 +103,9 @@ func (grpc *sdkV1Impl) CreateV1(req *pb.CreateDeviceV1Request) (*pb.CreateDevice
 	return <-resp, <-chanErr
 }
 
-func (grpc *sdkV1Impl) CheckExist(dvices []*pb.DeviceV1) (map[string]bool, error) {
+func (grpc *sdkV1Impl) CheckExist(ctx context.Context, dvices []*pb.DeviceV1) (map[string]bool, error) {
 	var err error
-	grpc.MyGrpc, err = core.NewMyGrpc(grpc.address)
+	grpc.MyGrpc, err = core.NewMyGrpc(ctx, grpc.address)
 	if err != nil {
 		return nil, err
 	}
@@ -120,9 +120,9 @@ func (grpc *sdkV1Impl) CheckExist(dvices []*pb.DeviceV1) (map[string]bool, error
 	return resp.ExistMap, nil
 }
 
-func (grpc *sdkV1Impl) CheckState(devices []*pb.Device) (map[string]string, error) {
+func (grpc *sdkV1Impl) CheckState(ctx context.Context, devices []*pb.Device) (map[string]string, error) {
 	var err error
-	grpc.MyGrpc, err = core.NewMyGrpc(grpc.address)
+	grpc.MyGrpc, err = core.NewMyGrpc(ctx, grpc.address)
 	if err != nil {
 		return nil, err
 	}
@@ -135,9 +135,9 @@ func (grpc *sdkV1Impl) CheckState(devices []*pb.Device) (map[string]string, erro
 	return resp.StateMap, nil
 }
 
-func (grpc *sdkV1Impl) GetDeviceInfo(mac, gwid string) (*pb.DeviceInfoResponse, error) {
+func (grpc *sdkV1Impl) GetDeviceInfo(ctx context.Context, mac, gwid string) (*pb.DeviceInfoResponse, error) {
 	var err error
-	grpc.MyGrpc, err = core.NewMyGrpc(grpc.address)
+	grpc.MyGrpc, err = core.NewMyGrpc(ctx, grpc.address)
 	if err != nil {
 		return nil, err
 	}
@@ -150,9 +150,9 @@ func (grpc *sdkV1Impl) GetDeviceInfo(mac, gwid string) (*pb.DeviceInfoResponse, 
 	return resp, nil
 }
 
-func (impl *sdkV1Impl) StartRemoveStream() error {
+func (impl *sdkV1Impl) StartRemoveStream(ctx context.Context) error {
 	var err error
-	impl.MyGrpc, err = core.NewMyGrpc(impl.address)
+	impl.MyGrpc, err = core.NewMyGrpc(ctx, impl.address)
 	if err != nil {
 		return err
 	}

@@ -10,8 +10,8 @@ import (
 )
 
 type ReportGrpcClient interface {
-	CountSensorWarning(sensorIds []string) (map[string]int64, error)
-	GetSensorReportInfo(sensorIds []string) (*pb.GetSensorsReportInfoResponse, error)
+	CountSensorWarning(ctx context.Context, sensorIds []string) (map[string]int64, error)
+	GetSensorReportInfo(ctx context.Context, sensorIds []string) (*pb.GetSensorsReportInfoResponse, error)
 }
 
 func NewReportGrpcClient(address string, channel string) ReportGrpcClient {
@@ -26,11 +26,11 @@ type reportGrpcClientImpl struct {
 	address string
 }
 
-func (c *reportGrpcClientImpl) CountSensorWarning(sensorIds []string) (map[string]int64, error) {
+func (c *reportGrpcClientImpl) CountSensorWarning(ctx context.Context, sensorIds []string) (map[string]int64, error) {
 	var err error
 	md := metadata.New(map[string]string{"X-Channel": c.channel})
-	ctx := metadata.NewOutgoingContext(context.Background(), md)
-	grpcClt, err := core.NewMyGrpc(c.address)
+	ctx = metadata.NewOutgoingContext(ctx, md)
+	grpcClt, err := core.NewMyGrpc(ctx, c.address)
 	if err != nil {
 		return nil, err
 	}
@@ -46,16 +46,17 @@ func (c *reportGrpcClientImpl) CountSensorWarning(sensorIds []string) (map[strin
 	return resp.Result, nil
 }
 
-func (c *reportGrpcClientImpl) GetSensorReportInfo(sensorIds []string) (*pb.GetSensorsReportInfoResponse, error) {
+func (c *reportGrpcClientImpl) GetSensorReportInfo(ctx context.Context, sensorIds []string) (*pb.GetSensorsReportInfoResponse, error) {
 	var err error
 	md := metadata.New(map[string]string{"X-Channel": c.channel})
-	ctx := metadata.NewOutgoingContext(context.Background(), md)
-	grpcClt, err := core.NewMyGrpc(c.address)
+
+	grpcClt, err := core.NewMyGrpc(ctx, c.address)
 	if err != nil {
 		return nil, err
 	}
 	defer grpcClt.Close()
 
+	ctx = metadata.NewOutgoingContext(ctx, md)
 	clt := pb.NewReportServiceClient(grpcClt)
 	resp, err := clt.GetSensorReportInfo(ctx, &pb.SensorIdsRequest{
 		SensorIds: sensorIds,
