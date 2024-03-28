@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github.com/94peter/micro-service/grpc_tool"
+	"github.com/94peter/microservice/grpc_tool"
 	"github.com/muulinCorp/interlib/auth/pb"
 
 	"golang.org/x/net/context"

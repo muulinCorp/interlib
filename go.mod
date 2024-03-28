@@ -5,7 +5,7 @@ go 1.21.7
 require (
 	github.com/94peter/api-toolkit v1.2.1
 	github.com/94peter/log v1.0.5
-	github.com/94peter/micro-service v0.0.1-dev
+	github.com/94peter/microservice v0.0.5
 	github.com/94peter/morm v1.0.1
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.6.0

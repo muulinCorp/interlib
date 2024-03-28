@@ -5,7 +5,7 @@ import (
 
 	"github.com/muulinCorp/interlib/notify/pb"
 
-	"github.com/94peter/micro-service/grpc_tool"
+	"github.com/94peter/microservice/grpc_tool"
 )
 
 type MailClient interface {

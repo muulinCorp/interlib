@@ -5,7 +5,7 @@ import (
 
 	"github.com/muulinCorp/interlib/channel/pb"
 
-	"github.com/94peter/micro-service/grpc_tool"
+	"github.com/94peter/microservice/grpc_tool"
 	"google.golang.org/grpc/metadata"
 )
 

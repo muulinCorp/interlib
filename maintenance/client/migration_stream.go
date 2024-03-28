@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/94peter/micro-service/grpc_tool"
+	"github.com/94peter/microservice/grpc_tool"
 	"github.com/muulinCorp/interlib/maintenance/pb"
 	"google.golang.org/grpc/metadata"
 

@@ -3,8 +3,8 @@ github.com/94peter/api-toolkit v1.2.1 h1:s0CrzkBC7iMZvrhcuqFfvRWOIU77Da0KRiv16rx
 github.com/94peter/api-toolkit v1.2.1/go.mod h1:sh1265u4Z2/Q6M2fNE0v/Pm7MHzB9Z9pyWZxzjVSV1U=
 github.com/94peter/log v1.0.5 h1:x3y12WGEQOXszK2lh05ZblQsHZo+ShkF1uLMAgnAvOs=
 github.com/94peter/log v1.0.5/go.mod h1:m1o6Rv8RXqDex0cfplDLMdJ3EGAPUDmJE8983jOtpG8=
-github.com/94peter/micro-service v0.0.1-dev h1:I5vMUVsWV0JkqevIlaoxmMTsSfTWelK0gIyHEjwDXfg=
-github.com/94peter/micro-service v0.0.1-dev/go.mod h1:z+a6k8ZFFsptESrYABZPDn2wy+TKOUjpOSrOMrkwuHk=
+github.com/94peter/microservice v0.0.5 h1:GB2K5I66sFqSxtqT6EwoIjjghTfjz3vBV3M0Sl0k3Zs=
+github.com/94peter/microservice v0.0.5/go.mod h1:bTSIbapcgDZw39eQ7vDjJ4lLdTbBeRI/hAfAdFWBwlM=
 github.com/94peter/morm v1.0.1 h1:jYMu8PaN0g61Omg+y8fqrBOzr9WqGyQatknVscyFANY=
 github.com/94peter/morm v1.0.1/go.mod h1:m8/S0P6qsNFmTWOK2sqSjYZuVucfGccG8ayiVjG1fZ8=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=

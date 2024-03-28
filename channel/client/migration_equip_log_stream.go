@@ -9,7 +9,7 @@ import (
 	"github.com/muulinCorp/interlib/channel/pb"
 	"google.golang.org/grpc/metadata"
 
-	"github.com/94peter/micro-service/grpc_tool"
+	"github.com/94peter/microservice/grpc_tool"
 	"golang.org/x/net/context"
 )
 
