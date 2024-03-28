@@ -1,7 +1,7 @@
 package channel
 
 import (
-	"github.com/94peter/di"
+	"github.com/94peter/micro-service/di"
 )
 
 type DI interface {

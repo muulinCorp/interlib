@@ -3,9 +3,9 @@ package client
 import (
 	"context"
 
+	"github.com/94peter/micro-service/grpc_tool"
 	"github.com/muulinCorp/interlib/channel/pb"
 
-	"github.com/muulinCorp/interlib/core"
 	"google.golang.org/grpc/metadata"
 )
 
@@ -30,7 +30,7 @@ func (c *reportGrpcClientImpl) CountSensorWarning(ctx context.Context, sensorIds
 	var err error
 	md := metadata.New(map[string]string{"X-Channel": c.channel})
 	ctx = metadata.NewOutgoingContext(ctx, md)
-	grpcClt, err := core.NewMyGrpc(ctx, c.address)
+	grpcClt, err := grpc_tool.NewConnection(ctx, c.address)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ func (c *reportGrpcClientImpl) GetSensorReportInfo(ctx context.Context, sensorId
 	var err error
 	md := metadata.New(map[string]string{"X-Channel": c.channel})
 
-	grpcClt, err := core.NewMyGrpc(ctx, c.address)
+	grpcClt, err := grpc_tool.NewConnection(ctx, c.address)
 	if err != nil {
 		return nil, err
 	}

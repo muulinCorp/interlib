@@ -5,14 +5,14 @@ import (
 	"reflect"
 	"time"
 
+	coreInterceptor "github.com/94peter/micro-service/grpc_tool/interceptor"
 	"github.com/muulinCorp/interlib/channel"
 	"github.com/muulinCorp/interlib/configuration/client"
-	coreInterceptor "github.com/muulinCorp/interlib/core/interceptor"
 
 	"github.com/muulinCorp/interlib/configuration/pb"
 
-	"github.com/94peter/di"
 	"github.com/94peter/log"
+	"github.com/94peter/micro-service/di"
 	"github.com/94peter/morm/conn"
 	"github.com/google/uuid"
 	"google.golang.org/grpc"

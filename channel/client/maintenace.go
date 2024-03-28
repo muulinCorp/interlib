@@ -5,7 +5,7 @@ import (
 
 	"github.com/muulinCorp/interlib/channel/pb"
 
-	"github.com/muulinCorp/interlib/core"
+	"github.com/94peter/micro-service/grpc_tool"
 	"google.golang.org/grpc/metadata"
 )
 
@@ -31,7 +31,7 @@ func (c *maintenaceGrpcClientImpl) GetEquipInfo(ctx context.Context, equipId str
 	var err error
 	md := metadata.New(map[string]string{"X-Channel": c.channel})
 	ctx = metadata.NewOutgoingContext(ctx, md)
-	grpcClt, err := core.NewMyGrpc(ctx, c.address)
+	grpcClt, err := grpc_tool.NewConnection(ctx, c.address)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (c *maintenaceGrpcClientImpl) GetEquipIdsByAccount(ctx context.Context, acc
 	var err error
 	md := metadata.New(map[string]string{"X-Channel": c.channel})
 	ctx = metadata.NewOutgoingContext(ctx, md)
-	grpcClt, err := core.NewMyGrpc(ctx, c.address)
+	grpcClt, err := grpc_tool.NewConnection(ctx, c.address)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +71,7 @@ func (c *maintenaceGrpcClientImpl) EmitEvent(ctx context.Context, req *pb.Mainte
 	var err error
 	md := metadata.New(map[string]string{"X-Channel": c.channel})
 	ctx = metadata.NewOutgoingContext(ctx, md)
-	grpcClt, err := core.NewMyGrpc(ctx, c.address)
+	grpcClt, err := grpc_tool.NewConnection(ctx, c.address)
 	if err != nil {
 		return err
 	}

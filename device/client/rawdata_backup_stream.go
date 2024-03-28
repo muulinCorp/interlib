@@ -4,36 +4,37 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"time"
 
+	"github.com/94peter/micro-service/grpc_tool"
 	"github.com/muulinCorp/interlib/device/pb"
 
-	"github.com/muulinCorp/interlib/core"
 	"golang.org/x/net/context"
 )
 
 type BackupRawdataStreamClient interface {
-	core.MyGrpc
+	grpc_tool.Connection
 	StartBackupRawdataStream(resp chan *pb.Response)
 	BackupRawdata(*pb.UpdateRawdataRequest) error
 	StopBackupRawdataStream() error
 }
 
-func NewBackupRawdataStreamClient(ctx context.Context, address string) BackupRawdataStreamClient {
+func NewBackupRawdataStreamClient(address string, timeout time.Duration) BackupRawdataStreamClient {
 
 	return &backupRawdataStreamSdkImpl{
-		AutoReConn: core.NewAutoReconn(ctx, address),
+		AutoReConn: grpc_tool.NewAutoReconn(address, timeout),
 	}
 }
 
 type backupRawdataStreamSdkImpl struct {
-	*core.AutoReConn
+	*grpc_tool.AutoReConn
 
 	backupRawdataStream pb.DeviceService_BackupRawdataClient
 }
 
 func (impl *backupRawdataStreamSdkImpl) StartBackupRawdataStream(resp chan *pb.Response) {
 	var err error
-	p := func(myGrpc core.MyGrpc) error {
+	p := func(myGrpc grpc_tool.Connection) error {
 		clt := pb.NewDeviceServiceClient(impl)
 		impl.backupRawdataStream, err = clt.BackupRawdata(context.Background())
 		if err != nil {

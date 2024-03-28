@@ -4,29 +4,30 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"time"
 
+	"github.com/94peter/micro-service/grpc_tool"
 	"github.com/muulinCorp/interlib/device/pb"
 	"google.golang.org/grpc/metadata"
 
-	"github.com/muulinCorp/interlib/core"
 	"golang.org/x/net/context"
 )
 
 type MigrationDeviceStreamClient interface {
-	core.MyGrpc
+	grpc_tool.Connection
 	StartMigrationStream(channel string, resp chan *pb.Response)
 	Migration(*pb.MigrationDeviceRequest) error
 	StopMigrationStream() error
 }
 
-func NewMigrationStreamClient(ctx context.Context, address string) MigrationDeviceStreamClient {
+func NewMigrationStreamClient(address string, timeout time.Duration) MigrationDeviceStreamClient {
 	return &migrationDeviceStreamImpl{
-		AutoReConn: core.NewAutoReconn(ctx, address),
+		AutoReConn: grpc_tool.NewAutoReconn(address, timeout),
 	}
 }
 
 type migrationDeviceStreamImpl struct {
-	*core.AutoReConn
+	*grpc_tool.AutoReConn
 
 	resp            chan *pb.Response
 	migrationStream pb.DeviceMigrationService_MigrationDeviceClient
@@ -35,7 +36,7 @@ type migrationDeviceStreamImpl struct {
 func (impl *migrationDeviceStreamImpl) StartMigrationStream(channel string, resp chan *pb.Response) {
 	var err error
 	impl.resp = resp
-	p := func(myGrpc core.MyGrpc) error {
+	p := func(myGrpc grpc_tool.Connection) error {
 		md := metadata.New(map[string]string{"X-Channel": channel})
 		ctx := metadata.NewOutgoingContext(context.Background(), md)
 		clt := pb.NewDeviceMigrationServiceClient(impl)

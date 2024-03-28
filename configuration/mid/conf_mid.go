@@ -11,7 +11,7 @@ import (
 
 	apiErr "github.com/94peter/api-toolkit/errors"
 	"github.com/94peter/api-toolkit/mid"
-	"github.com/94peter/di"
+	"github.com/94peter/micro-service/di"
 	"github.com/gin-gonic/gin"
 )
 

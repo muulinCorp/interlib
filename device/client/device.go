@@ -4,10 +4,10 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/muulinCorp/interlib/device/pb"
+	"context"
 
-	"github.com/muulinCorp/interlib/core"
-	"golang.org/x/net/context"
+	"github.com/94peter/micro-service/grpc_tool"
+	"github.com/muulinCorp/interlib/device/pb"
 )
 
 type DeviceClient interface {
@@ -29,7 +29,7 @@ type deviceSdkImpl struct {
 func (grpc *deviceSdkImpl) GetVirtualId(ctx context.Context, mac, gwid string) (uint8, error) {
 	var err error
 
-	grpcClt, err := core.NewMyGrpc(ctx, grpc.address)
+	grpcClt, err := grpc_tool.NewConnection(ctx, grpc.address)
 	if err != nil {
 		return 0, err
 	}
@@ -48,7 +48,7 @@ func (grpc *deviceSdkImpl) GetVirtualId(ctx context.Context, mac, gwid string) (
 func (grpc *deviceSdkImpl) SetTime(ctx context.Context, mac string, virtualId uint8) error {
 	var err error
 
-	grpcClt, err := core.NewMyGrpc(ctx, grpc.address)
+	grpcClt, err := grpc_tool.NewConnection(ctx, grpc.address)
 	if err != nil {
 		return err
 	}
@@ -70,7 +70,7 @@ func (grpc *deviceSdkImpl) SetTime(ctx context.Context, mac string, virtualId ui
 func (grpc *deviceSdkImpl) Remote(ctx context.Context, mac string, virtualId uint8, deviceNo uint8, address uint8, val float64) *pb.RemoteResponse {
 	var err error
 
-	grpcClt, err := core.NewMyGrpc(ctx, grpc.address)
+	grpcClt, err := grpc_tool.NewConnection(ctx, grpc.address)
 	if err != nil {
 		return &pb.RemoteResponse{
 			StatusCode: http.StatusInternalServerError,

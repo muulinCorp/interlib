@@ -3,8 +3,9 @@ package client
 import (
 	"github.com/muulinCorp/interlib/device/pb"
 
-	"github.com/muulinCorp/interlib/core"
-	"golang.org/x/net/context"
+	"context"
+
+	"github.com/94peter/micro-service/grpc_tool"
 )
 
 type DeviceV2Client interface {
@@ -23,7 +24,7 @@ type deviceV2SdkImpl struct {
 
 func (impl *deviceV2SdkImpl) CheckState(ctx context.Context, devices []*pb.Device) (map[string]*pb.DeviceState, error) {
 	var err error
-	mygrpc, err := core.NewMyGrpc(ctx, impl.address)
+	mygrpc, err := grpc_tool.NewConnection(ctx, impl.address)
 	if err != nil {
 		return nil, err
 	}

@@ -7,13 +7,14 @@ import (
 
 	"github.com/muulinCorp/interlib/device/pb"
 
+	"context"
+
 	apiErr "github.com/94peter/api-toolkit/errors"
-	"github.com/muulinCorp/interlib/core"
-	"golang.org/x/net/context"
+	"github.com/94peter/micro-service/grpc_tool"
 )
 
 type DeviceV1Client interface {
-	core.MyGrpc
+	grpc_tool.Connection
 	StartCreateV1Stream(context.Context) error
 	CreateV1(*pb.CreateDeviceV1Request) (*pb.CreateDeviceV1Response, error)
 	StopCreateV1Stream() error
@@ -29,13 +30,13 @@ type DeviceV1Client interface {
 func NewDeviceClientV1(address string) DeviceV1Client {
 	return &sdkV1Impl{
 		address: address,
-		// AutoReConn: core.NewAutoReconn(address),
+		// AutoReConn: grpc_tool.NewAutoReconn(address),
 	}
 }
 
 type sdkV1Impl struct {
 	address string
-	core.MyGrpc
+	grpc_tool.Connection
 
 	createV1Stream pb.DeviceV1Service_CreateV1Client
 	removeV1Stream pb.DeviceV1Service_DeleteClient
@@ -43,7 +44,7 @@ type sdkV1Impl struct {
 
 func (impl *sdkV1Impl) StartCreateV1Stream(ctx context.Context) error {
 	var err error
-	impl.MyGrpc, err = core.NewMyGrpc(ctx, impl.address)
+	impl.Connection, err = grpc_tool.NewConnection(ctx, impl.address)
 	if err != nil {
 		return err
 	}
@@ -105,7 +106,7 @@ func (grpc *sdkV1Impl) CreateV1(req *pb.CreateDeviceV1Request) (*pb.CreateDevice
 
 func (grpc *sdkV1Impl) CheckExist(ctx context.Context, dvices []*pb.DeviceV1) (map[string]bool, error) {
 	var err error
-	grpc.MyGrpc, err = core.NewMyGrpc(ctx, grpc.address)
+	grpc.Connection, err = grpc_tool.NewConnection(ctx, grpc.address)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +123,7 @@ func (grpc *sdkV1Impl) CheckExist(ctx context.Context, dvices []*pb.DeviceV1) (m
 
 func (grpc *sdkV1Impl) CheckState(ctx context.Context, devices []*pb.Device) (map[string]string, error) {
 	var err error
-	grpc.MyGrpc, err = core.NewMyGrpc(ctx, grpc.address)
+	grpc.Connection, err = grpc_tool.NewConnection(ctx, grpc.address)
 	if err != nil {
 		return nil, err
 	}
@@ -137,7 +138,7 @@ func (grpc *sdkV1Impl) CheckState(ctx context.Context, devices []*pb.Device) (ma
 
 func (grpc *sdkV1Impl) GetDeviceInfo(ctx context.Context, mac, gwid string) (*pb.DeviceInfoResponse, error) {
 	var err error
-	grpc.MyGrpc, err = core.NewMyGrpc(ctx, grpc.address)
+	grpc.Connection, err = grpc_tool.NewConnection(ctx, grpc.address)
 	if err != nil {
 		return nil, err
 	}
@@ -152,7 +153,7 @@ func (grpc *sdkV1Impl) GetDeviceInfo(ctx context.Context, mac, gwid string) (*pb
 
 func (impl *sdkV1Impl) StartRemoveStream(ctx context.Context) error {
 	var err error
-	impl.MyGrpc, err = core.NewMyGrpc(ctx, impl.address)
+	impl.Connection, err = grpc_tool.NewConnection(ctx, impl.address)
 	if err != nil {
 		return err
 	}

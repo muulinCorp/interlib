@@ -1,9 +1,11 @@
 package sdk
 
 import (
-	"github.com/muulinCorp/interlib/core"
+	"context"
+
 	"github.com/muulinCorp/interlib/notify/pb"
-	"golang.org/x/net/context"
+
+	"github.com/94peter/micro-service/grpc_tool"
 )
 
 type MailClient interface {
@@ -21,7 +23,7 @@ type mailSdkImpl struct {
 }
 
 func (impl *mailSdkImpl) SingleMail(ctx context.Context, req *pb.SingleMailRequest) error {
-	grpc, err := core.NewMyGrpc(ctx, impl.address)
+	grpc, err := grpc_tool.NewConnection(ctx, impl.address)
 	if err != nil {
 		return err
 	}

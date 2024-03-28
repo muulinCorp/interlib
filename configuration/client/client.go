@@ -1,9 +1,10 @@
 package client
 
 import (
+	"context"
+
+	"github.com/94peter/micro-service/grpc_tool"
 	"github.com/muulinCorp/interlib/configuration/pb"
-	"github.com/muulinCorp/interlib/core"
-	"golang.org/x/net/context"
 )
 
 type ConfigurationClient interface {
@@ -21,7 +22,7 @@ type clientImpl struct {
 }
 
 func (impl *clientImpl) GetChannelConf(ctx context.Context, req *pb.GetConfRequest) ([]byte, error) {
-	grpc, err := core.NewMyGrpc(ctx, impl.address)
+	grpc, err := grpc_tool.NewConnection(ctx, impl.address)
 	if err != nil {
 		return nil, err
 	}

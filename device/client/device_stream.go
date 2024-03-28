@@ -4,35 +4,36 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"time"
 
+	"context"
+
+	"github.com/94peter/micro-service/grpc_tool"
 	"github.com/muulinCorp/interlib/device/pb"
-
-	"github.com/muulinCorp/interlib/core"
-	"golang.org/x/net/context"
 )
 
 type GetVirtualIdStreamClient interface {
-	core.MyGrpc
+	grpc_tool.Connection
 
 	StartGetVirtualIdStream(resp chan *pb.GetVirtualIdStreamResponse)
 	GetVirtualReq(mac, gwid string) error
 	StopGetVirtualIdStream() error
 }
 
-func NewVirutalIdStreamClient(ctx context.Context, address string) GetVirtualIdStreamClient {
+func NewVirutalIdStreamClient(address string, timeout time.Duration) GetVirtualIdStreamClient {
 	return &virtualIDStream{
-		AutoReConn: core.NewAutoReconn(ctx, address),
+		AutoReConn: grpc_tool.NewAutoReconn(address, timeout),
 	}
 }
 
 type virtualIDStream struct {
-	*core.AutoReConn
+	*grpc_tool.AutoReConn
 	getVirtualIdStream pb.DeviceService_GetVritualIdStreamClient
 }
 
 func (impl *virtualIDStream) StartGetVirtualIdStream(resp chan *pb.GetVirtualIdStreamResponse) {
 	var err error
-	p := func(myGrpc core.MyGrpc) error {
+	p := func(myGrpc grpc_tool.Connection) error {
 		clt := pb.NewDeviceServiceClient(impl)
 		impl.getVirtualIdStream, err = clt.GetVritualIdStream(context.Background())
 		if err != nil {

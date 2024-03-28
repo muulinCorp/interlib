@@ -4,29 +4,30 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/muulinCorp/interlib/channel/pb"
 	"google.golang.org/grpc/metadata"
 
-	"github.com/muulinCorp/interlib/core"
+	"github.com/94peter/micro-service/grpc_tool"
 	"golang.org/x/net/context"
 )
 
 type MigrationEquipLogStreamClient interface {
-	core.MyGrpc
+	grpc_tool.Connection
 	StartMigrationStream(channel string, resp chan *pb.MigrationResponse)
 	Migration(*pb.MigrationLogRequest) error
 	StopMigrationStream() error
 }
 
-func NewMigrationEquipLogStreamClient(ctx context.Context, address string) MigrationEquipLogStreamClient {
+func NewMigrationEquipLogStreamClient(address string, timeout time.Duration) MigrationEquipLogStreamClient {
 	return &migrationEquipLogStreamImpl{
-		AutoReConn: core.NewAutoReconn(ctx, address),
+		AutoReConn: grpc_tool.NewAutoReconn(address, timeout),
 	}
 }
 
 type migrationEquipLogStreamImpl struct {
-	*core.AutoReConn
+	*grpc_tool.AutoReConn
 
 	migrationResp   chan *pb.MigrationResponse
 	migrationStream pb.ChannelMigrationService_MigrationEquipmentLogClient
@@ -35,7 +36,7 @@ type migrationEquipLogStreamImpl struct {
 func (impl *migrationEquipLogStreamImpl) StartMigrationStream(channel string, resp chan *pb.MigrationResponse) {
 	var err error
 	impl.migrationResp = resp
-	p := func(myGrpc core.MyGrpc) error {
+	p := func(myGrpc grpc_tool.Connection) error {
 		md := metadata.New(map[string]string{"X-Channel": channel})
 		ctx := metadata.NewOutgoingContext(context.Background(), md)
 		clt := pb.NewChannelMigrationServiceClient(impl)

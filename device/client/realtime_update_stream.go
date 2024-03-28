@@ -3,37 +3,38 @@ package client
 import (
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/pkg/errors"
 
-	"github.com/muulinCorp/interlib/device/pb"
+	"context"
 
-	"github.com/muulinCorp/interlib/core"
-	"golang.org/x/net/context"
+	"github.com/94peter/micro-service/grpc_tool"
+	"github.com/muulinCorp/interlib/device/pb"
 )
 
 type UpdateRealtimeStreamClient interface {
-	core.MyGrpc
+	grpc_tool.Connection
 	StartUpdateRealtimeStream(resp chan *pb.Response)
 	UpdateRealtime(*pb.UpdateRawdataRequest) error
 	StopUpdateRealtimeStream() error
 }
 
-func NewUpdateRealtimeStreamClient(ctx context.Context, address string) UpdateRealtimeStreamClient {
+func NewUpdateRealtimeStreamClient(address string, timeout time.Duration) UpdateRealtimeStreamClient {
 	return &updateRealtimeStreamSdkImpl{
-		AutoReConn: core.NewAutoReconn(ctx, address),
+		AutoReConn: grpc_tool.NewAutoReconn(address, timeout),
 	}
 }
 
 type updateRealtimeStreamSdkImpl struct {
-	*core.AutoReConn
+	*grpc_tool.AutoReConn
 
 	updateRealtimeStream pb.DeviceService_UpdateRawdataClient
 }
 
 func (impl *updateRealtimeStreamSdkImpl) StartUpdateRealtimeStream(resp chan *pb.Response) {
 	var err error
-	p := func(myGrpc core.MyGrpc) error {
+	p := func(myGrpc grpc_tool.Connection) error {
 		clt := pb.NewDeviceServiceClient(impl)
 		impl.updateRealtimeStream, err = clt.UpdateRealtime(context.Background())
 		if err != nil {
