@@ -11,6 +11,7 @@ import (
 type CommunicateClient interface {
 	Remote(ctx context.Context, data map[string]float64) error
 	GetSensors(ctx context.Context, names []string) (*pb.GetSensorsResponse, error)
+	GetSensorsReader(ctx context.Context, names []string) (SensorReader, error)
 }
 
 func New(address string) CommunicateClient {
@@ -46,4 +47,12 @@ func (impl *clientImpl) GetSensors(ctx context.Context, names []string) (*pb.Get
 	clt := pb.NewCommunicateServiceClient(grpc)
 
 	return clt.GetSensors(ctx, &pb.GetSensorsRequest{Name: names})
+}
+
+func (impl *clientImpl) GetSensorsReader(ctx context.Context, names []string) (SensorReader, error) {
+	resp, err := impl.GetSensors(ctx, names)
+	if err != nil {
+		return nil, err
+	}
+	return NewSensorReader(resp.Sensors), nil
 }
