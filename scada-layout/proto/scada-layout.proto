@@ -18,35 +18,7 @@ message GetFieldsTagsResponse {
         repeated string groups = 3;
         repeated string floors = 4;
         string unit = 5;
-        SensorType sensorType = 6;
+        string sensorType = 6;
     }
     repeated FieldTag fieldTags = 1;
-}
-
-enum SensorType {
-    alarm = 0;
-    capacity = 1;
-    clock = 2;
-    co = 3;
-    co2concentration = 4;
-    current = 5;
-    dimensionless = 6;
-    electricityConsumption = 7;
-    errorCode = 8;
-    flow = 9;
-    frequency = 10;
-    height = 11;
-    humidity = 12;
-    illuminance = 13;
-    noise  = 14;
-    percentage = 15;
-    pm25 = 16;
-    power = 17;
-    pressure = 18;
-    status = 19;
-    temperature = 20;
-    time = 21;
-    voltage = 22;
-    weight = 23;
-    windSpeed = 24;
 }
