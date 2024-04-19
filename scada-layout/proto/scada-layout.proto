@@ -14,12 +14,17 @@ message FieldList {
 message GetFieldsTagsResponse {
     message FieldTag {
         string field = 1;
-        repeated string equipments = 2;
-        repeated string groups = 3;
-        repeated string floors = 4;
+        repeated IdWithName equipments = 2;
+        repeated IdWithName groups = 3;
+        repeated IdWithName floors = 4;
         string unit = 5;
         string sensorType = 6;
         string name = 7;
     }
     repeated FieldTag fieldTags = 1;
+
+    message IdWithName {
+        string id = 1;
+        string name = 2;
+    }
 }
