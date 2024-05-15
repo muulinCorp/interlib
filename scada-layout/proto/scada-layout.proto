@@ -6,6 +6,7 @@ package scada_layout;
 service ScadaLayoutService {
     rpc getFieldsTags(FieldList) returns (GetFieldsTagsResponse) {};
     rpc getReportFields(FieldList) returns (GetReportFieldsResponse) {};
+    rpc getFieldsWithId(GetFieldListRequest) returns (GetFieldListResponse) {};
 }
 
 message FieldList {
@@ -46,4 +47,18 @@ message GetReportFieldsResponse {
     }
     string projectName = 1;
     repeated Field fields = 2;
+}
+
+message GetFieldListRequest {
+    string id = 1;
+    RequestType type = 2;
+
+    enum RequestType {
+        Tv = 0;
+        Floor = 1;
+    }
+}
+
+message GetFieldListResponse {
+    repeated string fields = 1;
 }

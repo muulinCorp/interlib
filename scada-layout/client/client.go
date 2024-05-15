@@ -11,6 +11,7 @@ type ScadaLayoutClient interface {
 	GetFieldsTags(ctx context.Context, fields []string) (*pb.GetFieldsTagsResponse, error)
 	GetFieldsTagsReader(ctx context.Context, fields []string) (FieldTagsReader, error)
 	GetReportFieldReader(ctx context.Context, fields []string) (ReportFieldReader, error)
+	GetFieldListWithId(ctx context.Context, input *pb.GetFieldListRequest) ([]string, error)
 }
 
 type clientImpl struct {
@@ -122,4 +123,20 @@ func (impl *clientImpl) GetReportFieldReader(ctx context.Context, fields []strin
 		return nil, err
 	}
 	return NewReportFieldsReader(resp), nil
+}
+
+func (impl *clientImpl) GetFieldListWithId(ctx context.Context, input *pb.GetFieldListRequest) ([]string, error) {
+	grpc, err := grpc_tool.NewConnection(ctx, impl.address)
+	if err != nil {
+		return nil, err
+	}
+	defer grpc.Close()
+
+	clt := pb.NewScadaLayoutServiceClient(grpc)
+
+	resp, err := clt.GetFieldsWithId(ctx, input)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Fields, nil
 }
