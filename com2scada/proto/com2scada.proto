@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "com2scada/pb";
+package com2scada;
+
+
+
+message FieldList {
+    repeated string fields = 1;
+}
+
+message changeDataResponse {
+    map<string,double> values = 1;
+}
+
+service Com2ScadaService {
+    rpc changeDataStream(FieldList) returns (stream changeDataResponse) {};
+}
