@@ -4,7 +4,6 @@ import (
 	"context"
 	"io"
 	"sync"
-	"time"
 
 	"github.com/94peter/microservice/grpc_tool"
 	"github.com/muulinCorp/interlib/com2scada/pb"
@@ -15,7 +14,7 @@ type ChangeDataStreamClient interface {
 	StopStream() error
 }
 
-func NewChangeDataStreamClient(address string, timeout time.Duration) ChangeDataStreamClient {
+func NewChangeDataStreamClient(address string) ChangeDataStreamClient {
 	return &changeDataStreamImpl{
 		address: address,
 	}

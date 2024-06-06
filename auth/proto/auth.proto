@@ -16,6 +16,7 @@ message GetTokenInfoResponse {
   string name = 5;
   repeated string roles = 7;
   repeated string channels = 8;
+  string useage = 9;
 }
 
 message GetAccountRequest {

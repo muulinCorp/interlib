@@ -1,6 +1,6 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
-github.com/94peter/api-toolkit v1.2.1 h1:s0CrzkBC7iMZvrhcuqFfvRWOIU77Da0KRiv16rxu79w=
-github.com/94peter/api-toolkit v1.2.1/go.mod h1:sh1265u4Z2/Q6M2fNE0v/Pm7MHzB9Z9pyWZxzjVSV1U=
+github.com/94peter/api-toolkit v1.4.0 h1:bbfC0vJfoQN+JiEu4ePjxcw+W6vIOQ9XAN2GS34pm08=
+github.com/94peter/api-toolkit v1.4.0/go.mod h1:sh1265u4Z2/Q6M2fNE0v/Pm7MHzB9Z9pyWZxzjVSV1U=
 github.com/94peter/log v1.0.5 h1:x3y12WGEQOXszK2lh05ZblQsHZo+ShkF1uLMAgnAvOs=
 github.com/94peter/log v1.0.5/go.mod h1:m1o6Rv8RXqDex0cfplDLMdJ3EGAPUDmJE8983jOtpG8=
 github.com/94peter/microservice v0.0.5 h1:GB2K5I66sFqSxtqT6EwoIjjghTfjz3vBV3M0Sl0k3Zs=
