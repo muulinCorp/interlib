@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -25,6 +26,8 @@ type ScadaLayoutServiceClient interface {
 	GetFieldsTags(ctx context.Context, in *FieldList, opts ...grpc.CallOption) (*GetFieldsTagsResponse, error)
 	GetReportFields(ctx context.Context, in *FieldList, opts ...grpc.CallOption) (*GetReportFieldsResponse, error)
 	GetFieldsWithId(ctx context.Context, in *GetFieldListRequest, opts ...grpc.CallOption) (*GetFieldListResponse, error)
+	GetSmartDefrost(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetSmartDefrostResponse, error)
+	GetReport(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetReportResponse, error)
 }
 
 type scadaLayoutServiceClient struct {
@@ -62,6 +65,24 @@ func (c *scadaLayoutServiceClient) GetFieldsWithId(ctx context.Context, in *GetF
 	return out, nil
 }
 
+func (c *scadaLayoutServiceClient) GetSmartDefrost(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetSmartDefrostResponse, error) {
+	out := new(GetSmartDefrostResponse)
+	err := c.cc.Invoke(ctx, "/scada_layout.ScadaLayoutService/getSmartDefrost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *scadaLayoutServiceClient) GetReport(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetReportResponse, error) {
+	out := new(GetReportResponse)
+	err := c.cc.Invoke(ctx, "/scada_layout.ScadaLayoutService/getReport", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ScadaLayoutServiceServer is the server API for ScadaLayoutService service.
 // All implementations must embed UnimplementedScadaLayoutServiceServer
 // for forward compatibility
@@ -69,6 +90,8 @@ type ScadaLayoutServiceServer interface {
 	GetFieldsTags(context.Context, *FieldList) (*GetFieldsTagsResponse, error)
 	GetReportFields(context.Context, *FieldList) (*GetReportFieldsResponse, error)
 	GetFieldsWithId(context.Context, *GetFieldListRequest) (*GetFieldListResponse, error)
+	GetSmartDefrost(context.Context, *emptypb.Empty) (*GetSmartDefrostResponse, error)
+	GetReport(context.Context, *emptypb.Empty) (*GetReportResponse, error)
 	mustEmbedUnimplementedScadaLayoutServiceServer()
 }
 
@@ -84,6 +107,12 @@ func (UnimplementedScadaLayoutServiceServer) GetReportFields(context.Context, *F
 }
 func (UnimplementedScadaLayoutServiceServer) GetFieldsWithId(context.Context, *GetFieldListRequest) (*GetFieldListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFieldsWithId not implemented")
+}
+func (UnimplementedScadaLayoutServiceServer) GetSmartDefrost(context.Context, *emptypb.Empty) (*GetSmartDefrostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSmartDefrost not implemented")
+}
+func (UnimplementedScadaLayoutServiceServer) GetReport(context.Context, *emptypb.Empty) (*GetReportResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetReport not implemented")
 }
 func (UnimplementedScadaLayoutServiceServer) mustEmbedUnimplementedScadaLayoutServiceServer() {}
 
@@ -152,6 +181,42 @@ func _ScadaLayoutService_GetFieldsWithId_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ScadaLayoutService_GetSmartDefrost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ScadaLayoutServiceServer).GetSmartDefrost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scada_layout.ScadaLayoutService/getSmartDefrost",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ScadaLayoutServiceServer).GetSmartDefrost(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ScadaLayoutService_GetReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ScadaLayoutServiceServer).GetReport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scada_layout.ScadaLayoutService/getReport",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ScadaLayoutServiceServer).GetReport(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ScadaLayoutService_ServiceDesc is the grpc.ServiceDesc for ScadaLayoutService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -170,6 +235,14 @@ var ScadaLayoutService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "getFieldsWithId",
 			Handler:    _ScadaLayoutService_GetFieldsWithId_Handler,
+		},
+		{
+			MethodName: "getSmartDefrost",
+			Handler:    _ScadaLayoutService_GetSmartDefrost_Handler,
+		},
+		{
+			MethodName: "getReport",
+			Handler:    _ScadaLayoutService_GetReport_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
