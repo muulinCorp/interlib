@@ -111,6 +111,7 @@ message GetReportResponse {
     InputDetail input_interval = 3;
     bool show_company_logo = 4;
     uint32 select_fields_Limit = 5;
+    repeated DefaultChart default_charts = 6;
 
     message ReportSettingDetail {
         bool enable = 1;
