@@ -3,10 +3,14 @@ syntax = "proto3";
 option go_package = "scada-layout/pb";
 package scada_layout;
 
+import "google/protobuf/empty.proto";
+
 service ScadaLayoutService {
     rpc getFieldsTags(FieldList) returns (GetFieldsTagsResponse) {};
     rpc getReportFields(FieldList) returns (GetReportFieldsResponse) {};
     rpc getFieldsWithId(GetFieldListRequest) returns (GetFieldListResponse) {};
+    rpc getSmartDefrost(google.protobuf.Empty) returns (GetSmartDefrostResponse) {};
+    rpc getReport(google.protobuf.Empty) returns (GetReportResponse) {};
 }
 
 message FieldList {
@@ -61,4 +65,81 @@ message GetFieldListRequest {
 
 message GetFieldListResponse {
     repeated string fields = 1;
+}
+
+message GetSmartDefrostResponse {
+    repeated GroupDetail groups = 1;
+    message GroupDetail {
+        string id = 1;
+        string name = 2;
+        repeated ElementDetail elements = 3;
+    }
+
+    message ElementDetail {
+        string id = 1;
+        string name = 2;
+        ServerSettingField fields = 3;
+    }
+
+    message ServerSettingField {
+        string state = 1;
+        string execute = 2;
+        string processID = 3;
+        string waiting = 4;
+        string def_delay_time = 5;
+        string def_time = 6;
+        string def_drip_time = 7;
+        string def_delay_remain_time = 8;
+        string def_remain_time = 9;
+        string def_drip_remain_time = 10;
+        string def_mode = 11;
+        string def_stop_mode = 12;
+        string io_status = 13;
+        string ai_status = 14;
+        string ao_status = 15;
+        string di_status = 16;
+        string do_status = 17;
+        string forced_def = 18;
+        string err_code = 19;
+        string err_code1 = 20;
+    }
+}
+
+message GetReportResponse {
+    ReportSettingDetail pdf_setting = 1;
+    ReportSettingDetail excel_setting = 2;
+    InputDetail input_interval = 3;
+    bool show_company_logo = 4;
+    uint32 select_fields_Limit = 5;
+    repeated DefaultChart default_charts = 6;
+
+    message ReportSettingDetail {
+        bool enable = 1;
+        bool download = 2;
+        bool print = 3;
+        bool cron = 4;
+    }
+
+    message InputDetail {
+        repeated string time = 1;
+        repeated string frequency = 2;
+    }
+    
+    message DefaultChart {
+        string name = 1;
+        ChartField chart_fields = 2;
+        
+        message ChartField {
+            string field = 1;
+            string type = 2;
+            DisplayType display_type = 3;
+            bool is_square_wave = 4;
+        }
+
+        enum DisplayType {
+            accumulation = 0;
+            realtime = 1;
+            state = 2;
+        }
+    }
 }
