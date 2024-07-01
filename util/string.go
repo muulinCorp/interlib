@@ -29,3 +29,17 @@ func IsStrInList(input string, target ...string) bool {
 	}
 	return false
 }
+
+func RemoveDuplicates(fields []string) []string {
+	// Create a map to store unique strings
+	var result []string
+	uniqueFields := make(map[string]bool)
+	for _, field := range fields {
+		if _, ok := uniqueFields[field]; ok {
+			continue
+		}
+		uniqueFields[field] = true
+		result = append(result, field)
+	}
+	return result
+}
