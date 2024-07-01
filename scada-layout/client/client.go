@@ -5,6 +5,7 @@ import (
 
 	"github.com/94peter/microservice/grpc_tool"
 	"github.com/muulinCorp/interlib/scada-layout/pb"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type ScadaLayoutClient interface {
@@ -12,6 +13,7 @@ type ScadaLayoutClient interface {
 	GetFieldsTagsReader(ctx context.Context, fields []string) (FieldTagsReader, error)
 	GetReportFieldReader(ctx context.Context, fields []string) (ReportFieldReader, error)
 	GetFieldListWithId(ctx context.Context, input *pb.GetFieldListRequest) ([]string, error)
+	GetReportSetting(ctx context.Context) (*pb.GetReportResponse, error)
 }
 
 type clientImpl struct {
@@ -139,4 +141,20 @@ func (impl *clientImpl) GetFieldListWithId(ctx context.Context, input *pb.GetFie
 		return nil, err
 	}
 	return resp.Fields, nil
+}
+
+func (impl *clientImpl) GetReportSetting(ctx context.Context) (*pb.GetReportResponse, error) {
+	grpc, err := grpc_tool.NewConnection(ctx, impl.address)
+	if err != nil {
+		return nil, err
+	}
+	defer grpc.Close()
+
+	clt := pb.NewScadaLayoutServiceClient(grpc)
+
+	resp, err := clt.GetReport(ctx, &emptypb.Empty{})
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }
