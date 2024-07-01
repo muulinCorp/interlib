@@ -119,6 +119,7 @@ message GetReportResponse {
         bool enable = 1;
         bool print = 2;
         bool cron = 3;
+        bool download = 4;
     }
 
     message PdfInputDetail {
