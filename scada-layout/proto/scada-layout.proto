@@ -108,21 +108,34 @@ message GetSmartDefrostResponse {
 message GetReportResponse {
     ReportSettingDetail pdf_setting = 1;
     ReportSettingDetail excel_setting = 2;
-    InputDetail input_interval = 3;
-    bool show_company_logo = 4;
-    uint32 select_fields_Limit = 5;
-    repeated DefaultChart default_charts = 6;
+    PdfInputDetail pdf_input = 3;
+    ExcelIntervalDetail excel_input = 4;
+    bool show_company_logo = 5;
+    uint32 select_fields_Limit = 6;
+    repeated DefaultChart default_charts = 7;
+    string Project_Name = 8;
 
     message ReportSettingDetail {
         bool enable = 1;
-        bool download = 2;
-        bool print = 3;
-        bool cron = 4;
+        bool print = 2;
+        bool cron = 3;
     }
 
-    message InputDetail {
-        repeated string time = 1;
-        repeated string frequency = 2;
+    message PdfInputDetail {
+        repeated IntervalDetail interval = 1;
+        repeated string info = 2;
+        repeated string detail_info = 3;
+    }
+
+    message ExcelIntervalDetail {
+        repeated IntervalDetail interval = 1;
+        repeated IntervalDetail data_interval = 2;
+    }
+
+    message IntervalDetail {
+        string key = 1;
+        bool enable = 2;
+        string desc = 3;
     }
     
     message DefaultChart {
@@ -131,9 +144,14 @@ message GetReportResponse {
         
         message ChartField {
             string field = 1;
-            string type = 2;
-            DisplayType display_type = 3;
-            bool is_square_wave = 4;
+            string name = 2;
+            string equip = 3;
+            string group = 4;
+            string type = 5;
+            string unit = 6;
+            uint32 display_dp = 7;
+            map<uint64, string> trans = 8;
+            bool is_square_wave = 9;
         }
 
         enum DisplayType {
