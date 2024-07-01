@@ -140,7 +140,7 @@ message GetReportResponse {
     
     message DefaultChart {
         string name = 1;
-        ChartField chart_fields = 2;
+        repeated ChartField chart_fields = 2;
         
         message ChartField {
             string field = 1;
