@@ -28,6 +28,7 @@ type ScadaLayoutServiceClient interface {
 	GetFieldsWithId(ctx context.Context, in *GetFieldListRequest, opts ...grpc.CallOption) (*GetFieldListResponse, error)
 	GetSmartDefrost(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetSmartDefrostResponse, error)
 	GetReport(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetReportResponse, error)
+	GetScenario(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetScenarioResponse, error)
 }
 
 type scadaLayoutServiceClient struct {
@@ -83,6 +84,15 @@ func (c *scadaLayoutServiceClient) GetReport(ctx context.Context, in *emptypb.Em
 	return out, nil
 }
 
+func (c *scadaLayoutServiceClient) GetScenario(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetScenarioResponse, error) {
+	out := new(GetScenarioResponse)
+	err := c.cc.Invoke(ctx, "/scada_layout.ScadaLayoutService/GetScenario", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ScadaLayoutServiceServer is the server API for ScadaLayoutService service.
 // All implementations must embed UnimplementedScadaLayoutServiceServer
 // for forward compatibility
@@ -92,6 +102,7 @@ type ScadaLayoutServiceServer interface {
 	GetFieldsWithId(context.Context, *GetFieldListRequest) (*GetFieldListResponse, error)
 	GetSmartDefrost(context.Context, *emptypb.Empty) (*GetSmartDefrostResponse, error)
 	GetReport(context.Context, *emptypb.Empty) (*GetReportResponse, error)
+	GetScenario(context.Context, *emptypb.Empty) (*GetScenarioResponse, error)
 	mustEmbedUnimplementedScadaLayoutServiceServer()
 }
 
@@ -113,6 +124,9 @@ func (UnimplementedScadaLayoutServiceServer) GetSmartDefrost(context.Context, *e
 }
 func (UnimplementedScadaLayoutServiceServer) GetReport(context.Context, *emptypb.Empty) (*GetReportResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetReport not implemented")
+}
+func (UnimplementedScadaLayoutServiceServer) GetScenario(context.Context, *emptypb.Empty) (*GetScenarioResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetScenario not implemented")
 }
 func (UnimplementedScadaLayoutServiceServer) mustEmbedUnimplementedScadaLayoutServiceServer() {}
 
@@ -217,6 +231,24 @@ func _ScadaLayoutService_GetReport_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ScadaLayoutService_GetScenario_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ScadaLayoutServiceServer).GetScenario(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scada_layout.ScadaLayoutService/GetScenario",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ScadaLayoutServiceServer).GetScenario(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ScadaLayoutService_ServiceDesc is the grpc.ServiceDesc for ScadaLayoutService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -243,6 +275,10 @@ var ScadaLayoutService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "getReport",
 			Handler:    _ScadaLayoutService_GetReport_Handler,
+		},
+		{
+			MethodName: "GetScenario",
+			Handler:    _ScadaLayoutService_GetScenario_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
