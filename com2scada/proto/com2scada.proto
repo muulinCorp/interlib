@@ -15,4 +15,5 @@ message changeDataResponse {
 
 service Com2ScadaService {
     rpc changeDataStream(FieldList) returns (stream changeDataResponse) {};
+    rpc routineDataStream(FieldList) returns (stream changeDataResponse) {};
 }
