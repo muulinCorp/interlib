@@ -24,12 +24,16 @@ func (ct ClockTime) Equal(tt ClockTime) bool {
 	return (t1.Hour() == t2.Hour() && t1.Second() == t2.Second())
 }
 
-func (ct ClockTime) Sub(tt time.Time) int {
+func (ct ClockTime) applyTime(tt time.Time) time.Time {
 	t := time.Time(ct)
-	t = t.In(tt.Location())
+	return time.Date(tt.Year(), tt.Month(), tt.Day(), t.Hour(), t.Minute(), t.Second(), 0, tt.Location())
+}
+
+func (ct ClockTime) Sub(tt time.Time) time.Duration {
+	t := ct.applyTime(tt)
 	totalMins := (t.Hour() - tt.Hour()) * 60
 	totalMins += t.Minute() - tt.Minute()
-	return t.Second() - tt.Second() + totalMins*60
+	return time.Duration(t.Second()-tt.Second()+totalMins*60) * time.Second
 }
 
 func (ct ClockTime) MarshalYAML() (interface{}, error) {

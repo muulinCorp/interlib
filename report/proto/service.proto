@@ -1,0 +1,25 @@
+
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+option go_package = "report/pb";
+package report;
+
+
+message QueryFieldsReq {
+	repeated string fields = 1;
+    string start = 2;
+    string end = 3;
+}
+
+message QueryFieldsResp {
+    message MapFieldEntry {
+        string key = 1;
+        repeated double value = 2;
+    }
+    repeated MapFieldEntry fieldsInfo = 1;
+}
+
+service ReportService {
+	// Query Fields Value
+	rpc QueryFieldsValue(QueryFieldsReq) returns (QueryFieldsResp) {};
+}
