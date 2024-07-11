@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+option go_package = "scada-event/pb";
+package scada_layout;
+
+import "google/protobuf/empty.proto";
+
+
+message fieldInfo {
+    string name = 1;
+    string field = 2;
+}
+message CreateWarningsReq {
+    
+    message Warning { 
+        string key = 1;
+        string name = 2;
+        fieldInfo field = 3;
+        bytes data = 4;
+        bytes detail = 5;
+    }
+
+    string service = 1;
+    repeated Warning warnings = 2;
+}
+
+message CloseWarningReq {
+    string service = 1;
+    repeated string key = 2;
+}
+
+message GetRealtimeReq {
+    string service = 1;
+}
+
+message GetRealtimeResp {
+    message ReaderInfo {
+        string account = 1;
+        int64 timestamp = 2;
+    }
+    message Warning { 
+        string key = 1;
+        string name = 2;
+        fieldInfo field = 3;
+        int64 createTime = 4;
+        bytes detail = 5;
+        repeated ReaderInfo readers = 6;
+    }
+    repeated Warning warnings = 1;
+}
+
+message ExtendWarningReq {
+    string service = 1;
+    repeated string key = 2;
+}
+
+message ReadWarningsReq {
+    string service = 1;
+    repeated string key = 2;
+    string account = 3;
+}
+
+service ScadaEventService {
+    rpc createWarning(CreateWarningsReq) returns (google.protobuf.Empty) {}
+    rpc closeWarning(CloseWarningReq) returns (google.protobuf.Empty) {}
+    rpc extendWarning(ExtendWarningReq) returns (google.protobuf.Empty) {}
+    rpc readWarnings(ReadWarningsReq) returns (google.protobuf.Empty) {}
+    rpc getRealtime(GetRealtimeReq) returns (GetRealtimeResp) {}
+}
