@@ -178,5 +178,5 @@ func (impl *scadaEventClientImpl[T]) GetRealtime(ctx context.Context, service st
 			Readers:    readerInfoSlice,
 		}
 	}
-	return nil, nil
+	return realtime, nil
 }
