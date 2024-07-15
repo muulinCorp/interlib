@@ -564,6 +564,53 @@ func (x *GetScenarioResponse) GetElements() []*GetScenarioResponse_ElementScenar
 	return nil
 }
 
+type GetAlarmFieldsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Fields []*GetAlarmFieldsResponse_FieldDetail `protobuf:"bytes,1,rep,name=fields,proto3" json:"fields,omitempty"`
+}
+
+func (x *GetAlarmFieldsResponse) Reset() {
+	*x = GetAlarmFieldsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAlarmFieldsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAlarmFieldsResponse) ProtoMessage() {}
+
+func (x *GetAlarmFieldsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAlarmFieldsResponse.ProtoReflect.Descriptor instead.
+func (*GetAlarmFieldsResponse) Descriptor() ([]byte, []int) {
+	return file_scada_layout_proto_scada_layout_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *GetAlarmFieldsResponse) GetFields() []*GetAlarmFieldsResponse_FieldDetail {
+	if x != nil {
+		return x.Fields
+	}
+	return nil
+}
+
 type GetFieldsTagsResponse_FieldTag struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -581,7 +628,7 @@ type GetFieldsTagsResponse_FieldTag struct {
 func (x *GetFieldsTagsResponse_FieldTag) Reset() {
 	*x = GetFieldsTagsResponse_FieldTag{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[8]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -594,7 +641,7 @@ func (x *GetFieldsTagsResponse_FieldTag) String() string {
 func (*GetFieldsTagsResponse_FieldTag) ProtoMessage() {}
 
 func (x *GetFieldsTagsResponse_FieldTag) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[8]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -671,7 +718,7 @@ type GetFieldsTagsResponse_IdWithName struct {
 func (x *GetFieldsTagsResponse_IdWithName) Reset() {
 	*x = GetFieldsTagsResponse_IdWithName{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[9]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -684,7 +731,7 @@ func (x *GetFieldsTagsResponse_IdWithName) String() string {
 func (*GetFieldsTagsResponse_IdWithName) ProtoMessage() {}
 
 func (x *GetFieldsTagsResponse_IdWithName) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[9]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -734,7 +781,7 @@ type GetReportFieldsResponse_Field struct {
 func (x *GetReportFieldsResponse_Field) Reset() {
 	*x = GetReportFieldsResponse_Field{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[10]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -747,7 +794,7 @@ func (x *GetReportFieldsResponse_Field) String() string {
 func (*GetReportFieldsResponse_Field) ProtoMessage() {}
 
 func (x *GetReportFieldsResponse_Field) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[10]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -846,7 +893,7 @@ type GetSmartDefrostResponse_GroupDetail struct {
 func (x *GetSmartDefrostResponse_GroupDetail) Reset() {
 	*x = GetSmartDefrostResponse_GroupDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[12]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -859,7 +906,7 @@ func (x *GetSmartDefrostResponse_GroupDetail) String() string {
 func (*GetSmartDefrostResponse_GroupDetail) ProtoMessage() {}
 
 func (x *GetSmartDefrostResponse_GroupDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[12]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -909,7 +956,7 @@ type GetSmartDefrostResponse_ElementDetail struct {
 func (x *GetSmartDefrostResponse_ElementDetail) Reset() {
 	*x = GetSmartDefrostResponse_ElementDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[13]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -922,7 +969,7 @@ func (x *GetSmartDefrostResponse_ElementDetail) String() string {
 func (*GetSmartDefrostResponse_ElementDetail) ProtoMessage() {}
 
 func (x *GetSmartDefrostResponse_ElementDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[13]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -989,7 +1036,7 @@ type GetSmartDefrostResponse_ServerSettingField struct {
 func (x *GetSmartDefrostResponse_ServerSettingField) Reset() {
 	*x = GetSmartDefrostResponse_ServerSettingField{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[14]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1002,7 +1049,7 @@ func (x *GetSmartDefrostResponse_ServerSettingField) String() string {
 func (*GetSmartDefrostResponse_ServerSettingField) ProtoMessage() {}
 
 func (x *GetSmartDefrostResponse_ServerSettingField) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[14]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1172,7 +1219,7 @@ type GetReportResponse_ReportSettingDetail struct {
 func (x *GetReportResponse_ReportSettingDetail) Reset() {
 	*x = GetReportResponse_ReportSettingDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[15]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1185,7 +1232,7 @@ func (x *GetReportResponse_ReportSettingDetail) String() string {
 func (*GetReportResponse_ReportSettingDetail) ProtoMessage() {}
 
 func (x *GetReportResponse_ReportSettingDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[15]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1242,7 +1289,7 @@ type GetReportResponse_PdfInputDetail struct {
 func (x *GetReportResponse_PdfInputDetail) Reset() {
 	*x = GetReportResponse_PdfInputDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[16]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1255,7 +1302,7 @@ func (x *GetReportResponse_PdfInputDetail) String() string {
 func (*GetReportResponse_PdfInputDetail) ProtoMessage() {}
 
 func (x *GetReportResponse_PdfInputDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[16]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1304,7 +1351,7 @@ type GetReportResponse_ExcelIntervalDetail struct {
 func (x *GetReportResponse_ExcelIntervalDetail) Reset() {
 	*x = GetReportResponse_ExcelIntervalDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[17]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1317,7 +1364,7 @@ func (x *GetReportResponse_ExcelIntervalDetail) String() string {
 func (*GetReportResponse_ExcelIntervalDetail) ProtoMessage() {}
 
 func (x *GetReportResponse_ExcelIntervalDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[17]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1360,7 +1407,7 @@ type GetReportResponse_IntervalDetail struct {
 func (x *GetReportResponse_IntervalDetail) Reset() {
 	*x = GetReportResponse_IntervalDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[18]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1373,7 +1420,7 @@ func (x *GetReportResponse_IntervalDetail) String() string {
 func (*GetReportResponse_IntervalDetail) ProtoMessage() {}
 
 func (x *GetReportResponse_IntervalDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[18]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1422,7 +1469,7 @@ type GetReportResponse_DefaultChart struct {
 func (x *GetReportResponse_DefaultChart) Reset() {
 	*x = GetReportResponse_DefaultChart{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[19]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1435,7 +1482,7 @@ func (x *GetReportResponse_DefaultChart) String() string {
 func (*GetReportResponse_DefaultChart) ProtoMessage() {}
 
 func (x *GetReportResponse_DefaultChart) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[19]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1484,7 +1531,7 @@ type GetReportResponse_DefaultChart_ChartField struct {
 func (x *GetReportResponse_DefaultChart_ChartField) Reset() {
 	*x = GetReportResponse_DefaultChart_ChartField{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[20]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1497,7 +1544,7 @@ func (x *GetReportResponse_DefaultChart_ChartField) String() string {
 func (*GetReportResponse_DefaultChart_ChartField) ProtoMessage() {}
 
 func (x *GetReportResponse_DefaultChart_ChartField) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[20]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1588,7 +1635,7 @@ type GetScenarioResponse_ElementScenario struct {
 func (x *GetScenarioResponse_ElementScenario) Reset() {
 	*x = GetScenarioResponse_ElementScenario{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[22]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1601,7 +1648,7 @@ func (x *GetScenarioResponse_ElementScenario) String() string {
 func (*GetScenarioResponse_ElementScenario) ProtoMessage() {}
 
 func (x *GetScenarioResponse_ElementScenario) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[22]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1645,7 +1692,7 @@ type GetScenarioResponse_ScenarioDetail struct {
 func (x *GetScenarioResponse_ScenarioDetail) Reset() {
 	*x = GetScenarioResponse_ScenarioDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[23]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1658,7 +1705,7 @@ func (x *GetScenarioResponse_ScenarioDetail) String() string {
 func (*GetScenarioResponse_ScenarioDetail) ProtoMessage() {}
 
 func (x *GetScenarioResponse_ScenarioDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[23]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1714,7 +1761,7 @@ type GetScenarioResponse_FieldAction struct {
 func (x *GetScenarioResponse_FieldAction) Reset() {
 	*x = GetScenarioResponse_FieldAction{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[24]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[25]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1727,7 +1774,7 @@ func (x *GetScenarioResponse_FieldAction) String() string {
 func (*GetScenarioResponse_FieldAction) ProtoMessage() {}
 
 func (x *GetScenarioResponse_FieldAction) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[24]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1753,6 +1800,195 @@ func (x *GetScenarioResponse_FieldAction) GetField() string {
 func (x *GetScenarioResponse_FieldAction) GetValue() float64 {
 	if x != nil {
 		return x.Value
+	}
+	return 0
+}
+
+type GetAlarmFieldsResponse_FieldDetail struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Field    string                            `protobuf:"bytes,1,opt,name=field,proto3" json:"field,omitempty"`
+	Desc     string                            `protobuf:"bytes,2,opt,name=desc,proto3" json:"desc,omitempty"`
+	Elements []*GetAlarmFieldsResponse_Element `protobuf:"bytes,3,rep,name=elements,proto3" json:"elements,omitempty"`
+	Limit    *GetAlarmFieldsResponse_Limit     `protobuf:"bytes,4,opt,name=limit,proto3" json:"limit,omitempty"`
+	Trans    map[int32]string                  `protobuf:"bytes,10,rep,name=trans,proto3" json:"trans,omitempty" protobuf_key:"varint,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+}
+
+func (x *GetAlarmFieldsResponse_FieldDetail) Reset() {
+	*x = GetAlarmFieldsResponse_FieldDetail{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[26]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAlarmFieldsResponse_FieldDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAlarmFieldsResponse_FieldDetail) ProtoMessage() {}
+
+func (x *GetAlarmFieldsResponse_FieldDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[26]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAlarmFieldsResponse_FieldDetail.ProtoReflect.Descriptor instead.
+func (*GetAlarmFieldsResponse_FieldDetail) Descriptor() ([]byte, []int) {
+	return file_scada_layout_proto_scada_layout_proto_rawDescGZIP(), []int{8, 0}
+}
+
+func (x *GetAlarmFieldsResponse_FieldDetail) GetField() string {
+	if x != nil {
+		return x.Field
+	}
+	return ""
+}
+
+func (x *GetAlarmFieldsResponse_FieldDetail) GetDesc() string {
+	if x != nil {
+		return x.Desc
+	}
+	return ""
+}
+
+func (x *GetAlarmFieldsResponse_FieldDetail) GetElements() []*GetAlarmFieldsResponse_Element {
+	if x != nil {
+		return x.Elements
+	}
+	return nil
+}
+
+func (x *GetAlarmFieldsResponse_FieldDetail) GetLimit() *GetAlarmFieldsResponse_Limit {
+	if x != nil {
+		return x.Limit
+	}
+	return nil
+}
+
+func (x *GetAlarmFieldsResponse_FieldDetail) GetTrans() map[int32]string {
+	if x != nil {
+		return x.Trans
+	}
+	return nil
+}
+
+type GetAlarmFieldsResponse_Element struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id   string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (x *GetAlarmFieldsResponse_Element) Reset() {
+	*x = GetAlarmFieldsResponse_Element{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[27]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAlarmFieldsResponse_Element) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAlarmFieldsResponse_Element) ProtoMessage() {}
+
+func (x *GetAlarmFieldsResponse_Element) ProtoReflect() protoreflect.Message {
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[27]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAlarmFieldsResponse_Element.ProtoReflect.Descriptor instead.
+func (*GetAlarmFieldsResponse_Element) Descriptor() ([]byte, []int) {
+	return file_scada_layout_proto_scada_layout_proto_rawDescGZIP(), []int{8, 1}
+}
+
+func (x *GetAlarmFieldsResponse_Element) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetAlarmFieldsResponse_Element) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type GetAlarmFieldsResponse_Limit struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Upper int32 `protobuf:"varint,1,opt,name=upper,proto3" json:"upper,omitempty"`
+	Lower int32 `protobuf:"varint,2,opt,name=lower,proto3" json:"lower,omitempty"`
+}
+
+func (x *GetAlarmFieldsResponse_Limit) Reset() {
+	*x = GetAlarmFieldsResponse_Limit{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[28]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAlarmFieldsResponse_Limit) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAlarmFieldsResponse_Limit) ProtoMessage() {}
+
+func (x *GetAlarmFieldsResponse_Limit) ProtoReflect() protoreflect.Message {
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[28]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAlarmFieldsResponse_Limit.ProtoReflect.Descriptor instead.
+func (*GetAlarmFieldsResponse_Limit) Descriptor() ([]byte, []int) {
+	return file_scada_layout_proto_scada_layout_proto_rawDescGZIP(), []int{8, 2}
+}
+
+func (x *GetAlarmFieldsResponse_Limit) GetUpper() int32 {
+	if x != nil {
+		return x.Upper
+	}
+	return 0
+}
+
+func (x *GetAlarmFieldsResponse_Limit) GetLower() int32 {
+	if x != nil {
+		return x.Lower
 	}
 	return 0
 }
@@ -2039,41 +2275,80 @@ var file_scada_layout_proto_scada_layout_proto_rawDesc = []byte{
 	0x1a, 0x39, 0x0a, 0x0b, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12,
 	0x14, 0x0a, 0x05, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
 	0x66, 0x69, 0x65, 0x6c, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x01, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x32, 0xfe, 0x03, 0x0a, 0x12,
-	0x53, 0x63, 0x61, 0x64, 0x61, 0x4c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69,
-	0x63, 0x65, 0x12, 0x4f, 0x0a, 0x0d, 0x67, 0x65, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x54,
-	0x61, 0x67, 0x73, 0x12, 0x17, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f,
-	0x75, 0x74, 0x2e, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x4c, 0x69, 0x73, 0x74, 0x1a, 0x23, 0x2e, 0x73,
-	0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x46,
-	0x69, 0x65, 0x6c, 0x64, 0x73, 0x54, 0x61, 0x67, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x22, 0x00, 0x12, 0x53, 0x0a, 0x0f, 0x67, 0x65, 0x74, 0x52, 0x65, 0x70, 0x6f, 0x72, 0x74,
-	0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x12, 0x17, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c,
-	0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x4c, 0x69, 0x73, 0x74, 0x1a,
-	0x25, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47,
-	0x65, 0x74, 0x52, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x5a, 0x0a, 0x0f, 0x67, 0x65, 0x74, 0x46,
-	0x69, 0x65, 0x6c, 0x64, 0x73, 0x57, 0x69, 0x74, 0x68, 0x49, 0x64, 0x12, 0x21, 0x2e, 0x73, 0x63,
-	0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x69,
-	0x65, 0x6c, 0x64, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22,
-	0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65,
-	0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x22, 0x00, 0x12, 0x52, 0x0a, 0x0f, 0x67, 0x65, 0x74, 0x53, 0x6d, 0x61, 0x72, 0x74,
-	0x44, 0x65, 0x66, 0x72, 0x6f, 0x73, 0x74, 0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a,
-	0x25, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47,
-	0x65, 0x74, 0x53, 0x6d, 0x61, 0x72, 0x74, 0x44, 0x65, 0x66, 0x72, 0x6f, 0x73, 0x74, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x46, 0x0a, 0x09, 0x67, 0x65, 0x74, 0x52,
-	0x65, 0x70, 0x6f, 0x72, 0x74, 0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x1f, 0x2e,
-	0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74,
-	0x52, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00,
-	0x12, 0x4a, 0x0a, 0x0b, 0x47, 0x65, 0x74, 0x53, 0x63, 0x65, 0x6e, 0x61, 0x72, 0x69, 0x6f, 0x12,
-	0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75,
-	0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x21, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f,
-	0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x53, 0x63, 0x65, 0x6e, 0x61, 0x72,
-	0x69, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x11, 0x5a, 0x0f,
-	0x73, 0x63, 0x61, 0x64, 0x61, 0x2d, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2f, 0x70, 0x62, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x20, 0x01, 0x28, 0x01, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x99, 0x04, 0x0a, 0x16,
+	0x47, 0x65, 0x74, 0x41, 0x6c, 0x61, 0x72, 0x6d, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x48, 0x0a, 0x06, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x73,
+	0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x30, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c,
+	0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x61, 0x72, 0x6d, 0x46, 0x69,
+	0x65, 0x6c, 0x64, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x46, 0x69, 0x65,
+	0x6c, 0x64, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x52, 0x06, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x73,
+	0x1a, 0xd0, 0x02, 0x0a, 0x0b, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c,
+	0x12, 0x14, 0x0a, 0x05, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x05, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x65, 0x73, 0x63, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x64, 0x65, 0x73, 0x63, 0x12, 0x48, 0x0a, 0x08, 0x65, 0x6c,
+	0x65, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x73,
+	0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x41,
+	0x6c, 0x61, 0x72, 0x6d, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x2e, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x52, 0x08, 0x65, 0x6c, 0x65, 0x6d,
+	0x65, 0x6e, 0x74, 0x73, 0x12, 0x40, 0x0a, 0x05, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x18, 0x04, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x2a, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f,
+	0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x61, 0x72, 0x6d, 0x46, 0x69, 0x65, 0x6c, 0x64,
+	0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x52,
+	0x05, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x12, 0x51, 0x0a, 0x05, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x18,
+	0x0a, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x3b, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61,
+	0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x61, 0x72, 0x6d, 0x46, 0x69, 0x65,
+	0x6c, 0x64, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x46, 0x69, 0x65, 0x6c,
+	0x64, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x45, 0x6e, 0x74,
+	0x72, 0x79, 0x52, 0x05, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x1a, 0x38, 0x0a, 0x0a, 0x54, 0x72, 0x61,
+	0x6e, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x05, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c,
+	0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a,
+	0x02, 0x38, 0x01, 0x1a, 0x2d, 0x0a, 0x07, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x0e,
+	0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12,
+	0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61,
+	0x6d, 0x65, 0x1a, 0x33, 0x0a, 0x05, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x75,
+	0x70, 0x70, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x05, 0x75, 0x70, 0x70, 0x65,
+	0x72, 0x12, 0x14, 0x0a, 0x05, 0x6c, 0x6f, 0x77, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05,
+	0x52, 0x05, 0x6c, 0x6f, 0x77, 0x65, 0x72, 0x32, 0xd0, 0x04, 0x0a, 0x12, 0x53, 0x63, 0x61, 0x64,
+	0x61, 0x4c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x4f,
+	0x0a, 0x0d, 0x67, 0x65, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x54, 0x61, 0x67, 0x73, 0x12,
+	0x17, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x46,
+	0x69, 0x65, 0x6c, 0x64, 0x4c, 0x69, 0x73, 0x74, 0x1a, 0x23, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61,
+	0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64,
+	0x73, 0x54, 0x61, 0x67, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12,
+	0x53, 0x0a, 0x0f, 0x67, 0x65, 0x74, 0x52, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x46, 0x69, 0x65, 0x6c,
+	0x64, 0x73, 0x12, 0x17, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75,
+	0x74, 0x2e, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x4c, 0x69, 0x73, 0x74, 0x1a, 0x25, 0x2e, 0x73, 0x63,
+	0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x65,
+	0x70, 0x6f, 0x72, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x22, 0x00, 0x12, 0x5a, 0x0a, 0x0f, 0x67, 0x65, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64,
+	0x73, 0x57, 0x69, 0x74, 0x68, 0x49, 0x64, 0x12, 0x21, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f,
+	0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x4c,
+	0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x73, 0x63, 0x61,
+	0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x69, 0x65,
+	0x6c, 0x64, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00,
+	0x12, 0x52, 0x0a, 0x0f, 0x67, 0x65, 0x74, 0x53, 0x6d, 0x61, 0x72, 0x74, 0x44, 0x65, 0x66, 0x72,
+	0x6f, 0x73, 0x74, 0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x25, 0x2e, 0x73, 0x63,
+	0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x53, 0x6d,
+	0x61, 0x72, 0x74, 0x44, 0x65, 0x66, 0x72, 0x6f, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x22, 0x00, 0x12, 0x46, 0x0a, 0x09, 0x67, 0x65, 0x74, 0x52, 0x65, 0x70, 0x6f, 0x72,
+	0x74, 0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x1f, 0x2e, 0x73, 0x63, 0x61, 0x64,
+	0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x65, 0x70, 0x6f,
+	0x72, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x4a, 0x0a, 0x0b,
+	0x47, 0x65, 0x74, 0x53, 0x63, 0x65, 0x6e, 0x61, 0x72, 0x69, 0x6f, 0x12, 0x16, 0x2e, 0x67, 0x6f,
+	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d,
+	0x70, 0x74, 0x79, 0x1a, 0x21, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f,
+	0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x53, 0x63, 0x65, 0x6e, 0x61, 0x72, 0x69, 0x6f, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x50, 0x0a, 0x0e, 0x47, 0x65, 0x74, 0x41,
+	0x6c, 0x61, 0x72, 0x6d, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f,
+	0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70,
+	0x74, 0x79, 0x1a, 0x24, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75,
+	0x74, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x61, 0x72, 0x6d, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x11, 0x5a, 0x0f, 0x73, 0x63,
+	0x61, 0x64, 0x61, 0x2d, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2089,7 +2364,7 @@ func file_scada_layout_proto_scada_layout_proto_rawDescGZIP() []byte {
 }
 
 var file_scada_layout_proto_scada_layout_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_scada_layout_proto_scada_layout_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
+var file_scada_layout_proto_scada_layout_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
 var file_scada_layout_proto_scada_layout_proto_goTypes = []interface{}{
 	(GetFieldListRequest_RequestType)(0),               // 0: scada_layout.GetFieldListRequest.RequestType
 	(GetReportResponse_DefaultChart_DisplayType)(0),    // 1: scada_layout.GetReportResponse.DefaultChart.DisplayType
@@ -2101,66 +2376,77 @@ var file_scada_layout_proto_scada_layout_proto_goTypes = []interface{}{
 	(*GetSmartDefrostResponse)(nil),                    // 7: scada_layout.GetSmartDefrostResponse
 	(*GetReportResponse)(nil),                          // 8: scada_layout.GetReportResponse
 	(*GetScenarioResponse)(nil),                        // 9: scada_layout.GetScenarioResponse
-	(*GetFieldsTagsResponse_FieldTag)(nil),             // 10: scada_layout.GetFieldsTagsResponse.FieldTag
-	(*GetFieldsTagsResponse_IdWithName)(nil),           // 11: scada_layout.GetFieldsTagsResponse.IdWithName
-	(*GetReportFieldsResponse_Field)(nil),              // 12: scada_layout.GetReportFieldsResponse.Field
-	nil,                                                // 13: scada_layout.GetReportFieldsResponse.Field.TransEntry
-	(*GetSmartDefrostResponse_GroupDetail)(nil),        // 14: scada_layout.GetSmartDefrostResponse.GroupDetail
-	(*GetSmartDefrostResponse_ElementDetail)(nil),      // 15: scada_layout.GetSmartDefrostResponse.ElementDetail
-	(*GetSmartDefrostResponse_ServerSettingField)(nil), // 16: scada_layout.GetSmartDefrostResponse.ServerSettingField
-	(*GetReportResponse_ReportSettingDetail)(nil),      // 17: scada_layout.GetReportResponse.ReportSettingDetail
-	(*GetReportResponse_PdfInputDetail)(nil),           // 18: scada_layout.GetReportResponse.PdfInputDetail
-	(*GetReportResponse_ExcelIntervalDetail)(nil),      // 19: scada_layout.GetReportResponse.ExcelIntervalDetail
-	(*GetReportResponse_IntervalDetail)(nil),           // 20: scada_layout.GetReportResponse.IntervalDetail
-	(*GetReportResponse_DefaultChart)(nil),             // 21: scada_layout.GetReportResponse.DefaultChart
-	(*GetReportResponse_DefaultChart_ChartField)(nil),  // 22: scada_layout.GetReportResponse.DefaultChart.ChartField
-	nil, // 23: scada_layout.GetReportResponse.DefaultChart.ChartField.TransEntry
-	(*GetScenarioResponse_ElementScenario)(nil), // 24: scada_layout.GetScenarioResponse.ElementScenario
-	(*GetScenarioResponse_ScenarioDetail)(nil),  // 25: scada_layout.GetScenarioResponse.ScenarioDetail
-	(*GetScenarioResponse_FieldAction)(nil),     // 26: scada_layout.GetScenarioResponse.FieldAction
-	(*emptypb.Empty)(nil),                       // 27: google.protobuf.Empty
+	(*GetAlarmFieldsResponse)(nil),                     // 10: scada_layout.GetAlarmFieldsResponse
+	(*GetFieldsTagsResponse_FieldTag)(nil),             // 11: scada_layout.GetFieldsTagsResponse.FieldTag
+	(*GetFieldsTagsResponse_IdWithName)(nil),           // 12: scada_layout.GetFieldsTagsResponse.IdWithName
+	(*GetReportFieldsResponse_Field)(nil),              // 13: scada_layout.GetReportFieldsResponse.Field
+	nil,                                                // 14: scada_layout.GetReportFieldsResponse.Field.TransEntry
+	(*GetSmartDefrostResponse_GroupDetail)(nil),        // 15: scada_layout.GetSmartDefrostResponse.GroupDetail
+	(*GetSmartDefrostResponse_ElementDetail)(nil),      // 16: scada_layout.GetSmartDefrostResponse.ElementDetail
+	(*GetSmartDefrostResponse_ServerSettingField)(nil), // 17: scada_layout.GetSmartDefrostResponse.ServerSettingField
+	(*GetReportResponse_ReportSettingDetail)(nil),      // 18: scada_layout.GetReportResponse.ReportSettingDetail
+	(*GetReportResponse_PdfInputDetail)(nil),           // 19: scada_layout.GetReportResponse.PdfInputDetail
+	(*GetReportResponse_ExcelIntervalDetail)(nil),      // 20: scada_layout.GetReportResponse.ExcelIntervalDetail
+	(*GetReportResponse_IntervalDetail)(nil),           // 21: scada_layout.GetReportResponse.IntervalDetail
+	(*GetReportResponse_DefaultChart)(nil),             // 22: scada_layout.GetReportResponse.DefaultChart
+	(*GetReportResponse_DefaultChart_ChartField)(nil),  // 23: scada_layout.GetReportResponse.DefaultChart.ChartField
+	nil, // 24: scada_layout.GetReportResponse.DefaultChart.ChartField.TransEntry
+	(*GetScenarioResponse_ElementScenario)(nil), // 25: scada_layout.GetScenarioResponse.ElementScenario
+	(*GetScenarioResponse_ScenarioDetail)(nil),  // 26: scada_layout.GetScenarioResponse.ScenarioDetail
+	(*GetScenarioResponse_FieldAction)(nil),     // 27: scada_layout.GetScenarioResponse.FieldAction
+	(*GetAlarmFieldsResponse_FieldDetail)(nil),  // 28: scada_layout.GetAlarmFieldsResponse.FieldDetail
+	(*GetAlarmFieldsResponse_Element)(nil),      // 29: scada_layout.GetAlarmFieldsResponse.Element
+	(*GetAlarmFieldsResponse_Limit)(nil),        // 30: scada_layout.GetAlarmFieldsResponse.Limit
+	nil,                                         // 31: scada_layout.GetAlarmFieldsResponse.FieldDetail.TransEntry
+	(*emptypb.Empty)(nil),                       // 32: google.protobuf.Empty
 }
 var file_scada_layout_proto_scada_layout_proto_depIdxs = []int32{
-	10, // 0: scada_layout.GetFieldsTagsResponse.fieldTags:type_name -> scada_layout.GetFieldsTagsResponse.FieldTag
-	12, // 1: scada_layout.GetReportFieldsResponse.fields:type_name -> scada_layout.GetReportFieldsResponse.Field
+	11, // 0: scada_layout.GetFieldsTagsResponse.fieldTags:type_name -> scada_layout.GetFieldsTagsResponse.FieldTag
+	13, // 1: scada_layout.GetReportFieldsResponse.fields:type_name -> scada_layout.GetReportFieldsResponse.Field
 	0,  // 2: scada_layout.GetFieldListRequest.type:type_name -> scada_layout.GetFieldListRequest.RequestType
-	14, // 3: scada_layout.GetSmartDefrostResponse.groups:type_name -> scada_layout.GetSmartDefrostResponse.GroupDetail
-	17, // 4: scada_layout.GetReportResponse.pdf_setting:type_name -> scada_layout.GetReportResponse.ReportSettingDetail
-	17, // 5: scada_layout.GetReportResponse.excel_setting:type_name -> scada_layout.GetReportResponse.ReportSettingDetail
-	18, // 6: scada_layout.GetReportResponse.pdf_input:type_name -> scada_layout.GetReportResponse.PdfInputDetail
-	19, // 7: scada_layout.GetReportResponse.excel_input:type_name -> scada_layout.GetReportResponse.ExcelIntervalDetail
-	21, // 8: scada_layout.GetReportResponse.default_charts:type_name -> scada_layout.GetReportResponse.DefaultChart
-	24, // 9: scada_layout.GetScenarioResponse.elements:type_name -> scada_layout.GetScenarioResponse.ElementScenario
-	11, // 10: scada_layout.GetFieldsTagsResponse.FieldTag.equipments:type_name -> scada_layout.GetFieldsTagsResponse.IdWithName
-	11, // 11: scada_layout.GetFieldsTagsResponse.FieldTag.groups:type_name -> scada_layout.GetFieldsTagsResponse.IdWithName
-	11, // 12: scada_layout.GetFieldsTagsResponse.FieldTag.floors:type_name -> scada_layout.GetFieldsTagsResponse.IdWithName
-	13, // 13: scada_layout.GetReportFieldsResponse.Field.trans:type_name -> scada_layout.GetReportFieldsResponse.Field.TransEntry
-	15, // 14: scada_layout.GetSmartDefrostResponse.GroupDetail.elements:type_name -> scada_layout.GetSmartDefrostResponse.ElementDetail
-	16, // 15: scada_layout.GetSmartDefrostResponse.ElementDetail.fields:type_name -> scada_layout.GetSmartDefrostResponse.ServerSettingField
-	20, // 16: scada_layout.GetReportResponse.PdfInputDetail.interval:type_name -> scada_layout.GetReportResponse.IntervalDetail
-	20, // 17: scada_layout.GetReportResponse.ExcelIntervalDetail.interval:type_name -> scada_layout.GetReportResponse.IntervalDetail
-	20, // 18: scada_layout.GetReportResponse.ExcelIntervalDetail.data_interval:type_name -> scada_layout.GetReportResponse.IntervalDetail
-	22, // 19: scada_layout.GetReportResponse.DefaultChart.chart_fields:type_name -> scada_layout.GetReportResponse.DefaultChart.ChartField
-	23, // 20: scada_layout.GetReportResponse.DefaultChart.ChartField.trans:type_name -> scada_layout.GetReportResponse.DefaultChart.ChartField.TransEntry
-	25, // 21: scada_layout.GetScenarioResponse.ElementScenario.scenarios:type_name -> scada_layout.GetScenarioResponse.ScenarioDetail
-	26, // 22: scada_layout.GetScenarioResponse.ScenarioDetail.field_actions:type_name -> scada_layout.GetScenarioResponse.FieldAction
-	2,  // 23: scada_layout.ScadaLayoutService.getFieldsTags:input_type -> scada_layout.FieldList
-	2,  // 24: scada_layout.ScadaLayoutService.getReportFields:input_type -> scada_layout.FieldList
-	5,  // 25: scada_layout.ScadaLayoutService.getFieldsWithId:input_type -> scada_layout.GetFieldListRequest
-	27, // 26: scada_layout.ScadaLayoutService.getSmartDefrost:input_type -> google.protobuf.Empty
-	27, // 27: scada_layout.ScadaLayoutService.getReport:input_type -> google.protobuf.Empty
-	27, // 28: scada_layout.ScadaLayoutService.GetScenario:input_type -> google.protobuf.Empty
-	3,  // 29: scada_layout.ScadaLayoutService.getFieldsTags:output_type -> scada_layout.GetFieldsTagsResponse
-	4,  // 30: scada_layout.ScadaLayoutService.getReportFields:output_type -> scada_layout.GetReportFieldsResponse
-	6,  // 31: scada_layout.ScadaLayoutService.getFieldsWithId:output_type -> scada_layout.GetFieldListResponse
-	7,  // 32: scada_layout.ScadaLayoutService.getSmartDefrost:output_type -> scada_layout.GetSmartDefrostResponse
-	8,  // 33: scada_layout.ScadaLayoutService.getReport:output_type -> scada_layout.GetReportResponse
-	9,  // 34: scada_layout.ScadaLayoutService.GetScenario:output_type -> scada_layout.GetScenarioResponse
-	29, // [29:35] is the sub-list for method output_type
-	23, // [23:29] is the sub-list for method input_type
-	23, // [23:23] is the sub-list for extension type_name
-	23, // [23:23] is the sub-list for extension extendee
-	0,  // [0:23] is the sub-list for field type_name
+	15, // 3: scada_layout.GetSmartDefrostResponse.groups:type_name -> scada_layout.GetSmartDefrostResponse.GroupDetail
+	18, // 4: scada_layout.GetReportResponse.pdf_setting:type_name -> scada_layout.GetReportResponse.ReportSettingDetail
+	18, // 5: scada_layout.GetReportResponse.excel_setting:type_name -> scada_layout.GetReportResponse.ReportSettingDetail
+	19, // 6: scada_layout.GetReportResponse.pdf_input:type_name -> scada_layout.GetReportResponse.PdfInputDetail
+	20, // 7: scada_layout.GetReportResponse.excel_input:type_name -> scada_layout.GetReportResponse.ExcelIntervalDetail
+	22, // 8: scada_layout.GetReportResponse.default_charts:type_name -> scada_layout.GetReportResponse.DefaultChart
+	25, // 9: scada_layout.GetScenarioResponse.elements:type_name -> scada_layout.GetScenarioResponse.ElementScenario
+	28, // 10: scada_layout.GetAlarmFieldsResponse.fields:type_name -> scada_layout.GetAlarmFieldsResponse.FieldDetail
+	12, // 11: scada_layout.GetFieldsTagsResponse.FieldTag.equipments:type_name -> scada_layout.GetFieldsTagsResponse.IdWithName
+	12, // 12: scada_layout.GetFieldsTagsResponse.FieldTag.groups:type_name -> scada_layout.GetFieldsTagsResponse.IdWithName
+	12, // 13: scada_layout.GetFieldsTagsResponse.FieldTag.floors:type_name -> scada_layout.GetFieldsTagsResponse.IdWithName
+	14, // 14: scada_layout.GetReportFieldsResponse.Field.trans:type_name -> scada_layout.GetReportFieldsResponse.Field.TransEntry
+	16, // 15: scada_layout.GetSmartDefrostResponse.GroupDetail.elements:type_name -> scada_layout.GetSmartDefrostResponse.ElementDetail
+	17, // 16: scada_layout.GetSmartDefrostResponse.ElementDetail.fields:type_name -> scada_layout.GetSmartDefrostResponse.ServerSettingField
+	21, // 17: scada_layout.GetReportResponse.PdfInputDetail.interval:type_name -> scada_layout.GetReportResponse.IntervalDetail
+	21, // 18: scada_layout.GetReportResponse.ExcelIntervalDetail.interval:type_name -> scada_layout.GetReportResponse.IntervalDetail
+	21, // 19: scada_layout.GetReportResponse.ExcelIntervalDetail.data_interval:type_name -> scada_layout.GetReportResponse.IntervalDetail
+	23, // 20: scada_layout.GetReportResponse.DefaultChart.chart_fields:type_name -> scada_layout.GetReportResponse.DefaultChart.ChartField
+	24, // 21: scada_layout.GetReportResponse.DefaultChart.ChartField.trans:type_name -> scada_layout.GetReportResponse.DefaultChart.ChartField.TransEntry
+	26, // 22: scada_layout.GetScenarioResponse.ElementScenario.scenarios:type_name -> scada_layout.GetScenarioResponse.ScenarioDetail
+	27, // 23: scada_layout.GetScenarioResponse.ScenarioDetail.field_actions:type_name -> scada_layout.GetScenarioResponse.FieldAction
+	29, // 24: scada_layout.GetAlarmFieldsResponse.FieldDetail.elements:type_name -> scada_layout.GetAlarmFieldsResponse.Element
+	30, // 25: scada_layout.GetAlarmFieldsResponse.FieldDetail.limit:type_name -> scada_layout.GetAlarmFieldsResponse.Limit
+	31, // 26: scada_layout.GetAlarmFieldsResponse.FieldDetail.trans:type_name -> scada_layout.GetAlarmFieldsResponse.FieldDetail.TransEntry
+	2,  // 27: scada_layout.ScadaLayoutService.getFieldsTags:input_type -> scada_layout.FieldList
+	2,  // 28: scada_layout.ScadaLayoutService.getReportFields:input_type -> scada_layout.FieldList
+	5,  // 29: scada_layout.ScadaLayoutService.getFieldsWithId:input_type -> scada_layout.GetFieldListRequest
+	32, // 30: scada_layout.ScadaLayoutService.getSmartDefrost:input_type -> google.protobuf.Empty
+	32, // 31: scada_layout.ScadaLayoutService.getReport:input_type -> google.protobuf.Empty
+	32, // 32: scada_layout.ScadaLayoutService.GetScenario:input_type -> google.protobuf.Empty
+	32, // 33: scada_layout.ScadaLayoutService.GetAlarmFields:input_type -> google.protobuf.Empty
+	3,  // 34: scada_layout.ScadaLayoutService.getFieldsTags:output_type -> scada_layout.GetFieldsTagsResponse
+	4,  // 35: scada_layout.ScadaLayoutService.getReportFields:output_type -> scada_layout.GetReportFieldsResponse
+	6,  // 36: scada_layout.ScadaLayoutService.getFieldsWithId:output_type -> scada_layout.GetFieldListResponse
+	7,  // 37: scada_layout.ScadaLayoutService.getSmartDefrost:output_type -> scada_layout.GetSmartDefrostResponse
+	8,  // 38: scada_layout.ScadaLayoutService.getReport:output_type -> scada_layout.GetReportResponse
+	9,  // 39: scada_layout.ScadaLayoutService.GetScenario:output_type -> scada_layout.GetScenarioResponse
+	10, // 40: scada_layout.ScadaLayoutService.GetAlarmFields:output_type -> scada_layout.GetAlarmFieldsResponse
+	34, // [34:41] is the sub-list for method output_type
+	27, // [27:34] is the sub-list for method input_type
+	27, // [27:27] is the sub-list for extension type_name
+	27, // [27:27] is the sub-list for extension extendee
+	0,  // [0:27] is the sub-list for field type_name
 }
 
 func init() { file_scada_layout_proto_scada_layout_proto_init() }
@@ -2266,7 +2552,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 			}
 		}
 		file_scada_layout_proto_scada_layout_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetFieldsTagsResponse_FieldTag); i {
+			switch v := v.(*GetAlarmFieldsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2278,7 +2564,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 			}
 		}
 		file_scada_layout_proto_scada_layout_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetFieldsTagsResponse_IdWithName); i {
+			switch v := v.(*GetFieldsTagsResponse_FieldTag); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2290,6 +2576,18 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 			}
 		}
 		file_scada_layout_proto_scada_layout_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetFieldsTagsResponse_IdWithName); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_scada_layout_proto_scada_layout_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReportFieldsResponse_Field); i {
 			case 0:
 				return &v.state
@@ -2301,7 +2599,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetSmartDefrostResponse_GroupDetail); i {
 			case 0:
 				return &v.state
@@ -2313,7 +2611,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetSmartDefrostResponse_ElementDetail); i {
 			case 0:
 				return &v.state
@@ -2325,7 +2623,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetSmartDefrostResponse_ServerSettingField); i {
 			case 0:
 				return &v.state
@@ -2337,7 +2635,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReportResponse_ReportSettingDetail); i {
 			case 0:
 				return &v.state
@@ -2349,7 +2647,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReportResponse_PdfInputDetail); i {
 			case 0:
 				return &v.state
@@ -2361,7 +2659,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReportResponse_ExcelIntervalDetail); i {
 			case 0:
 				return &v.state
@@ -2373,7 +2671,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReportResponse_IntervalDetail); i {
 			case 0:
 				return &v.state
@@ -2385,7 +2683,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReportResponse_DefaultChart); i {
 			case 0:
 				return &v.state
@@ -2397,7 +2695,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReportResponse_DefaultChart_ChartField); i {
 			case 0:
 				return &v.state
@@ -2409,7 +2707,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetScenarioResponse_ElementScenario); i {
 			case 0:
 				return &v.state
@@ -2421,7 +2719,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetScenarioResponse_ScenarioDetail); i {
 			case 0:
 				return &v.state
@@ -2433,8 +2731,44 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetScenarioResponse_FieldAction); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_scada_layout_proto_scada_layout_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetAlarmFieldsResponse_FieldDetail); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_scada_layout_proto_scada_layout_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetAlarmFieldsResponse_Element); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_scada_layout_proto_scada_layout_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetAlarmFieldsResponse_Limit); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2452,7 +2786,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_scada_layout_proto_scada_layout_proto_rawDesc,
 			NumEnums:      2,
-			NumMessages:   25,
+			NumMessages:   30,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
