@@ -203,7 +203,7 @@ message GetAlarmFieldsResponse {
     }
 
     message Limit {
-        int32 upper = 1;
-        int32 lower = 2;
+        double upper = 1;
+        double lower = 2;
     }
 }
