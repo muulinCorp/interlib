@@ -12,6 +12,7 @@ service ScadaLayoutService {
     rpc getSmartDefrost(google.protobuf.Empty) returns (GetSmartDefrostResponse) {};
     rpc getReport(google.protobuf.Empty) returns (GetReportResponse) {};
     rpc GetScenario(google.protobuf.Empty) returns (GetScenarioResponse) {};
+    rpc GetAlarmFields(google.protobuf.Empty) returns (GetAlarmFieldsResponse) {};
 }
 
 message FieldList {
@@ -182,5 +183,27 @@ message GetScenarioResponse {
     message FieldAction {
         string field = 1;
         double value = 2;
+    }
+}
+
+message GetAlarmFieldsResponse {
+    repeated FieldDetail fields = 1;
+
+    message FieldDetail {
+        string field = 1;
+        string desc = 2;
+        repeated Element elements = 3;
+        Limit limit = 4;
+        map<int32, string> trans = 10;
+    }
+
+    message Element {
+        string id = 1;
+        string name = 2;
+    }
+
+    message Limit {
+        int32 upper = 1;
+        int32 lower = 2;
     }
 }
