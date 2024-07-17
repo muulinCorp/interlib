@@ -28,6 +28,8 @@ message GetFieldsTagsResponse {
         string unit = 5;
         string sensorType = 6;
         string name = 7;
+        repeated string smart_temp_groups = 8;
+        bool isEletricMeter = 9;
     }
     repeated FieldTag fieldTags = 1;
 
