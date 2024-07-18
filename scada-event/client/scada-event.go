@@ -9,6 +9,37 @@ import (
 	"github.com/muulinCorp/interlib/scada-event/pb"
 )
 
+type ScadaBasicEventClient interface {
+	CreateEvent(ctx context.Context, service, typ, summary, detail string) error
+}
+
+func NewScadaBasicEventClient(address string) ScadaBasicEventClient {
+	return &scadaBasicEventClientImpl{
+		address: address,
+	}
+}
+
+type scadaBasicEventClientImpl struct {
+	address string
+}
+
+func (impl *scadaBasicEventClientImpl) CreateEvent(ctx context.Context, service, typ, summary, detail string) error {
+	grpc, err := grpc_tool.NewConnection(ctx, impl.address)
+	if err != nil {
+		return err
+	}
+	defer grpc.Close()
+
+	clt := pb.NewScadaEventServiceClient(grpc)
+	_, err = clt.CreateEvent(ctx, &pb.CreateEventReq{
+		Service:   service,
+		Type:      typ,
+		Summarize: summary,
+		Detail:    detail,
+	})
+	return err
+}
+
 type ScadaEventWarnClient[T any] interface {
 	CreateWarning(ctx context.Context, service string, warns ...*CreateWarn[T]) error
 	CloseWarning(ctx context.Context, service string, keys ...string) error

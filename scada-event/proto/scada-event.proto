@@ -60,10 +60,18 @@ message ReadWarningsReq {
     string account = 3;
 }
 
+message CreateEventReq {
+    string service = 1;
+    string type = 2;
+    string summarize = 3;
+    string detail = 4;
+}
+
 service ScadaEventService {
     rpc createWarning(CreateWarningsReq) returns (google.protobuf.Empty) {}
     rpc closeWarning(CloseWarningReq) returns (google.protobuf.Empty) {}
     rpc extendWarning(ExtendWarningReq) returns (google.protobuf.Empty) {}
     rpc readWarnings(ReadWarningsReq) returns (google.protobuf.Empty) {}
     rpc getRealtime(GetRealtimeReq) returns (GetRealtimeResp) {}
+    rpc createEvent(CreateEventReq) returns (google.protobuf.Empty) {}
 }
