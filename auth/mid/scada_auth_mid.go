@@ -9,6 +9,8 @@ import (
 	authClient "github.com/muulinCorp/interlib/auth/client"
 	"github.com/muulinCorp/interlib/auth/pb"
 	"github.com/muulinCorp/interlib/types"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	apitool "github.com/94peter/api-toolkit"
 	"github.com/94peter/api-toolkit/auth"
@@ -69,7 +71,13 @@ func (am *scadaAuthMiddle) Handler() gin.HandlerFunc {
 				Host: host, Token: authToken[7:],
 			})
 			if err != nil {
-				am.GinApiErrorHandler(c, types.NewErrorWaper(types.ErrAuthGrpcConnectFail, err.Error()))
+				status, ok := status.FromError(err)
+				if !ok || status.Code() != codes.Unauthenticated {
+					am.GinApiErrorHandler(c, types.NewErrorWaper(types.ErrAuthGrpcConnectFail, err.Error()))
+					c.Abort()
+					return
+				}
+				am.GinApiErrorHandler(c, types.NewErrorWaper(types.ErrTokenTimeout, err.Error()))
 				c.Abort()
 				return
 			}
