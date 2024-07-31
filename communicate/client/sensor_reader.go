@@ -28,10 +28,10 @@ type sensorReaderImpl struct {
 func (impl *sensorReaderImpl) GetValue(name string) (float64, error) {
 	l := len(impl.sensors)
 	for i := 0; i < l; i++ {
-		if impl.sensors[i].GetIsConnErr() {
-			return 0, ErrConnectFail
-		}
 		if impl.sensors[i].Name == name {
+			if impl.sensors[i].GetIsConnErr() {
+				return 0, ErrConnectFail
+			}
 			return impl.sensors[i].GetValue(), nil
 		}
 	}
