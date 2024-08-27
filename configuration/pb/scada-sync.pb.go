@@ -75,7 +75,7 @@ type SyncConfigReq struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ConfigToken string `protobuf:"bytes,1,opt,name=configToken,proto3" json:"configToken,omitempty"`
+	ConfigToken string `protobuf:"bytes,1,opt,name=configToken,proto3" json:"configToken,omitempty"` // env
 	Version     string `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
 }
 
@@ -206,6 +206,7 @@ func (*SyncConfigResp_UpdateMsg_) isSyncConfigResp_Msg() {}
 
 func (*SyncConfigResp_DebugMsg_) isSyncConfigResp_Msg() {}
 
+// not going to implement it currently
 type ReportProgressReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
