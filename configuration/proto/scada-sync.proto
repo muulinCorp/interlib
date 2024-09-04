@@ -6,7 +6,7 @@ package configuration;
 import "google/protobuf/empty.proto";
 
 message SyncConfigReq {
-    string configToken = 1;
+    string configToken = 1; // env
     string version = 2;
 }
 
@@ -27,6 +27,7 @@ message SyncConfigResp {
   }
 }
 
+// not going to implement it currently
 message ReportProgressReq {
   ConfigSyncMethod state = 1;
 
@@ -50,6 +51,7 @@ service ScadaSyncService {
     // 建立雙向stream連綫
     rpc SyncConfigStream(SyncConfigReq) returns (stream SyncConfigResp) {};
     
+    // not going to implement it currently
     // 告知sync進度
     rpc ReportProgress(ReportProgressReq) returns (google.protobuf.Empty) {};
 

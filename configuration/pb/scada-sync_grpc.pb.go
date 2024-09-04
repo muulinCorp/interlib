@@ -25,6 +25,7 @@ const _ = grpc.SupportPackageIsVersion7
 type ScadaSyncServiceClient interface {
 	// 建立雙向stream連綫
 	SyncConfigStream(ctx context.Context, in *SyncConfigReq, opts ...grpc.CallOption) (ScadaSyncService_SyncConfigStreamClient, error)
+	// not going to implement it currently
 	// 告知sync進度
 	ReportProgress(ctx context.Context, in *ReportProgressReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// 從comm回傳log
@@ -95,6 +96,7 @@ func (c *scadaSyncServiceClient) CommDebugLogReturn(ctx context.Context, in *Deb
 type ScadaSyncServiceServer interface {
 	// 建立雙向stream連綫
 	SyncConfigStream(*SyncConfigReq, ScadaSyncService_SyncConfigStreamServer) error
+	// not going to implement it currently
 	// 告知sync進度
 	ReportProgress(context.Context, *ReportProgressReq) (*emptypb.Empty, error)
 	// 從comm回傳log
