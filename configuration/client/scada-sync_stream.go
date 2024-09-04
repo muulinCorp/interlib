@@ -29,7 +29,7 @@ func (i *scadaSyncStreamImpl) StartListenSyncStream(
 	respMsg chan *pb.SyncConfigResp, errMsg chan string,
 ) {
 	var err error
-	grpcClt, err := grpc_tool.NewConnection(ctx, i.address)
+	grpcClt, err := grpc_tool.NewConnection(i.address)
 	if err != nil {
 		errMsg <- err.Error()
 		return
