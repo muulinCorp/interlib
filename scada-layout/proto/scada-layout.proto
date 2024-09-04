@@ -213,18 +213,18 @@ message GetAlarmFieldsResponse {
 
 message GetElectricityDemandResponse {
     int32 delay_mins = 1;
-    repeated ElectricityDemandDetail demand_list = 2;
+    ChartColor chart_color = 2;
+    repeated ElectricityDemandDetail demand_list = 3;
 
     message ElectricityDemandDetail {
         string key = 1;
         string name = 2;
         string electricity_field = 3;
         string unit = 4;
-        ChartColor chart_color = 5;
-        InputLimit input_limit = 6;
-        repeated GroupDetail groups = 7;
-        repeated TimingField timing_fields = 8;
-        string dynamo_signal_field = 9;
+        InputLimit input_limit = 5;
+        repeated GroupDetail groups = 6;
+        repeated TimingField timing_fields = 7;
+        string dynamo_signal_field = 8;
     }
 
     message ChartColor {
