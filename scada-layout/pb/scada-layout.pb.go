@@ -611,6 +611,69 @@ func (x *GetAlarmFieldsResponse) GetFields() []*GetAlarmFieldsResponse_FieldDeta
 	return nil
 }
 
+type GetElectricityDemandResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	DelayMins  int32                                                   `protobuf:"varint,1,opt,name=delay_mins,json=delayMins,proto3" json:"delay_mins,omitempty"`
+	ChartColor *GetElectricityDemandResponse_ChartColor                `protobuf:"bytes,2,opt,name=chart_color,json=chartColor,proto3" json:"chart_color,omitempty"`
+	DemandList []*GetElectricityDemandResponse_ElectricityDemandDetail `protobuf:"bytes,3,rep,name=demand_list,json=demandList,proto3" json:"demand_list,omitempty"`
+}
+
+func (x *GetElectricityDemandResponse) Reset() {
+	*x = GetElectricityDemandResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetElectricityDemandResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetElectricityDemandResponse) ProtoMessage() {}
+
+func (x *GetElectricityDemandResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetElectricityDemandResponse.ProtoReflect.Descriptor instead.
+func (*GetElectricityDemandResponse) Descriptor() ([]byte, []int) {
+	return file_scada_layout_proto_scada_layout_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *GetElectricityDemandResponse) GetDelayMins() int32 {
+	if x != nil {
+		return x.DelayMins
+	}
+	return 0
+}
+
+func (x *GetElectricityDemandResponse) GetChartColor() *GetElectricityDemandResponse_ChartColor {
+	if x != nil {
+		return x.ChartColor
+	}
+	return nil
+}
+
+func (x *GetElectricityDemandResponse) GetDemandList() []*GetElectricityDemandResponse_ElectricityDemandDetail {
+	if x != nil {
+		return x.DemandList
+	}
+	return nil
+}
+
 type GetFieldsTagsResponse_FieldTag struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -630,7 +693,7 @@ type GetFieldsTagsResponse_FieldTag struct {
 func (x *GetFieldsTagsResponse_FieldTag) Reset() {
 	*x = GetFieldsTagsResponse_FieldTag{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[9]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -643,7 +706,7 @@ func (x *GetFieldsTagsResponse_FieldTag) String() string {
 func (*GetFieldsTagsResponse_FieldTag) ProtoMessage() {}
 
 func (x *GetFieldsTagsResponse_FieldTag) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[9]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -734,7 +797,7 @@ type GetFieldsTagsResponse_IdWithName struct {
 func (x *GetFieldsTagsResponse_IdWithName) Reset() {
 	*x = GetFieldsTagsResponse_IdWithName{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[10]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -747,7 +810,7 @@ func (x *GetFieldsTagsResponse_IdWithName) String() string {
 func (*GetFieldsTagsResponse_IdWithName) ProtoMessage() {}
 
 func (x *GetFieldsTagsResponse_IdWithName) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[10]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -797,7 +860,7 @@ type GetReportFieldsResponse_Field struct {
 func (x *GetReportFieldsResponse_Field) Reset() {
 	*x = GetReportFieldsResponse_Field{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[11]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -810,7 +873,7 @@ func (x *GetReportFieldsResponse_Field) String() string {
 func (*GetReportFieldsResponse_Field) ProtoMessage() {}
 
 func (x *GetReportFieldsResponse_Field) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[11]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -909,7 +972,7 @@ type GetSmartDefrostResponse_GroupDetail struct {
 func (x *GetSmartDefrostResponse_GroupDetail) Reset() {
 	*x = GetSmartDefrostResponse_GroupDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[13]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -922,7 +985,7 @@ func (x *GetSmartDefrostResponse_GroupDetail) String() string {
 func (*GetSmartDefrostResponse_GroupDetail) ProtoMessage() {}
 
 func (x *GetSmartDefrostResponse_GroupDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[13]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -972,7 +1035,7 @@ type GetSmartDefrostResponse_ElementDetail struct {
 func (x *GetSmartDefrostResponse_ElementDetail) Reset() {
 	*x = GetSmartDefrostResponse_ElementDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[14]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -985,7 +1048,7 @@ func (x *GetSmartDefrostResponse_ElementDetail) String() string {
 func (*GetSmartDefrostResponse_ElementDetail) ProtoMessage() {}
 
 func (x *GetSmartDefrostResponse_ElementDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[14]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1052,7 +1115,7 @@ type GetSmartDefrostResponse_ServerSettingField struct {
 func (x *GetSmartDefrostResponse_ServerSettingField) Reset() {
 	*x = GetSmartDefrostResponse_ServerSettingField{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[15]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1065,7 +1128,7 @@ func (x *GetSmartDefrostResponse_ServerSettingField) String() string {
 func (*GetSmartDefrostResponse_ServerSettingField) ProtoMessage() {}
 
 func (x *GetSmartDefrostResponse_ServerSettingField) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[15]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1235,7 +1298,7 @@ type GetReportResponse_ReportSettingDetail struct {
 func (x *GetReportResponse_ReportSettingDetail) Reset() {
 	*x = GetReportResponse_ReportSettingDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[16]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1248,7 +1311,7 @@ func (x *GetReportResponse_ReportSettingDetail) String() string {
 func (*GetReportResponse_ReportSettingDetail) ProtoMessage() {}
 
 func (x *GetReportResponse_ReportSettingDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[16]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1305,7 +1368,7 @@ type GetReportResponse_PdfInputDetail struct {
 func (x *GetReportResponse_PdfInputDetail) Reset() {
 	*x = GetReportResponse_PdfInputDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[17]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1318,7 +1381,7 @@ func (x *GetReportResponse_PdfInputDetail) String() string {
 func (*GetReportResponse_PdfInputDetail) ProtoMessage() {}
 
 func (x *GetReportResponse_PdfInputDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[17]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1367,7 +1430,7 @@ type GetReportResponse_ExcelIntervalDetail struct {
 func (x *GetReportResponse_ExcelIntervalDetail) Reset() {
 	*x = GetReportResponse_ExcelIntervalDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[18]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1380,7 +1443,7 @@ func (x *GetReportResponse_ExcelIntervalDetail) String() string {
 func (*GetReportResponse_ExcelIntervalDetail) ProtoMessage() {}
 
 func (x *GetReportResponse_ExcelIntervalDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[18]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1423,7 +1486,7 @@ type GetReportResponse_IntervalDetail struct {
 func (x *GetReportResponse_IntervalDetail) Reset() {
 	*x = GetReportResponse_IntervalDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[19]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1436,7 +1499,7 @@ func (x *GetReportResponse_IntervalDetail) String() string {
 func (*GetReportResponse_IntervalDetail) ProtoMessage() {}
 
 func (x *GetReportResponse_IntervalDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[19]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1485,7 +1548,7 @@ type GetReportResponse_DefaultChart struct {
 func (x *GetReportResponse_DefaultChart) Reset() {
 	*x = GetReportResponse_DefaultChart{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[20]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1498,7 +1561,7 @@ func (x *GetReportResponse_DefaultChart) String() string {
 func (*GetReportResponse_DefaultChart) ProtoMessage() {}
 
 func (x *GetReportResponse_DefaultChart) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[20]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1547,7 +1610,7 @@ type GetReportResponse_DefaultChart_ChartField struct {
 func (x *GetReportResponse_DefaultChart_ChartField) Reset() {
 	*x = GetReportResponse_DefaultChart_ChartField{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[21]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1560,7 +1623,7 @@ func (x *GetReportResponse_DefaultChart_ChartField) String() string {
 func (*GetReportResponse_DefaultChart_ChartField) ProtoMessage() {}
 
 func (x *GetReportResponse_DefaultChart_ChartField) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[21]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1651,7 +1714,7 @@ type GetScenarioResponse_ElementScenario struct {
 func (x *GetScenarioResponse_ElementScenario) Reset() {
 	*x = GetScenarioResponse_ElementScenario{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[23]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1664,7 +1727,7 @@ func (x *GetScenarioResponse_ElementScenario) String() string {
 func (*GetScenarioResponse_ElementScenario) ProtoMessage() {}
 
 func (x *GetScenarioResponse_ElementScenario) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[23]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1708,7 +1771,7 @@ type GetScenarioResponse_ScenarioDetail struct {
 func (x *GetScenarioResponse_ScenarioDetail) Reset() {
 	*x = GetScenarioResponse_ScenarioDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[24]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[25]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1721,7 +1784,7 @@ func (x *GetScenarioResponse_ScenarioDetail) String() string {
 func (*GetScenarioResponse_ScenarioDetail) ProtoMessage() {}
 
 func (x *GetScenarioResponse_ScenarioDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[24]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1777,7 +1840,7 @@ type GetScenarioResponse_FieldAction struct {
 func (x *GetScenarioResponse_FieldAction) Reset() {
 	*x = GetScenarioResponse_FieldAction{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[25]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[26]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1790,7 +1853,7 @@ func (x *GetScenarioResponse_FieldAction) String() string {
 func (*GetScenarioResponse_FieldAction) ProtoMessage() {}
 
 func (x *GetScenarioResponse_FieldAction) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[25]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1835,7 +1898,7 @@ type GetAlarmFieldsResponse_FieldDetail struct {
 func (x *GetAlarmFieldsResponse_FieldDetail) Reset() {
 	*x = GetAlarmFieldsResponse_FieldDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[26]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[27]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1848,7 +1911,7 @@ func (x *GetAlarmFieldsResponse_FieldDetail) String() string {
 func (*GetAlarmFieldsResponse_FieldDetail) ProtoMessage() {}
 
 func (x *GetAlarmFieldsResponse_FieldDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[26]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1911,7 +1974,7 @@ type GetAlarmFieldsResponse_Element struct {
 func (x *GetAlarmFieldsResponse_Element) Reset() {
 	*x = GetAlarmFieldsResponse_Element{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[27]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[28]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1924,7 +1987,7 @@ func (x *GetAlarmFieldsResponse_Element) String() string {
 func (*GetAlarmFieldsResponse_Element) ProtoMessage() {}
 
 func (x *GetAlarmFieldsResponse_Element) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[27]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[28]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1966,7 +2029,7 @@ type GetAlarmFieldsResponse_Limit struct {
 func (x *GetAlarmFieldsResponse_Limit) Reset() {
 	*x = GetAlarmFieldsResponse_Limit{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[28]
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[29]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1979,7 +2042,7 @@ func (x *GetAlarmFieldsResponse_Limit) String() string {
 func (*GetAlarmFieldsResponse_Limit) ProtoMessage() {}
 
 func (x *GetAlarmFieldsResponse_Limit) ProtoReflect() protoreflect.Message {
-	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[28]
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[29]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2007,6 +2070,574 @@ func (x *GetAlarmFieldsResponse_Limit) GetLower() float64 {
 		return x.Lower
 	}
 	return 0
+}
+
+type GetElectricityDemandResponse_ElectricityDemandDetail struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Key               string                                      `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Name              string                                      `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	ElectricityField  string                                      `protobuf:"bytes,3,opt,name=electricity_field,json=electricityField,proto3" json:"electricity_field,omitempty"`
+	Unit              string                                      `protobuf:"bytes,4,opt,name=unit,proto3" json:"unit,omitempty"`
+	InputLimit        *GetElectricityDemandResponse_InputLimit    `protobuf:"bytes,5,opt,name=input_limit,json=inputLimit,proto3" json:"input_limit,omitempty"`
+	Groups            []*GetElectricityDemandResponse_GroupDetail `protobuf:"bytes,6,rep,name=groups,proto3" json:"groups,omitempty"`
+	TimingFields      []*GetElectricityDemandResponse_TimingField `protobuf:"bytes,7,rep,name=timing_fields,json=timingFields,proto3" json:"timing_fields,omitempty"`
+	DynamoSignalField string                                      `protobuf:"bytes,8,opt,name=dynamo_signal_field,json=dynamoSignalField,proto3" json:"dynamo_signal_field,omitempty"`
+}
+
+func (x *GetElectricityDemandResponse_ElectricityDemandDetail) Reset() {
+	*x = GetElectricityDemandResponse_ElectricityDemandDetail{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[31]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetElectricityDemandResponse_ElectricityDemandDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetElectricityDemandResponse_ElectricityDemandDetail) ProtoMessage() {}
+
+func (x *GetElectricityDemandResponse_ElectricityDemandDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[31]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetElectricityDemandResponse_ElectricityDemandDetail.ProtoReflect.Descriptor instead.
+func (*GetElectricityDemandResponse_ElectricityDemandDetail) Descriptor() ([]byte, []int) {
+	return file_scada_layout_proto_scada_layout_proto_rawDescGZIP(), []int{9, 0}
+}
+
+func (x *GetElectricityDemandResponse_ElectricityDemandDetail) GetKey() string {
+	if x != nil {
+		return x.Key
+	}
+	return ""
+}
+
+func (x *GetElectricityDemandResponse_ElectricityDemandDetail) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *GetElectricityDemandResponse_ElectricityDemandDetail) GetElectricityField() string {
+	if x != nil {
+		return x.ElectricityField
+	}
+	return ""
+}
+
+func (x *GetElectricityDemandResponse_ElectricityDemandDetail) GetUnit() string {
+	if x != nil {
+		return x.Unit
+	}
+	return ""
+}
+
+func (x *GetElectricityDemandResponse_ElectricityDemandDetail) GetInputLimit() *GetElectricityDemandResponse_InputLimit {
+	if x != nil {
+		return x.InputLimit
+	}
+	return nil
+}
+
+func (x *GetElectricityDemandResponse_ElectricityDemandDetail) GetGroups() []*GetElectricityDemandResponse_GroupDetail {
+	if x != nil {
+		return x.Groups
+	}
+	return nil
+}
+
+func (x *GetElectricityDemandResponse_ElectricityDemandDetail) GetTimingFields() []*GetElectricityDemandResponse_TimingField {
+	if x != nil {
+		return x.TimingFields
+	}
+	return nil
+}
+
+func (x *GetElectricityDemandResponse_ElectricityDemandDetail) GetDynamoSignalField() string {
+	if x != nil {
+		return x.DynamoSignalField
+	}
+	return ""
+}
+
+type GetElectricityDemandResponse_ChartColor struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Target   string `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
+	Forecast string `protobuf:"bytes,2,opt,name=forecast,proto3" json:"forecast,omitempty"`
+	Current  string `protobuf:"bytes,3,opt,name=current,proto3" json:"current,omitempty"`
+}
+
+func (x *GetElectricityDemandResponse_ChartColor) Reset() {
+	*x = GetElectricityDemandResponse_ChartColor{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[32]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetElectricityDemandResponse_ChartColor) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetElectricityDemandResponse_ChartColor) ProtoMessage() {}
+
+func (x *GetElectricityDemandResponse_ChartColor) ProtoReflect() protoreflect.Message {
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[32]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetElectricityDemandResponse_ChartColor.ProtoReflect.Descriptor instead.
+func (*GetElectricityDemandResponse_ChartColor) Descriptor() ([]byte, []int) {
+	return file_scada_layout_proto_scada_layout_proto_rawDescGZIP(), []int{9, 1}
+}
+
+func (x *GetElectricityDemandResponse_ChartColor) GetTarget() string {
+	if x != nil {
+		return x.Target
+	}
+	return ""
+}
+
+func (x *GetElectricityDemandResponse_ChartColor) GetForecast() string {
+	if x != nil {
+		return x.Forecast
+	}
+	return ""
+}
+
+func (x *GetElectricityDemandResponse_ChartColor) GetCurrent() string {
+	if x != nil {
+		return x.Current
+	}
+	return ""
+}
+
+type GetElectricityDemandResponse_InputLimit struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	TargetElectricity *GetElectricityDemandResponse_LimitDetail `protobuf:"bytes,1,opt,name=target_electricity,json=targetElectricity,proto3,oneof" json:"target_electricity,omitempty"`
+	RestrictedMins    *GetElectricityDemandResponse_LimitDetail `protobuf:"bytes,2,opt,name=restricted_mins,json=restrictedMins,proto3,oneof" json:"restricted_mins,omitempty"`
+	Electricity       *GetElectricityDemandResponse_LimitDetail `protobuf:"bytes,3,opt,name=electricity,proto3,oneof" json:"electricity,omitempty"`
+	ElapsedMins       *GetElectricityDemandResponse_LimitDetail `protobuf:"bytes,4,opt,name=elapsed_mins,json=elapsedMins,proto3,oneof" json:"elapsed_mins,omitempty"`
+}
+
+func (x *GetElectricityDemandResponse_InputLimit) Reset() {
+	*x = GetElectricityDemandResponse_InputLimit{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[33]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetElectricityDemandResponse_InputLimit) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetElectricityDemandResponse_InputLimit) ProtoMessage() {}
+
+func (x *GetElectricityDemandResponse_InputLimit) ProtoReflect() protoreflect.Message {
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[33]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetElectricityDemandResponse_InputLimit.ProtoReflect.Descriptor instead.
+func (*GetElectricityDemandResponse_InputLimit) Descriptor() ([]byte, []int) {
+	return file_scada_layout_proto_scada_layout_proto_rawDescGZIP(), []int{9, 2}
+}
+
+func (x *GetElectricityDemandResponse_InputLimit) GetTargetElectricity() *GetElectricityDemandResponse_LimitDetail {
+	if x != nil {
+		return x.TargetElectricity
+	}
+	return nil
+}
+
+func (x *GetElectricityDemandResponse_InputLimit) GetRestrictedMins() *GetElectricityDemandResponse_LimitDetail {
+	if x != nil {
+		return x.RestrictedMins
+	}
+	return nil
+}
+
+func (x *GetElectricityDemandResponse_InputLimit) GetElectricity() *GetElectricityDemandResponse_LimitDetail {
+	if x != nil {
+		return x.Electricity
+	}
+	return nil
+}
+
+func (x *GetElectricityDemandResponse_InputLimit) GetElapsedMins() *GetElectricityDemandResponse_LimitDetail {
+	if x != nil {
+		return x.ElapsedMins
+	}
+	return nil
+}
+
+type GetElectricityDemandResponse_LimitDetail struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Upper int32 `protobuf:"varint,1,opt,name=upper,proto3" json:"upper,omitempty"`
+	Lower int32 `protobuf:"varint,2,opt,name=lower,proto3" json:"lower,omitempty"`
+}
+
+func (x *GetElectricityDemandResponse_LimitDetail) Reset() {
+	*x = GetElectricityDemandResponse_LimitDetail{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[34]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetElectricityDemandResponse_LimitDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetElectricityDemandResponse_LimitDetail) ProtoMessage() {}
+
+func (x *GetElectricityDemandResponse_LimitDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[34]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetElectricityDemandResponse_LimitDetail.ProtoReflect.Descriptor instead.
+func (*GetElectricityDemandResponse_LimitDetail) Descriptor() ([]byte, []int) {
+	return file_scada_layout_proto_scada_layout_proto_rawDescGZIP(), []int{9, 3}
+}
+
+func (x *GetElectricityDemandResponse_LimitDetail) GetUpper() int32 {
+	if x != nil {
+		return x.Upper
+	}
+	return 0
+}
+
+func (x *GetElectricityDemandResponse_LimitDetail) GetLower() int32 {
+	if x != nil {
+		return x.Lower
+	}
+	return 0
+}
+
+type GetElectricityDemandResponse_GroupDetail struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id       string                                        `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name     string                                        `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Elements []*GetElectricityDemandResponse_ElementDetail `protobuf:"bytes,3,rep,name=elements,proto3" json:"elements,omitempty"`
+}
+
+func (x *GetElectricityDemandResponse_GroupDetail) Reset() {
+	*x = GetElectricityDemandResponse_GroupDetail{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[35]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetElectricityDemandResponse_GroupDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetElectricityDemandResponse_GroupDetail) ProtoMessage() {}
+
+func (x *GetElectricityDemandResponse_GroupDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[35]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetElectricityDemandResponse_GroupDetail.ProtoReflect.Descriptor instead.
+func (*GetElectricityDemandResponse_GroupDetail) Descriptor() ([]byte, []int) {
+	return file_scada_layout_proto_scada_layout_proto_rawDescGZIP(), []int{9, 4}
+}
+
+func (x *GetElectricityDemandResponse_GroupDetail) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetElectricityDemandResponse_GroupDetail) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *GetElectricityDemandResponse_GroupDetail) GetElements() []*GetElectricityDemandResponse_ElementDetail {
+	if x != nil {
+		return x.Elements
+	}
+	return nil
+}
+
+type GetElectricityDemandResponse_ElementDetail struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id     string                                      `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name   string                                      `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Fields []*GetElectricityDemandResponse_FieldDetail `protobuf:"bytes,3,rep,name=fields,proto3" json:"fields,omitempty"`
+}
+
+func (x *GetElectricityDemandResponse_ElementDetail) Reset() {
+	*x = GetElectricityDemandResponse_ElementDetail{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[36]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetElectricityDemandResponse_ElementDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetElectricityDemandResponse_ElementDetail) ProtoMessage() {}
+
+func (x *GetElectricityDemandResponse_ElementDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[36]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetElectricityDemandResponse_ElementDetail.ProtoReflect.Descriptor instead.
+func (*GetElectricityDemandResponse_ElementDetail) Descriptor() ([]byte, []int) {
+	return file_scada_layout_proto_scada_layout_proto_rawDescGZIP(), []int{9, 5}
+}
+
+func (x *GetElectricityDemandResponse_ElementDetail) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetElectricityDemandResponse_ElementDetail) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *GetElectricityDemandResponse_ElementDetail) GetFields() []*GetElectricityDemandResponse_FieldDetail {
+	if x != nil {
+		return x.Fields
+	}
+	return nil
+}
+
+type GetElectricityDemandResponse_FieldDetail struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Field     string  `protobuf:"bytes,1,opt,name=field,proto3" json:"field,omitempty"`
+	RunValue  float64 `protobuf:"fixed64,2,opt,name=run_value,json=runValue,proto3" json:"run_value,omitempty"`    // 復歸參數
+	StopValue float64 `protobuf:"fixed64,3,opt,name=stop_value,json=stopValue,proto3" json:"stop_value,omitempty"` // 卸載參數
+}
+
+func (x *GetElectricityDemandResponse_FieldDetail) Reset() {
+	*x = GetElectricityDemandResponse_FieldDetail{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[37]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetElectricityDemandResponse_FieldDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetElectricityDemandResponse_FieldDetail) ProtoMessage() {}
+
+func (x *GetElectricityDemandResponse_FieldDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[37]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetElectricityDemandResponse_FieldDetail.ProtoReflect.Descriptor instead.
+func (*GetElectricityDemandResponse_FieldDetail) Descriptor() ([]byte, []int) {
+	return file_scada_layout_proto_scada_layout_proto_rawDescGZIP(), []int{9, 6}
+}
+
+func (x *GetElectricityDemandResponse_FieldDetail) GetField() string {
+	if x != nil {
+		return x.Field
+	}
+	return ""
+}
+
+func (x *GetElectricityDemandResponse_FieldDetail) GetRunValue() float64 {
+	if x != nil {
+		return x.RunValue
+	}
+	return 0
+}
+
+func (x *GetElectricityDemandResponse_FieldDetail) GetStopValue() float64 {
+	if x != nil {
+		return x.StopValue
+	}
+	return 0
+}
+
+type GetElectricityDemandResponse_TimingField struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Year   string `protobuf:"bytes,1,opt,name=Year,proto3" json:"Year,omitempty"`
+	Month  string `protobuf:"bytes,2,opt,name=Month,proto3" json:"Month,omitempty"`
+	Day    string `protobuf:"bytes,3,opt,name=Day,proto3" json:"Day,omitempty"`
+	Hour   string `protobuf:"bytes,4,opt,name=Hour,proto3" json:"Hour,omitempty"`
+	Minute string `protobuf:"bytes,5,opt,name=Minute,proto3" json:"Minute,omitempty"`
+	Second string `protobuf:"bytes,6,opt,name=Second,proto3" json:"Second,omitempty"`
+}
+
+func (x *GetElectricityDemandResponse_TimingField) Reset() {
+	*x = GetElectricityDemandResponse_TimingField{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[38]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetElectricityDemandResponse_TimingField) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetElectricityDemandResponse_TimingField) ProtoMessage() {}
+
+func (x *GetElectricityDemandResponse_TimingField) ProtoReflect() protoreflect.Message {
+	mi := &file_scada_layout_proto_scada_layout_proto_msgTypes[38]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetElectricityDemandResponse_TimingField.ProtoReflect.Descriptor instead.
+func (*GetElectricityDemandResponse_TimingField) Descriptor() ([]byte, []int) {
+	return file_scada_layout_proto_scada_layout_proto_rawDescGZIP(), []int{9, 7}
+}
+
+func (x *GetElectricityDemandResponse_TimingField) GetYear() string {
+	if x != nil {
+		return x.Year
+	}
+	return ""
+}
+
+func (x *GetElectricityDemandResponse_TimingField) GetMonth() string {
+	if x != nil {
+		return x.Month
+	}
+	return ""
+}
+
+func (x *GetElectricityDemandResponse_TimingField) GetDay() string {
+	if x != nil {
+		return x.Day
+	}
+	return ""
+}
+
+func (x *GetElectricityDemandResponse_TimingField) GetHour() string {
+	if x != nil {
+		return x.Hour
+	}
+	return ""
+}
+
+func (x *GetElectricityDemandResponse_TimingField) GetMinute() string {
+	if x != nil {
+		return x.Minute
+	}
+	return ""
+}
+
+func (x *GetElectricityDemandResponse_TimingField) GetSecond() string {
+	if x != nil {
+		return x.Second
+	}
+	return ""
 }
 
 var File_scada_layout_proto_scada_layout_proto protoreflect.FileDescriptor
@@ -2330,46 +2961,167 @@ var file_scada_layout_proto_scada_layout_proto_rawDesc = []byte{
 	0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x1a, 0x33, 0x0a, 0x05, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x12,
 	0x14, 0x0a, 0x05, 0x75, 0x70, 0x70, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x01, 0x52, 0x05,
 	0x75, 0x70, 0x70, 0x65, 0x72, 0x12, 0x14, 0x0a, 0x05, 0x6c, 0x6f, 0x77, 0x65, 0x72, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x01, 0x52, 0x05, 0x6c, 0x6f, 0x77, 0x65, 0x72, 0x32, 0xd0, 0x04, 0x0a, 0x12,
-	0x53, 0x63, 0x61, 0x64, 0x61, 0x4c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69,
-	0x63, 0x65, 0x12, 0x4f, 0x0a, 0x0d, 0x67, 0x65, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x54,
-	0x61, 0x67, 0x73, 0x12, 0x17, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f,
-	0x75, 0x74, 0x2e, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x4c, 0x69, 0x73, 0x74, 0x1a, 0x23, 0x2e, 0x73,
-	0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x46,
-	0x69, 0x65, 0x6c, 0x64, 0x73, 0x54, 0x61, 0x67, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x22, 0x00, 0x12, 0x53, 0x0a, 0x0f, 0x67, 0x65, 0x74, 0x52, 0x65, 0x70, 0x6f, 0x72, 0x74,
-	0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x12, 0x17, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c,
-	0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x4c, 0x69, 0x73, 0x74, 0x1a,
-	0x25, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47,
-	0x65, 0x74, 0x52, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x5a, 0x0a, 0x0f, 0x67, 0x65, 0x74, 0x46,
-	0x69, 0x65, 0x6c, 0x64, 0x73, 0x57, 0x69, 0x74, 0x68, 0x49, 0x64, 0x12, 0x21, 0x2e, 0x73, 0x63,
-	0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x69,
-	0x65, 0x6c, 0x64, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22,
-	0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65,
-	0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x22, 0x00, 0x12, 0x52, 0x0a, 0x0f, 0x67, 0x65, 0x74, 0x53, 0x6d, 0x61, 0x72, 0x74,
-	0x44, 0x65, 0x66, 0x72, 0x6f, 0x73, 0x74, 0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a,
-	0x25, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47,
-	0x65, 0x74, 0x53, 0x6d, 0x61, 0x72, 0x74, 0x44, 0x65, 0x66, 0x72, 0x6f, 0x73, 0x74, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x46, 0x0a, 0x09, 0x67, 0x65, 0x74, 0x52,
-	0x65, 0x70, 0x6f, 0x72, 0x74, 0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x1f, 0x2e,
-	0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74,
-	0x52, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00,
-	0x12, 0x4a, 0x0a, 0x0b, 0x47, 0x65, 0x74, 0x53, 0x63, 0x65, 0x6e, 0x61, 0x72, 0x69, 0x6f, 0x12,
-	0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75,
-	0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x21, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f,
-	0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x53, 0x63, 0x65, 0x6e, 0x61, 0x72,
-	0x69, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x50, 0x0a, 0x0e,
-	0x47, 0x65, 0x74, 0x41, 0x6c, 0x61, 0x72, 0x6d, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x12, 0x16,
+	0x20, 0x01, 0x28, 0x01, 0x52, 0x05, 0x6c, 0x6f, 0x77, 0x65, 0x72, 0x22, 0xb6, 0x0e, 0x0a, 0x1c,
+	0x47, 0x65, 0x74, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x69, 0x63, 0x69, 0x74, 0x79, 0x44, 0x65,
+	0x6d, 0x61, 0x6e, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1d, 0x0a, 0x0a,
+	0x64, 0x65, 0x6c, 0x61, 0x79, 0x5f, 0x6d, 0x69, 0x6e, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05,
+	0x52, 0x09, 0x64, 0x65, 0x6c, 0x61, 0x79, 0x4d, 0x69, 0x6e, 0x73, 0x12, 0x56, 0x0a, 0x0b, 0x63,
+	0x68, 0x61, 0x72, 0x74, 0x5f, 0x63, 0x6f, 0x6c, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x35, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e,
+	0x47, 0x65, 0x74, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x69, 0x63, 0x69, 0x74, 0x79, 0x44, 0x65,
+	0x6d, 0x61, 0x6e, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x43, 0x68, 0x61,
+	0x72, 0x74, 0x43, 0x6f, 0x6c, 0x6f, 0x72, 0x52, 0x0a, 0x63, 0x68, 0x61, 0x72, 0x74, 0x43, 0x6f,
+	0x6c, 0x6f, 0x72, 0x12, 0x63, 0x0a, 0x0b, 0x64, 0x65, 0x6d, 0x61, 0x6e, 0x64, 0x5f, 0x6c, 0x69,
+	0x73, 0x74, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x42, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61,
+	0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x45, 0x6c, 0x65, 0x63, 0x74,
+	0x72, 0x69, 0x63, 0x69, 0x74, 0x79, 0x44, 0x65, 0x6d, 0x61, 0x6e, 0x64, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x69, 0x63, 0x69, 0x74, 0x79,
+	0x44, 0x65, 0x6d, 0x61, 0x6e, 0x64, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x52, 0x0a, 0x64, 0x65,
+	0x6d, 0x61, 0x6e, 0x64, 0x4c, 0x69, 0x73, 0x74, 0x1a, 0xb5, 0x03, 0x0a, 0x17, 0x45, 0x6c, 0x65,
+	0x63, 0x74, 0x72, 0x69, 0x63, 0x69, 0x74, 0x79, 0x44, 0x65, 0x6d, 0x61, 0x6e, 0x64, 0x44, 0x65,
+	0x74, 0x61, 0x69, 0x6c, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x2b, 0x0a, 0x11, 0x65, 0x6c,
+	0x65, 0x63, 0x74, 0x72, 0x69, 0x63, 0x69, 0x74, 0x79, 0x5f, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x10, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x69, 0x63, 0x69,
+	0x74, 0x79, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x75, 0x6e, 0x69, 0x74, 0x18,
+	0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x75, 0x6e, 0x69, 0x74, 0x12, 0x56, 0x0a, 0x0b, 0x69,
+	0x6e, 0x70, 0x75, 0x74, 0x5f, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x35, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e,
+	0x47, 0x65, 0x74, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x69, 0x63, 0x69, 0x74, 0x79, 0x44, 0x65,
+	0x6d, 0x61, 0x6e, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x49, 0x6e, 0x70,
+	0x75, 0x74, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x52, 0x0a, 0x69, 0x6e, 0x70, 0x75, 0x74, 0x4c, 0x69,
+	0x6d, 0x69, 0x74, 0x12, 0x4e, 0x0a, 0x06, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x73, 0x18, 0x06, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x36, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f,
+	0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x69, 0x63, 0x69, 0x74,
+	0x79, 0x44, 0x65, 0x6d, 0x61, 0x6e, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e,
+	0x47, 0x72, 0x6f, 0x75, 0x70, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x52, 0x06, 0x67, 0x72, 0x6f,
+	0x75, 0x70, 0x73, 0x12, 0x5b, 0x0a, 0x0d, 0x74, 0x69, 0x6d, 0x69, 0x6e, 0x67, 0x5f, 0x66, 0x69,
+	0x65, 0x6c, 0x64, 0x73, 0x18, 0x07, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x36, 0x2e, 0x73, 0x63, 0x61,
+	0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x45, 0x6c, 0x65,
+	0x63, 0x74, 0x72, 0x69, 0x63, 0x69, 0x74, 0x79, 0x44, 0x65, 0x6d, 0x61, 0x6e, 0x64, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x54, 0x69, 0x6d, 0x69, 0x6e, 0x67, 0x46, 0x69, 0x65,
+	0x6c, 0x64, 0x52, 0x0c, 0x74, 0x69, 0x6d, 0x69, 0x6e, 0x67, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73,
+	0x12, 0x2e, 0x0a, 0x13, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x6f, 0x5f, 0x73, 0x69, 0x67, 0x6e, 0x61,
+	0x6c, 0x5f, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x11, 0x64,
+	0x79, 0x6e, 0x61, 0x6d, 0x6f, 0x53, 0x69, 0x67, 0x6e, 0x61, 0x6c, 0x46, 0x69, 0x65, 0x6c, 0x64,
+	0x1a, 0x5a, 0x0a, 0x0a, 0x43, 0x68, 0x61, 0x72, 0x74, 0x43, 0x6f, 0x6c, 0x6f, 0x72, 0x12, 0x16,
+	0x0a, 0x06, 0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06,
+	0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x66, 0x6f, 0x72, 0x65, 0x63, 0x61,
+	0x73, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x66, 0x6f, 0x72, 0x65, 0x63, 0x61,
+	0x73, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x18, 0x03, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x1a, 0xe9, 0x03, 0x0a,
+	0x0a, 0x49, 0x6e, 0x70, 0x75, 0x74, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x12, 0x6a, 0x0a, 0x12, 0x74,
+	0x61, 0x72, 0x67, 0x65, 0x74, 0x5f, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x69, 0x63, 0x69, 0x74,
+	0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x36, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f,
+	0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72,
+	0x69, 0x63, 0x69, 0x74, 0x79, 0x44, 0x65, 0x6d, 0x61, 0x6e, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x2e, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x48,
+	0x00, 0x52, 0x11, 0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x69,
+	0x63, 0x69, 0x74, 0x79, 0x88, 0x01, 0x01, 0x12, 0x64, 0x0a, 0x0f, 0x72, 0x65, 0x73, 0x74, 0x72,
+	0x69, 0x63, 0x74, 0x65, 0x64, 0x5f, 0x6d, 0x69, 0x6e, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x36, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e,
+	0x47, 0x65, 0x74, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x69, 0x63, 0x69, 0x74, 0x79, 0x44, 0x65,
+	0x6d, 0x61, 0x6e, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x4c, 0x69, 0x6d,
+	0x69, 0x74, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x48, 0x01, 0x52, 0x0e, 0x72, 0x65, 0x73, 0x74,
+	0x72, 0x69, 0x63, 0x74, 0x65, 0x64, 0x4d, 0x69, 0x6e, 0x73, 0x88, 0x01, 0x01, 0x12, 0x5d, 0x0a,
+	0x0b, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x69, 0x63, 0x69, 0x74, 0x79, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x36, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75,
+	0x74, 0x2e, 0x47, 0x65, 0x74, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x69, 0x63, 0x69, 0x74, 0x79,
+	0x44, 0x65, 0x6d, 0x61, 0x6e, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x4c,
+	0x69, 0x6d, 0x69, 0x74, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x48, 0x02, 0x52, 0x0b, 0x65, 0x6c,
+	0x65, 0x63, 0x74, 0x72, 0x69, 0x63, 0x69, 0x74, 0x79, 0x88, 0x01, 0x01, 0x12, 0x5e, 0x0a, 0x0c,
+	0x65, 0x6c, 0x61, 0x70, 0x73, 0x65, 0x64, 0x5f, 0x6d, 0x69, 0x6e, 0x73, 0x18, 0x04, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x36, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75,
+	0x74, 0x2e, 0x47, 0x65, 0x74, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x69, 0x63, 0x69, 0x74, 0x79,
+	0x44, 0x65, 0x6d, 0x61, 0x6e, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x4c,
+	0x69, 0x6d, 0x69, 0x74, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x48, 0x03, 0x52, 0x0b, 0x65, 0x6c,
+	0x61, 0x70, 0x73, 0x65, 0x64, 0x4d, 0x69, 0x6e, 0x73, 0x88, 0x01, 0x01, 0x42, 0x15, 0x0a, 0x13,
+	0x5f, 0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x5f, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x69, 0x63,
+	0x69, 0x74, 0x79, 0x42, 0x12, 0x0a, 0x10, 0x5f, 0x72, 0x65, 0x73, 0x74, 0x72, 0x69, 0x63, 0x74,
+	0x65, 0x64, 0x5f, 0x6d, 0x69, 0x6e, 0x73, 0x42, 0x0e, 0x0a, 0x0c, 0x5f, 0x65, 0x6c, 0x65, 0x63,
+	0x74, 0x72, 0x69, 0x63, 0x69, 0x74, 0x79, 0x42, 0x0f, 0x0a, 0x0d, 0x5f, 0x65, 0x6c, 0x61, 0x70,
+	0x73, 0x65, 0x64, 0x5f, 0x6d, 0x69, 0x6e, 0x73, 0x1a, 0x39, 0x0a, 0x0b, 0x4c, 0x69, 0x6d, 0x69,
+	0x74, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x12, 0x14, 0x0a, 0x05, 0x75, 0x70, 0x70, 0x65, 0x72,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x05, 0x75, 0x70, 0x70, 0x65, 0x72, 0x12, 0x14, 0x0a,
+	0x05, 0x6c, 0x6f, 0x77, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x05, 0x6c, 0x6f,
+	0x77, 0x65, 0x72, 0x1a, 0x87, 0x01, 0x0a, 0x0b, 0x47, 0x72, 0x6f, 0x75, 0x70, 0x44, 0x65, 0x74,
+	0x61, 0x69, 0x6c, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x54, 0x0a, 0x08, 0x65, 0x6c, 0x65, 0x6d, 0x65,
+	0x6e, 0x74, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x38, 0x2e, 0x73, 0x63, 0x61, 0x64,
+	0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x45, 0x6c, 0x65, 0x63,
+	0x74, 0x72, 0x69, 0x63, 0x69, 0x74, 0x79, 0x44, 0x65, 0x6d, 0x61, 0x6e, 0x64, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x44, 0x65, 0x74,
+	0x61, 0x69, 0x6c, 0x52, 0x08, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x1a, 0x83, 0x01,
+	0x0a, 0x0d, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x12,
+	0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12,
+	0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e,
+	0x61, 0x6d, 0x65, 0x12, 0x4e, 0x0a, 0x06, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x18, 0x03, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x36, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f,
+	0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x69, 0x63, 0x69, 0x74,
+	0x79, 0x44, 0x65, 0x6d, 0x61, 0x6e, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e,
+	0x46, 0x69, 0x65, 0x6c, 0x64, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x52, 0x06, 0x66, 0x69, 0x65,
+	0x6c, 0x64, 0x73, 0x1a, 0x5f, 0x0a, 0x0b, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x44, 0x65, 0x74, 0x61,
+	0x69, 0x6c, 0x12, 0x14, 0x0a, 0x05, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x05, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x12, 0x1b, 0x0a, 0x09, 0x72, 0x75, 0x6e, 0x5f,
+	0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x01, 0x52, 0x08, 0x72, 0x75, 0x6e,
+	0x56, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x74, 0x6f, 0x70, 0x5f, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x01, 0x52, 0x09, 0x73, 0x74, 0x6f, 0x70, 0x56,
+	0x61, 0x6c, 0x75, 0x65, 0x1a, 0x8d, 0x01, 0x0a, 0x0b, 0x54, 0x69, 0x6d, 0x69, 0x6e, 0x67, 0x46,
+	0x69, 0x65, 0x6c, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x59, 0x65, 0x61, 0x72, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x04, 0x59, 0x65, 0x61, 0x72, 0x12, 0x14, 0x0a, 0x05, 0x4d, 0x6f, 0x6e, 0x74,
+	0x68, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x4d, 0x6f, 0x6e, 0x74, 0x68, 0x12, 0x10,
+	0x0a, 0x03, 0x44, 0x61, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x44, 0x61, 0x79,
+	0x12, 0x12, 0x0a, 0x04, 0x48, 0x6f, 0x75, 0x72, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
+	0x48, 0x6f, 0x75, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x4d, 0x69, 0x6e, 0x75, 0x74, 0x65, 0x18, 0x05,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x4d, 0x69, 0x6e, 0x75, 0x74, 0x65, 0x12, 0x16, 0x0a, 0x06,
+	0x53, 0x65, 0x63, 0x6f, 0x6e, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x53, 0x65,
+	0x63, 0x6f, 0x6e, 0x64, 0x32, 0xae, 0x05, 0x0a, 0x12, 0x53, 0x63, 0x61, 0x64, 0x61, 0x4c, 0x61,
+	0x79, 0x6f, 0x75, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x4f, 0x0a, 0x0d, 0x67,
+	0x65, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x54, 0x61, 0x67, 0x73, 0x12, 0x17, 0x2e, 0x73,
+	0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x46, 0x69, 0x65, 0x6c,
+	0x64, 0x4c, 0x69, 0x73, 0x74, 0x1a, 0x23, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61,
+	0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x54, 0x61,
+	0x67, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x53, 0x0a, 0x0f,
+	0x67, 0x65, 0x74, 0x52, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x12,
+	0x17, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x46,
+	0x69, 0x65, 0x6c, 0x64, 0x4c, 0x69, 0x73, 0x74, 0x1a, 0x25, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61,
+	0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x65, 0x70, 0x6f, 0x72,
+	0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
+	0x00, 0x12, 0x5a, 0x0a, 0x0f, 0x67, 0x65, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x57, 0x69,
+	0x74, 0x68, 0x49, 0x64, 0x12, 0x21, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79,
+	0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x4c, 0x69, 0x73, 0x74,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f,
+	0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x4c,
+	0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x52, 0x0a,
+	0x0f, 0x67, 0x65, 0x74, 0x53, 0x6d, 0x61, 0x72, 0x74, 0x44, 0x65, 0x66, 0x72, 0x6f, 0x73, 0x74,
+	0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62,
+	0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x25, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61,
+	0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x53, 0x6d, 0x61, 0x72, 0x74,
+	0x44, 0x65, 0x66, 0x72, 0x6f, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
+	0x00, 0x12, 0x46, 0x0a, 0x09, 0x67, 0x65, 0x74, 0x52, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x12, 0x16,
 	0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
-	0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x24, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c,
-	0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x61, 0x72, 0x6d, 0x46, 0x69,
-	0x65, 0x6c, 0x64, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x11,
-	0x5a, 0x0f, 0x73, 0x63, 0x61, 0x64, 0x61, 0x2d, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2f, 0x70,
-	0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x1f, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c,
+	0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x4a, 0x0a, 0x0b, 0x47, 0x65, 0x74,
+	0x53, 0x63, 0x65, 0x6e, 0x61, 0x72, 0x69, 0x6f, 0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
+	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79,
+	0x1a, 0x21, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e,
+	0x47, 0x65, 0x74, 0x53, 0x63, 0x65, 0x6e, 0x61, 0x72, 0x69, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x50, 0x0a, 0x0e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x61, 0x72,
+	0x6d, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a,
+	0x24, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f, 0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47,
+	0x65, 0x74, 0x41, 0x6c, 0x61, 0x72, 0x6d, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x5c, 0x0a, 0x14, 0x47, 0x65, 0x74, 0x45, 0x6c,
+	0x65, 0x63, 0x74, 0x72, 0x69, 0x63, 0x69, 0x74, 0x79, 0x44, 0x65, 0x6d, 0x61, 0x6e, 0x64, 0x12,
+	0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75,
+	0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x2a, 0x2e, 0x73, 0x63, 0x61, 0x64, 0x61, 0x5f,
+	0x6c, 0x61, 0x79, 0x6f, 0x75, 0x74, 0x2e, 0x47, 0x65, 0x74, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72,
+	0x69, 0x63, 0x69, 0x74, 0x79, 0x44, 0x65, 0x6d, 0x61, 0x6e, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x11, 0x5a, 0x0f, 0x73, 0x63, 0x61, 0x64, 0x61, 0x2d, 0x6c,
+	0x61, 0x79, 0x6f, 0x75, 0x74, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2385,7 +3137,7 @@ func file_scada_layout_proto_scada_layout_proto_rawDescGZIP() []byte {
 }
 
 var file_scada_layout_proto_scada_layout_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_scada_layout_proto_scada_layout_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
+var file_scada_layout_proto_scada_layout_proto_msgTypes = make([]protoimpl.MessageInfo, 39)
 var file_scada_layout_proto_scada_layout_proto_goTypes = []interface{}{
 	(GetFieldListRequest_RequestType)(0),               // 0: scada_layout.GetFieldListRequest.RequestType
 	(GetReportResponse_DefaultChart_DisplayType)(0),    // 1: scada_layout.GetReportResponse.DefaultChart.DisplayType
@@ -2398,76 +3150,98 @@ var file_scada_layout_proto_scada_layout_proto_goTypes = []interface{}{
 	(*GetReportResponse)(nil),                          // 8: scada_layout.GetReportResponse
 	(*GetScenarioResponse)(nil),                        // 9: scada_layout.GetScenarioResponse
 	(*GetAlarmFieldsResponse)(nil),                     // 10: scada_layout.GetAlarmFieldsResponse
-	(*GetFieldsTagsResponse_FieldTag)(nil),             // 11: scada_layout.GetFieldsTagsResponse.FieldTag
-	(*GetFieldsTagsResponse_IdWithName)(nil),           // 12: scada_layout.GetFieldsTagsResponse.IdWithName
-	(*GetReportFieldsResponse_Field)(nil),              // 13: scada_layout.GetReportFieldsResponse.Field
-	nil,                                                // 14: scada_layout.GetReportFieldsResponse.Field.TransEntry
-	(*GetSmartDefrostResponse_GroupDetail)(nil),        // 15: scada_layout.GetSmartDefrostResponse.GroupDetail
-	(*GetSmartDefrostResponse_ElementDetail)(nil),      // 16: scada_layout.GetSmartDefrostResponse.ElementDetail
-	(*GetSmartDefrostResponse_ServerSettingField)(nil), // 17: scada_layout.GetSmartDefrostResponse.ServerSettingField
-	(*GetReportResponse_ReportSettingDetail)(nil),      // 18: scada_layout.GetReportResponse.ReportSettingDetail
-	(*GetReportResponse_PdfInputDetail)(nil),           // 19: scada_layout.GetReportResponse.PdfInputDetail
-	(*GetReportResponse_ExcelIntervalDetail)(nil),      // 20: scada_layout.GetReportResponse.ExcelIntervalDetail
-	(*GetReportResponse_IntervalDetail)(nil),           // 21: scada_layout.GetReportResponse.IntervalDetail
-	(*GetReportResponse_DefaultChart)(nil),             // 22: scada_layout.GetReportResponse.DefaultChart
-	(*GetReportResponse_DefaultChart_ChartField)(nil),  // 23: scada_layout.GetReportResponse.DefaultChart.ChartField
-	nil, // 24: scada_layout.GetReportResponse.DefaultChart.ChartField.TransEntry
-	(*GetScenarioResponse_ElementScenario)(nil), // 25: scada_layout.GetScenarioResponse.ElementScenario
-	(*GetScenarioResponse_ScenarioDetail)(nil),  // 26: scada_layout.GetScenarioResponse.ScenarioDetail
-	(*GetScenarioResponse_FieldAction)(nil),     // 27: scada_layout.GetScenarioResponse.FieldAction
-	(*GetAlarmFieldsResponse_FieldDetail)(nil),  // 28: scada_layout.GetAlarmFieldsResponse.FieldDetail
-	(*GetAlarmFieldsResponse_Element)(nil),      // 29: scada_layout.GetAlarmFieldsResponse.Element
-	(*GetAlarmFieldsResponse_Limit)(nil),        // 30: scada_layout.GetAlarmFieldsResponse.Limit
-	nil,                                         // 31: scada_layout.GetAlarmFieldsResponse.FieldDetail.TransEntry
-	(*emptypb.Empty)(nil),                       // 32: google.protobuf.Empty
+	(*GetElectricityDemandResponse)(nil),               // 11: scada_layout.GetElectricityDemandResponse
+	(*GetFieldsTagsResponse_FieldTag)(nil),             // 12: scada_layout.GetFieldsTagsResponse.FieldTag
+	(*GetFieldsTagsResponse_IdWithName)(nil),           // 13: scada_layout.GetFieldsTagsResponse.IdWithName
+	(*GetReportFieldsResponse_Field)(nil),              // 14: scada_layout.GetReportFieldsResponse.Field
+	nil,                                                // 15: scada_layout.GetReportFieldsResponse.Field.TransEntry
+	(*GetSmartDefrostResponse_GroupDetail)(nil),        // 16: scada_layout.GetSmartDefrostResponse.GroupDetail
+	(*GetSmartDefrostResponse_ElementDetail)(nil),      // 17: scada_layout.GetSmartDefrostResponse.ElementDetail
+	(*GetSmartDefrostResponse_ServerSettingField)(nil), // 18: scada_layout.GetSmartDefrostResponse.ServerSettingField
+	(*GetReportResponse_ReportSettingDetail)(nil),      // 19: scada_layout.GetReportResponse.ReportSettingDetail
+	(*GetReportResponse_PdfInputDetail)(nil),           // 20: scada_layout.GetReportResponse.PdfInputDetail
+	(*GetReportResponse_ExcelIntervalDetail)(nil),      // 21: scada_layout.GetReportResponse.ExcelIntervalDetail
+	(*GetReportResponse_IntervalDetail)(nil),           // 22: scada_layout.GetReportResponse.IntervalDetail
+	(*GetReportResponse_DefaultChart)(nil),             // 23: scada_layout.GetReportResponse.DefaultChart
+	(*GetReportResponse_DefaultChart_ChartField)(nil),  // 24: scada_layout.GetReportResponse.DefaultChart.ChartField
+	nil, // 25: scada_layout.GetReportResponse.DefaultChart.ChartField.TransEntry
+	(*GetScenarioResponse_ElementScenario)(nil),                  // 26: scada_layout.GetScenarioResponse.ElementScenario
+	(*GetScenarioResponse_ScenarioDetail)(nil),                   // 27: scada_layout.GetScenarioResponse.ScenarioDetail
+	(*GetScenarioResponse_FieldAction)(nil),                      // 28: scada_layout.GetScenarioResponse.FieldAction
+	(*GetAlarmFieldsResponse_FieldDetail)(nil),                   // 29: scada_layout.GetAlarmFieldsResponse.FieldDetail
+	(*GetAlarmFieldsResponse_Element)(nil),                       // 30: scada_layout.GetAlarmFieldsResponse.Element
+	(*GetAlarmFieldsResponse_Limit)(nil),                         // 31: scada_layout.GetAlarmFieldsResponse.Limit
+	nil,                                                          // 32: scada_layout.GetAlarmFieldsResponse.FieldDetail.TransEntry
+	(*GetElectricityDemandResponse_ElectricityDemandDetail)(nil), // 33: scada_layout.GetElectricityDemandResponse.ElectricityDemandDetail
+	(*GetElectricityDemandResponse_ChartColor)(nil),              // 34: scada_layout.GetElectricityDemandResponse.ChartColor
+	(*GetElectricityDemandResponse_InputLimit)(nil),              // 35: scada_layout.GetElectricityDemandResponse.InputLimit
+	(*GetElectricityDemandResponse_LimitDetail)(nil),             // 36: scada_layout.GetElectricityDemandResponse.LimitDetail
+	(*GetElectricityDemandResponse_GroupDetail)(nil),             // 37: scada_layout.GetElectricityDemandResponse.GroupDetail
+	(*GetElectricityDemandResponse_ElementDetail)(nil),           // 38: scada_layout.GetElectricityDemandResponse.ElementDetail
+	(*GetElectricityDemandResponse_FieldDetail)(nil),             // 39: scada_layout.GetElectricityDemandResponse.FieldDetail
+	(*GetElectricityDemandResponse_TimingField)(nil),             // 40: scada_layout.GetElectricityDemandResponse.TimingField
+	(*emptypb.Empty)(nil),                                        // 41: google.protobuf.Empty
 }
 var file_scada_layout_proto_scada_layout_proto_depIdxs = []int32{
-	11, // 0: scada_layout.GetFieldsTagsResponse.fieldTags:type_name -> scada_layout.GetFieldsTagsResponse.FieldTag
-	13, // 1: scada_layout.GetReportFieldsResponse.fields:type_name -> scada_layout.GetReportFieldsResponse.Field
+	12, // 0: scada_layout.GetFieldsTagsResponse.fieldTags:type_name -> scada_layout.GetFieldsTagsResponse.FieldTag
+	14, // 1: scada_layout.GetReportFieldsResponse.fields:type_name -> scada_layout.GetReportFieldsResponse.Field
 	0,  // 2: scada_layout.GetFieldListRequest.type:type_name -> scada_layout.GetFieldListRequest.RequestType
-	15, // 3: scada_layout.GetSmartDefrostResponse.groups:type_name -> scada_layout.GetSmartDefrostResponse.GroupDetail
-	18, // 4: scada_layout.GetReportResponse.pdf_setting:type_name -> scada_layout.GetReportResponse.ReportSettingDetail
-	18, // 5: scada_layout.GetReportResponse.excel_setting:type_name -> scada_layout.GetReportResponse.ReportSettingDetail
-	19, // 6: scada_layout.GetReportResponse.pdf_input:type_name -> scada_layout.GetReportResponse.PdfInputDetail
-	20, // 7: scada_layout.GetReportResponse.excel_input:type_name -> scada_layout.GetReportResponse.ExcelIntervalDetail
-	22, // 8: scada_layout.GetReportResponse.default_charts:type_name -> scada_layout.GetReportResponse.DefaultChart
-	25, // 9: scada_layout.GetScenarioResponse.elements:type_name -> scada_layout.GetScenarioResponse.ElementScenario
-	28, // 10: scada_layout.GetAlarmFieldsResponse.fields:type_name -> scada_layout.GetAlarmFieldsResponse.FieldDetail
-	12, // 11: scada_layout.GetFieldsTagsResponse.FieldTag.equipments:type_name -> scada_layout.GetFieldsTagsResponse.IdWithName
-	12, // 12: scada_layout.GetFieldsTagsResponse.FieldTag.groups:type_name -> scada_layout.GetFieldsTagsResponse.IdWithName
-	12, // 13: scada_layout.GetFieldsTagsResponse.FieldTag.floors:type_name -> scada_layout.GetFieldsTagsResponse.IdWithName
-	14, // 14: scada_layout.GetReportFieldsResponse.Field.trans:type_name -> scada_layout.GetReportFieldsResponse.Field.TransEntry
-	16, // 15: scada_layout.GetSmartDefrostResponse.GroupDetail.elements:type_name -> scada_layout.GetSmartDefrostResponse.ElementDetail
-	17, // 16: scada_layout.GetSmartDefrostResponse.ElementDetail.fields:type_name -> scada_layout.GetSmartDefrostResponse.ServerSettingField
-	21, // 17: scada_layout.GetReportResponse.PdfInputDetail.interval:type_name -> scada_layout.GetReportResponse.IntervalDetail
-	21, // 18: scada_layout.GetReportResponse.ExcelIntervalDetail.interval:type_name -> scada_layout.GetReportResponse.IntervalDetail
-	21, // 19: scada_layout.GetReportResponse.ExcelIntervalDetail.data_interval:type_name -> scada_layout.GetReportResponse.IntervalDetail
-	23, // 20: scada_layout.GetReportResponse.DefaultChart.chart_fields:type_name -> scada_layout.GetReportResponse.DefaultChart.ChartField
-	24, // 21: scada_layout.GetReportResponse.DefaultChart.ChartField.trans:type_name -> scada_layout.GetReportResponse.DefaultChart.ChartField.TransEntry
-	26, // 22: scada_layout.GetScenarioResponse.ElementScenario.scenarios:type_name -> scada_layout.GetScenarioResponse.ScenarioDetail
-	27, // 23: scada_layout.GetScenarioResponse.ScenarioDetail.field_actions:type_name -> scada_layout.GetScenarioResponse.FieldAction
-	29, // 24: scada_layout.GetAlarmFieldsResponse.FieldDetail.elements:type_name -> scada_layout.GetAlarmFieldsResponse.Element
-	30, // 25: scada_layout.GetAlarmFieldsResponse.FieldDetail.limit:type_name -> scada_layout.GetAlarmFieldsResponse.Limit
-	31, // 26: scada_layout.GetAlarmFieldsResponse.FieldDetail.trans:type_name -> scada_layout.GetAlarmFieldsResponse.FieldDetail.TransEntry
-	2,  // 27: scada_layout.ScadaLayoutService.getFieldsTags:input_type -> scada_layout.FieldList
-	2,  // 28: scada_layout.ScadaLayoutService.getReportFields:input_type -> scada_layout.FieldList
-	5,  // 29: scada_layout.ScadaLayoutService.getFieldsWithId:input_type -> scada_layout.GetFieldListRequest
-	32, // 30: scada_layout.ScadaLayoutService.getSmartDefrost:input_type -> google.protobuf.Empty
-	32, // 31: scada_layout.ScadaLayoutService.getReport:input_type -> google.protobuf.Empty
-	32, // 32: scada_layout.ScadaLayoutService.GetScenario:input_type -> google.protobuf.Empty
-	32, // 33: scada_layout.ScadaLayoutService.GetAlarmFields:input_type -> google.protobuf.Empty
-	3,  // 34: scada_layout.ScadaLayoutService.getFieldsTags:output_type -> scada_layout.GetFieldsTagsResponse
-	4,  // 35: scada_layout.ScadaLayoutService.getReportFields:output_type -> scada_layout.GetReportFieldsResponse
-	6,  // 36: scada_layout.ScadaLayoutService.getFieldsWithId:output_type -> scada_layout.GetFieldListResponse
-	7,  // 37: scada_layout.ScadaLayoutService.getSmartDefrost:output_type -> scada_layout.GetSmartDefrostResponse
-	8,  // 38: scada_layout.ScadaLayoutService.getReport:output_type -> scada_layout.GetReportResponse
-	9,  // 39: scada_layout.ScadaLayoutService.GetScenario:output_type -> scada_layout.GetScenarioResponse
-	10, // 40: scada_layout.ScadaLayoutService.GetAlarmFields:output_type -> scada_layout.GetAlarmFieldsResponse
-	34, // [34:41] is the sub-list for method output_type
-	27, // [27:34] is the sub-list for method input_type
-	27, // [27:27] is the sub-list for extension type_name
-	27, // [27:27] is the sub-list for extension extendee
-	0,  // [0:27] is the sub-list for field type_name
+	16, // 3: scada_layout.GetSmartDefrostResponse.groups:type_name -> scada_layout.GetSmartDefrostResponse.GroupDetail
+	19, // 4: scada_layout.GetReportResponse.pdf_setting:type_name -> scada_layout.GetReportResponse.ReportSettingDetail
+	19, // 5: scada_layout.GetReportResponse.excel_setting:type_name -> scada_layout.GetReportResponse.ReportSettingDetail
+	20, // 6: scada_layout.GetReportResponse.pdf_input:type_name -> scada_layout.GetReportResponse.PdfInputDetail
+	21, // 7: scada_layout.GetReportResponse.excel_input:type_name -> scada_layout.GetReportResponse.ExcelIntervalDetail
+	23, // 8: scada_layout.GetReportResponse.default_charts:type_name -> scada_layout.GetReportResponse.DefaultChart
+	26, // 9: scada_layout.GetScenarioResponse.elements:type_name -> scada_layout.GetScenarioResponse.ElementScenario
+	29, // 10: scada_layout.GetAlarmFieldsResponse.fields:type_name -> scada_layout.GetAlarmFieldsResponse.FieldDetail
+	34, // 11: scada_layout.GetElectricityDemandResponse.chart_color:type_name -> scada_layout.GetElectricityDemandResponse.ChartColor
+	33, // 12: scada_layout.GetElectricityDemandResponse.demand_list:type_name -> scada_layout.GetElectricityDemandResponse.ElectricityDemandDetail
+	13, // 13: scada_layout.GetFieldsTagsResponse.FieldTag.equipments:type_name -> scada_layout.GetFieldsTagsResponse.IdWithName
+	13, // 14: scada_layout.GetFieldsTagsResponse.FieldTag.groups:type_name -> scada_layout.GetFieldsTagsResponse.IdWithName
+	13, // 15: scada_layout.GetFieldsTagsResponse.FieldTag.floors:type_name -> scada_layout.GetFieldsTagsResponse.IdWithName
+	15, // 16: scada_layout.GetReportFieldsResponse.Field.trans:type_name -> scada_layout.GetReportFieldsResponse.Field.TransEntry
+	17, // 17: scada_layout.GetSmartDefrostResponse.GroupDetail.elements:type_name -> scada_layout.GetSmartDefrostResponse.ElementDetail
+	18, // 18: scada_layout.GetSmartDefrostResponse.ElementDetail.fields:type_name -> scada_layout.GetSmartDefrostResponse.ServerSettingField
+	22, // 19: scada_layout.GetReportResponse.PdfInputDetail.interval:type_name -> scada_layout.GetReportResponse.IntervalDetail
+	22, // 20: scada_layout.GetReportResponse.ExcelIntervalDetail.interval:type_name -> scada_layout.GetReportResponse.IntervalDetail
+	22, // 21: scada_layout.GetReportResponse.ExcelIntervalDetail.data_interval:type_name -> scada_layout.GetReportResponse.IntervalDetail
+	24, // 22: scada_layout.GetReportResponse.DefaultChart.chart_fields:type_name -> scada_layout.GetReportResponse.DefaultChart.ChartField
+	25, // 23: scada_layout.GetReportResponse.DefaultChart.ChartField.trans:type_name -> scada_layout.GetReportResponse.DefaultChart.ChartField.TransEntry
+	27, // 24: scada_layout.GetScenarioResponse.ElementScenario.scenarios:type_name -> scada_layout.GetScenarioResponse.ScenarioDetail
+	28, // 25: scada_layout.GetScenarioResponse.ScenarioDetail.field_actions:type_name -> scada_layout.GetScenarioResponse.FieldAction
+	30, // 26: scada_layout.GetAlarmFieldsResponse.FieldDetail.elements:type_name -> scada_layout.GetAlarmFieldsResponse.Element
+	31, // 27: scada_layout.GetAlarmFieldsResponse.FieldDetail.limit:type_name -> scada_layout.GetAlarmFieldsResponse.Limit
+	32, // 28: scada_layout.GetAlarmFieldsResponse.FieldDetail.trans:type_name -> scada_layout.GetAlarmFieldsResponse.FieldDetail.TransEntry
+	35, // 29: scada_layout.GetElectricityDemandResponse.ElectricityDemandDetail.input_limit:type_name -> scada_layout.GetElectricityDemandResponse.InputLimit
+	37, // 30: scada_layout.GetElectricityDemandResponse.ElectricityDemandDetail.groups:type_name -> scada_layout.GetElectricityDemandResponse.GroupDetail
+	40, // 31: scada_layout.GetElectricityDemandResponse.ElectricityDemandDetail.timing_fields:type_name -> scada_layout.GetElectricityDemandResponse.TimingField
+	36, // 32: scada_layout.GetElectricityDemandResponse.InputLimit.target_electricity:type_name -> scada_layout.GetElectricityDemandResponse.LimitDetail
+	36, // 33: scada_layout.GetElectricityDemandResponse.InputLimit.restricted_mins:type_name -> scada_layout.GetElectricityDemandResponse.LimitDetail
+	36, // 34: scada_layout.GetElectricityDemandResponse.InputLimit.electricity:type_name -> scada_layout.GetElectricityDemandResponse.LimitDetail
+	36, // 35: scada_layout.GetElectricityDemandResponse.InputLimit.elapsed_mins:type_name -> scada_layout.GetElectricityDemandResponse.LimitDetail
+	38, // 36: scada_layout.GetElectricityDemandResponse.GroupDetail.elements:type_name -> scada_layout.GetElectricityDemandResponse.ElementDetail
+	39, // 37: scada_layout.GetElectricityDemandResponse.ElementDetail.fields:type_name -> scada_layout.GetElectricityDemandResponse.FieldDetail
+	2,  // 38: scada_layout.ScadaLayoutService.getFieldsTags:input_type -> scada_layout.FieldList
+	2,  // 39: scada_layout.ScadaLayoutService.getReportFields:input_type -> scada_layout.FieldList
+	5,  // 40: scada_layout.ScadaLayoutService.getFieldsWithId:input_type -> scada_layout.GetFieldListRequest
+	41, // 41: scada_layout.ScadaLayoutService.getSmartDefrost:input_type -> google.protobuf.Empty
+	41, // 42: scada_layout.ScadaLayoutService.getReport:input_type -> google.protobuf.Empty
+	41, // 43: scada_layout.ScadaLayoutService.GetScenario:input_type -> google.protobuf.Empty
+	41, // 44: scada_layout.ScadaLayoutService.GetAlarmFields:input_type -> google.protobuf.Empty
+	41, // 45: scada_layout.ScadaLayoutService.GetElectricityDemand:input_type -> google.protobuf.Empty
+	3,  // 46: scada_layout.ScadaLayoutService.getFieldsTags:output_type -> scada_layout.GetFieldsTagsResponse
+	4,  // 47: scada_layout.ScadaLayoutService.getReportFields:output_type -> scada_layout.GetReportFieldsResponse
+	6,  // 48: scada_layout.ScadaLayoutService.getFieldsWithId:output_type -> scada_layout.GetFieldListResponse
+	7,  // 49: scada_layout.ScadaLayoutService.getSmartDefrost:output_type -> scada_layout.GetSmartDefrostResponse
+	8,  // 50: scada_layout.ScadaLayoutService.getReport:output_type -> scada_layout.GetReportResponse
+	9,  // 51: scada_layout.ScadaLayoutService.GetScenario:output_type -> scada_layout.GetScenarioResponse
+	10, // 52: scada_layout.ScadaLayoutService.GetAlarmFields:output_type -> scada_layout.GetAlarmFieldsResponse
+	11, // 53: scada_layout.ScadaLayoutService.GetElectricityDemand:output_type -> scada_layout.GetElectricityDemandResponse
+	46, // [46:54] is the sub-list for method output_type
+	38, // [38:46] is the sub-list for method input_type
+	38, // [38:38] is the sub-list for extension type_name
+	38, // [38:38] is the sub-list for extension extendee
+	0,  // [0:38] is the sub-list for field type_name
 }
 
 func init() { file_scada_layout_proto_scada_layout_proto_init() }
@@ -2585,7 +3359,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 			}
 		}
 		file_scada_layout_proto_scada_layout_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetFieldsTagsResponse_FieldTag); i {
+			switch v := v.(*GetElectricityDemandResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2597,7 +3371,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 			}
 		}
 		file_scada_layout_proto_scada_layout_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetFieldsTagsResponse_IdWithName); i {
+			switch v := v.(*GetFieldsTagsResponse_FieldTag); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2609,6 +3383,18 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 			}
 		}
 		file_scada_layout_proto_scada_layout_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetFieldsTagsResponse_IdWithName); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_scada_layout_proto_scada_layout_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReportFieldsResponse_Field); i {
 			case 0:
 				return &v.state
@@ -2620,7 +3406,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetSmartDefrostResponse_GroupDetail); i {
 			case 0:
 				return &v.state
@@ -2632,7 +3418,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetSmartDefrostResponse_ElementDetail); i {
 			case 0:
 				return &v.state
@@ -2644,7 +3430,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetSmartDefrostResponse_ServerSettingField); i {
 			case 0:
 				return &v.state
@@ -2656,7 +3442,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReportResponse_ReportSettingDetail); i {
 			case 0:
 				return &v.state
@@ -2668,7 +3454,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReportResponse_PdfInputDetail); i {
 			case 0:
 				return &v.state
@@ -2680,7 +3466,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReportResponse_ExcelIntervalDetail); i {
 			case 0:
 				return &v.state
@@ -2692,7 +3478,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReportResponse_IntervalDetail); i {
 			case 0:
 				return &v.state
@@ -2704,7 +3490,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReportResponse_DefaultChart); i {
 			case 0:
 				return &v.state
@@ -2716,7 +3502,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReportResponse_DefaultChart_ChartField); i {
 			case 0:
 				return &v.state
@@ -2728,7 +3514,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetScenarioResponse_ElementScenario); i {
 			case 0:
 				return &v.state
@@ -2740,7 +3526,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetScenarioResponse_ScenarioDetail); i {
 			case 0:
 				return &v.state
@@ -2752,7 +3538,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetScenarioResponse_FieldAction); i {
 			case 0:
 				return &v.state
@@ -2764,7 +3550,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetAlarmFieldsResponse_FieldDetail); i {
 			case 0:
 				return &v.state
@@ -2776,7 +3562,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetAlarmFieldsResponse_Element); i {
 			case 0:
 				return &v.state
@@ -2788,7 +3574,7 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
-		file_scada_layout_proto_scada_layout_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
+		file_scada_layout_proto_scada_layout_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetAlarmFieldsResponse_Limit); i {
 			case 0:
 				return &v.state
@@ -2800,14 +3586,111 @@ func file_scada_layout_proto_scada_layout_proto_init() {
 				return nil
 			}
 		}
+		file_scada_layout_proto_scada_layout_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetElectricityDemandResponse_ElectricityDemandDetail); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_scada_layout_proto_scada_layout_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetElectricityDemandResponse_ChartColor); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_scada_layout_proto_scada_layout_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetElectricityDemandResponse_InputLimit); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_scada_layout_proto_scada_layout_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetElectricityDemandResponse_LimitDetail); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_scada_layout_proto_scada_layout_proto_msgTypes[35].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetElectricityDemandResponse_GroupDetail); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_scada_layout_proto_scada_layout_proto_msgTypes[36].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetElectricityDemandResponse_ElementDetail); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_scada_layout_proto_scada_layout_proto_msgTypes[37].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetElectricityDemandResponse_FieldDetail); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_scada_layout_proto_scada_layout_proto_msgTypes[38].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetElectricityDemandResponse_TimingField); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
+	file_scada_layout_proto_scada_layout_proto_msgTypes[33].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_scada_layout_proto_scada_layout_proto_rawDesc,
 			NumEnums:      2,
-			NumMessages:   30,
+			NumMessages:   39,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -13,6 +13,7 @@ service ScadaLayoutService {
     rpc getReport(google.protobuf.Empty) returns (GetReportResponse) {};
     rpc GetScenario(google.protobuf.Empty) returns (GetScenarioResponse) {};
     rpc GetAlarmFields(google.protobuf.Empty) returns (GetAlarmFieldsResponse) {};
+    rpc GetElectricityDemand(google.protobuf.Empty) returns (GetElectricityDemandResponse) {};
 }
 
 message FieldList {
@@ -207,5 +208,67 @@ message GetAlarmFieldsResponse {
     message Limit {
         double upper = 1;
         double lower = 2;
+    }
+}
+
+message GetElectricityDemandResponse {
+    int32 delay_mins = 1;
+    ChartColor chart_color = 2;
+    repeated ElectricityDemandDetail demand_list = 3;
+
+    message ElectricityDemandDetail {
+        string key = 1;
+        string name = 2;
+        string electricity_field = 3;
+        string unit = 4;
+        InputLimit input_limit = 5;
+        repeated GroupDetail groups = 6;
+        repeated TimingField timing_fields = 7;
+        string dynamo_signal_field = 8;
+    }
+
+    message ChartColor {
+        string target = 1;
+        string forecast = 2;
+        string current = 3;
+    }
+
+    message InputLimit {
+        optional LimitDetail target_electricity = 1;
+        optional LimitDetail restricted_mins = 2;
+        optional LimitDetail electricity = 3;
+        optional LimitDetail elapsed_mins = 4;
+    }
+
+    message LimitDetail {
+        int32 upper = 1;
+        int32 lower = 2;
+    }
+
+    message GroupDetail {
+        string id = 1;
+        string name = 2;
+        repeated ElementDetail elements = 3;
+    }
+
+    message ElementDetail {
+        string id = 1;
+        string name = 2;
+        repeated FieldDetail fields = 3;
+    }
+
+    message FieldDetail {
+        string field = 1;
+        double run_value = 2; // 復歸參數
+        double stop_value = 3; // 卸載參數
+    }
+
+    message TimingField {
+        string Year = 1;
+        string Month = 2;
+        string Day = 3;
+        string Hour = 4;
+        string Minute = 5;
+        string Second = 6;
     }
 }
