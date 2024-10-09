@@ -56,6 +56,12 @@ func WithMockGetSmartDefrostFunc(f func(ctx context.Context) (SmartDefrostLayout
 	}
 }
 
+func WithMockGetElectricityDemandFunc(f func(ctx context.Context) (*pb.GetElectricityDemandResponse, error)) mockScadaLayoutClientOpt {
+	return func(client *mockScadaLayoutClient) {
+		client.getElectricityDemandFunc = f
+	}
+}
+
 func NewMockScadaLayoutClient(opts ...mockScadaLayoutClientOpt) ScadaLayoutClient {
 	client := &mockScadaLayoutClient{}
 	for _, opt := range opts {
@@ -73,6 +79,7 @@ type mockScadaLayoutClient struct {
 	getScenarioReaderFunc    func(ctx context.Context) (ScenarioReader, error)
 	getAlarmFieldsFunc       func(ctx context.Context) ([]*pb.GetAlarmFieldsResponse_FieldDetail, error)
 	getSmartDefrostFunc      func(ctx context.Context) (SmartDefrostLayout, error)
+	getElectricityDemandFunc func(ctx context.Context) (*pb.GetElectricityDemandResponse, error)
 }
 
 func (mock *mockScadaLayoutClient) GetFieldsTags(ctx context.Context, fields []string) (*pb.GetFieldsTagsResponse, error) {
@@ -121,6 +128,13 @@ func (mock *mockScadaLayoutClient) GetAlarmFields(ctx context.Context) ([]*pb.Ge
 func (mock *mockScadaLayoutClient) GetSmartDefrost(ctx context.Context) (SmartDefrostLayout, error) {
 	if mock.getSmartDefrostFunc != nil {
 		return mock.getSmartDefrostFunc(ctx)
+	}
+	return nil, nil
+}
+
+func (mock *mockScadaLayoutClient) GetElectricityDemand(ctx context.Context) (*pb.GetElectricityDemandResponse, error) {
+	if mock.getElectricityDemandFunc != nil {
+		return mock.getElectricityDemandFunc(ctx)
 	}
 	return nil, nil
 }
