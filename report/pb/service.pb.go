@@ -130,6 +130,53 @@ func (x *QueryFieldsResp) GetFieldsInfo() []*QueryFieldsResp_MapFieldEntry {
 	return nil
 }
 
+type QueryFieldsTimeValueResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	FieldsInfo []*QueryFieldsTimeValueResp_MapFieldEntry `protobuf:"bytes,1,rep,name=fieldsInfo,proto3" json:"fieldsInfo,omitempty"`
+}
+
+func (x *QueryFieldsTimeValueResp) Reset() {
+	*x = QueryFieldsTimeValueResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_report_proto_service_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryFieldsTimeValueResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryFieldsTimeValueResp) ProtoMessage() {}
+
+func (x *QueryFieldsTimeValueResp) ProtoReflect() protoreflect.Message {
+	mi := &file_report_proto_service_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryFieldsTimeValueResp.ProtoReflect.Descriptor instead.
+func (*QueryFieldsTimeValueResp) Descriptor() ([]byte, []int) {
+	return file_report_proto_service_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *QueryFieldsTimeValueResp) GetFieldsInfo() []*QueryFieldsTimeValueResp_MapFieldEntry {
+	if x != nil {
+		return x.FieldsInfo
+	}
+	return nil
+}
+
 type QueryFieldsResp_MapFieldEntry struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -142,7 +189,7 @@ type QueryFieldsResp_MapFieldEntry struct {
 func (x *QueryFieldsResp_MapFieldEntry) Reset() {
 	*x = QueryFieldsResp_MapFieldEntry{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_report_proto_service_proto_msgTypes[2]
+		mi := &file_report_proto_service_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -155,7 +202,7 @@ func (x *QueryFieldsResp_MapFieldEntry) String() string {
 func (*QueryFieldsResp_MapFieldEntry) ProtoMessage() {}
 
 func (x *QueryFieldsResp_MapFieldEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_report_proto_service_proto_msgTypes[2]
+	mi := &file_report_proto_service_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -185,6 +232,116 @@ func (x *QueryFieldsResp_MapFieldEntry) GetValue() []float64 {
 	return nil
 }
 
+type QueryFieldsTimeValueResp_TimeValue struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Timestamp int64   `protobuf:"varint,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	Value     float64 `protobuf:"fixed64,2,opt,name=value,proto3" json:"value,omitempty"`
+}
+
+func (x *QueryFieldsTimeValueResp_TimeValue) Reset() {
+	*x = QueryFieldsTimeValueResp_TimeValue{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_report_proto_service_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryFieldsTimeValueResp_TimeValue) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryFieldsTimeValueResp_TimeValue) ProtoMessage() {}
+
+func (x *QueryFieldsTimeValueResp_TimeValue) ProtoReflect() protoreflect.Message {
+	mi := &file_report_proto_service_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryFieldsTimeValueResp_TimeValue.ProtoReflect.Descriptor instead.
+func (*QueryFieldsTimeValueResp_TimeValue) Descriptor() ([]byte, []int) {
+	return file_report_proto_service_proto_rawDescGZIP(), []int{2, 0}
+}
+
+func (x *QueryFieldsTimeValueResp_TimeValue) GetTimestamp() int64 {
+	if x != nil {
+		return x.Timestamp
+	}
+	return 0
+}
+
+func (x *QueryFieldsTimeValueResp_TimeValue) GetValue() float64 {
+	if x != nil {
+		return x.Value
+	}
+	return 0
+}
+
+type QueryFieldsTimeValueResp_MapFieldEntry struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Key    string                                `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Values []*QueryFieldsTimeValueResp_TimeValue `protobuf:"bytes,2,rep,name=values,proto3" json:"values,omitempty"`
+}
+
+func (x *QueryFieldsTimeValueResp_MapFieldEntry) Reset() {
+	*x = QueryFieldsTimeValueResp_MapFieldEntry{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_report_proto_service_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryFieldsTimeValueResp_MapFieldEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryFieldsTimeValueResp_MapFieldEntry) ProtoMessage() {}
+
+func (x *QueryFieldsTimeValueResp_MapFieldEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_report_proto_service_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryFieldsTimeValueResp_MapFieldEntry.ProtoReflect.Descriptor instead.
+func (*QueryFieldsTimeValueResp_MapFieldEntry) Descriptor() ([]byte, []int) {
+	return file_report_proto_service_proto_rawDescGZIP(), []int{2, 1}
+}
+
+func (x *QueryFieldsTimeValueResp_MapFieldEntry) GetKey() string {
+	if x != nil {
+		return x.Key
+	}
+	return ""
+}
+
+func (x *QueryFieldsTimeValueResp_MapFieldEntry) GetValues() []*QueryFieldsTimeValueResp_TimeValue {
+	if x != nil {
+		return x.Values
+	}
+	return nil
+}
+
 var File_report_proto_service_proto protoreflect.FileDescriptor
 
 var file_report_proto_service_proto_rawDesc = []byte{
@@ -204,14 +361,37 @@ var file_report_proto_service_proto_rawDesc = []byte{
 	0x6f, 0x1a, 0x37, 0x0a, 0x0d, 0x4d, 0x61, 0x70, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x45, 0x6e, 0x74,
 	0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
 	0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20,
-	0x03, 0x28, 0x01, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x32, 0x56, 0x0a, 0x0d, 0x52, 0x65,
-	0x70, 0x6f, 0x72, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x45, 0x0a, 0x10, 0x51,
-	0x75, 0x65, 0x72, 0x79, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x12,
-	0x16, 0x2e, 0x72, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x46, 0x69,
-	0x65, 0x6c, 0x64, 0x73, 0x52, 0x65, 0x71, 0x1a, 0x17, 0x2e, 0x72, 0x65, 0x70, 0x6f, 0x72, 0x74,
-	0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x52, 0x65, 0x73, 0x70,
-	0x22, 0x00, 0x42, 0x0b, 0x5a, 0x09, 0x72, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x2f, 0x70, 0x62, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x03, 0x28, 0x01, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x92, 0x02, 0x0a, 0x18, 0x51,
+	0x75, 0x65, 0x72, 0x79, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x54, 0x69, 0x6d, 0x65, 0x56, 0x61,
+	0x6c, 0x75, 0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x4e, 0x0a, 0x0a, 0x66, 0x69, 0x65, 0x6c, 0x64,
+	0x73, 0x49, 0x6e, 0x66, 0x6f, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2e, 0x2e, 0x72, 0x65,
+	0x70, 0x6f, 0x72, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73,
+	0x54, 0x69, 0x6d, 0x65, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x52, 0x65, 0x73, 0x70, 0x2e, 0x4d, 0x61,
+	0x70, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x0a, 0x66, 0x69, 0x65,
+	0x6c, 0x64, 0x73, 0x49, 0x6e, 0x66, 0x6f, 0x1a, 0x3f, 0x0a, 0x09, 0x54, 0x69, 0x6d, 0x65, 0x56,
+	0x61, 0x6c, 0x75, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d,
+	0x70, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61,
+	0x6d, 0x70, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x01, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x1a, 0x65, 0x0a, 0x0d, 0x4d, 0x61, 0x70, 0x46,
+	0x69, 0x65, 0x6c, 0x64, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x42, 0x0a, 0x06, 0x76,
+	0x61, 0x6c, 0x75, 0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2a, 0x2e, 0x72, 0x65,
+	0x70, 0x6f, 0x72, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73,
+	0x54, 0x69, 0x6d, 0x65, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x52, 0x65, 0x73, 0x70, 0x2e, 0x54, 0x69,
+	0x6d, 0x65, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x52, 0x06, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x73, 0x32,
+	0xaa, 0x01, 0x0a, 0x0d, 0x52, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63,
+	0x65, 0x12, 0x45, 0x0a, 0x10, 0x51, 0x75, 0x65, 0x72, 0x79, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73,
+	0x56, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x16, 0x2e, 0x72, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x2e, 0x51,
+	0x75, 0x65, 0x72, 0x79, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x52, 0x65, 0x71, 0x1a, 0x17, 0x2e,
+	0x72, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x46, 0x69, 0x65, 0x6c,
+	0x64, 0x73, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x12, 0x52, 0x0a, 0x14, 0x51, 0x75, 0x65, 0x72,
+	0x79, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x54, 0x69, 0x6d, 0x65, 0x56, 0x61, 0x6c, 0x75, 0x65,
+	0x12, 0x16, 0x2e, 0x72, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x46,
+	0x69, 0x65, 0x6c, 0x64, 0x73, 0x52, 0x65, 0x71, 0x1a, 0x20, 0x2e, 0x72, 0x65, 0x70, 0x6f, 0x72,
+	0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x54, 0x69, 0x6d,
+	0x65, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x42, 0x0b, 0x5a, 0x09,
+	0x72, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -226,21 +406,28 @@ func file_report_proto_service_proto_rawDescGZIP() []byte {
 	return file_report_proto_service_proto_rawDescData
 }
 
-var file_report_proto_service_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_report_proto_service_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_report_proto_service_proto_goTypes = []interface{}{
-	(*QueryFieldsReq)(nil),                // 0: report.QueryFieldsReq
-	(*QueryFieldsResp)(nil),               // 1: report.QueryFieldsResp
-	(*QueryFieldsResp_MapFieldEntry)(nil), // 2: report.QueryFieldsResp.MapFieldEntry
+	(*QueryFieldsReq)(nil),                         // 0: report.QueryFieldsReq
+	(*QueryFieldsResp)(nil),                        // 1: report.QueryFieldsResp
+	(*QueryFieldsTimeValueResp)(nil),               // 2: report.QueryFieldsTimeValueResp
+	(*QueryFieldsResp_MapFieldEntry)(nil),          // 3: report.QueryFieldsResp.MapFieldEntry
+	(*QueryFieldsTimeValueResp_TimeValue)(nil),     // 4: report.QueryFieldsTimeValueResp.TimeValue
+	(*QueryFieldsTimeValueResp_MapFieldEntry)(nil), // 5: report.QueryFieldsTimeValueResp.MapFieldEntry
 }
 var file_report_proto_service_proto_depIdxs = []int32{
-	2, // 0: report.QueryFieldsResp.fieldsInfo:type_name -> report.QueryFieldsResp.MapFieldEntry
-	0, // 1: report.ReportService.QueryFieldsValue:input_type -> report.QueryFieldsReq
-	1, // 2: report.ReportService.QueryFieldsValue:output_type -> report.QueryFieldsResp
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	3, // 0: report.QueryFieldsResp.fieldsInfo:type_name -> report.QueryFieldsResp.MapFieldEntry
+	5, // 1: report.QueryFieldsTimeValueResp.fieldsInfo:type_name -> report.QueryFieldsTimeValueResp.MapFieldEntry
+	4, // 2: report.QueryFieldsTimeValueResp.MapFieldEntry.values:type_name -> report.QueryFieldsTimeValueResp.TimeValue
+	0, // 3: report.ReportService.QueryFieldsValue:input_type -> report.QueryFieldsReq
+	0, // 4: report.ReportService.QueryFieldsTimeValue:input_type -> report.QueryFieldsReq
+	1, // 5: report.ReportService.QueryFieldsValue:output_type -> report.QueryFieldsResp
+	2, // 6: report.ReportService.QueryFieldsTimeValue:output_type -> report.QueryFieldsTimeValueResp
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_report_proto_service_proto_init() }
@@ -274,7 +461,43 @@ func file_report_proto_service_proto_init() {
 			}
 		}
 		file_report_proto_service_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryFieldsTimeValueResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_report_proto_service_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*QueryFieldsResp_MapFieldEntry); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_report_proto_service_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryFieldsTimeValueResp_TimeValue); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_report_proto_service_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryFieldsTimeValueResp_MapFieldEntry); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -292,7 +515,7 @@ func file_report_proto_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_report_proto_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

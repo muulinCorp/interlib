@@ -19,7 +19,20 @@ message QueryFieldsResp {
     repeated MapFieldEntry fieldsInfo = 1;
 }
 
+message QueryFieldsTimeValueResp {
+    message TimeValue {
+        int64 timestamp = 1;
+        double value = 2;
+    }
+    message MapFieldEntry {
+        string key = 1;
+        repeated TimeValue values = 2;
+    }
+    repeated MapFieldEntry fieldsInfo = 1;
+}
+
 service ReportService {
 	// Query Fields Value
 	rpc QueryFieldsValue(QueryFieldsReq) returns (QueryFieldsResp) {};
+    rpc QueryFieldsTimeValue(QueryFieldsReq) returns (QueryFieldsTimeValueResp) {};
 }

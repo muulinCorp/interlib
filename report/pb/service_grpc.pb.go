@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type ReportServiceClient interface {
 	// Query Fields Value
 	QueryFieldsValue(ctx context.Context, in *QueryFieldsReq, opts ...grpc.CallOption) (*QueryFieldsResp, error)
+	QueryFieldsTimeValue(ctx context.Context, in *QueryFieldsReq, opts ...grpc.CallOption) (*QueryFieldsTimeValueResp, error)
 }
 
 type reportServiceClient struct {
@@ -43,12 +44,22 @@ func (c *reportServiceClient) QueryFieldsValue(ctx context.Context, in *QueryFie
 	return out, nil
 }
 
+func (c *reportServiceClient) QueryFieldsTimeValue(ctx context.Context, in *QueryFieldsReq, opts ...grpc.CallOption) (*QueryFieldsTimeValueResp, error) {
+	out := new(QueryFieldsTimeValueResp)
+	err := c.cc.Invoke(ctx, "/report.ReportService/QueryFieldsTimeValue", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ReportServiceServer is the server API for ReportService service.
 // All implementations must embed UnimplementedReportServiceServer
 // for forward compatibility
 type ReportServiceServer interface {
 	// Query Fields Value
 	QueryFieldsValue(context.Context, *QueryFieldsReq) (*QueryFieldsResp, error)
+	QueryFieldsTimeValue(context.Context, *QueryFieldsReq) (*QueryFieldsTimeValueResp, error)
 	mustEmbedUnimplementedReportServiceServer()
 }
 
@@ -58,6 +69,9 @@ type UnimplementedReportServiceServer struct {
 
 func (UnimplementedReportServiceServer) QueryFieldsValue(context.Context, *QueryFieldsReq) (*QueryFieldsResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method QueryFieldsValue not implemented")
+}
+func (UnimplementedReportServiceServer) QueryFieldsTimeValue(context.Context, *QueryFieldsReq) (*QueryFieldsTimeValueResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryFieldsTimeValue not implemented")
 }
 func (UnimplementedReportServiceServer) mustEmbedUnimplementedReportServiceServer() {}
 
@@ -90,6 +104,24 @@ func _ReportService_QueryFieldsValue_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ReportService_QueryFieldsTimeValue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryFieldsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReportServiceServer).QueryFieldsTimeValue(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/report.ReportService/QueryFieldsTimeValue",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReportServiceServer).QueryFieldsTimeValue(ctx, req.(*QueryFieldsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ReportService_ServiceDesc is the grpc.ServiceDesc for ReportService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -100,6 +132,10 @@ var ReportService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "QueryFieldsValue",
 			Handler:    _ReportService_QueryFieldsValue_Handler,
+		},
+		{
+			MethodName: "QueryFieldsTimeValue",
+			Handler:    _ReportService_QueryFieldsTimeValue_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
