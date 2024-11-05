@@ -6,34 +6,36 @@ import (
 	"strconv"
 )
 
-func GetFloat64(v interface{}) float64 {
+func GetFloat64(v interface{}) (*float64, error) {
+	var f float64
+	var err error
 	switch i := v.(type) {
 	default:
-		panic(fmt.Sprintf("unexpected type %T", v))
+		return nil, fmt.Errorf("unexpected type %T", v)
 	case nil:
-		return 0.0
+		return nil, nil
 	case string:
-		f, err := strconv.ParseFloat(string(i), 64)
+		f, err = strconv.ParseFloat(string(i), 64)
 		if err != nil {
-			return 0.0
+			return nil, err
 		}
-		return f
 	case uint32:
-		return float64(uint32(i))
+		f = float64(uint32(i))
 	case uint16:
-		return float64(uint16(i))
+		f = float64(uint16(i))
 	case int16:
-		return float64(int16(i))
+		f = float64(int16(i))
 	case int:
-		return float64(int(i))
+		f = float64(int(i))
 	case json.Number:
 		jn, _ := v.(json.Number)
-		result, err := jn.Float64()
+		f, err = jn.Float64()
 		if err != nil {
-			return 0.0
+			return nil, err
 		}
-		return result
+
 	case float64:
-		return v.(float64)
+		f = v.(float64)
 	}
+	return &f, nil
 }
