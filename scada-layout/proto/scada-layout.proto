@@ -261,6 +261,7 @@ message GetElectricityDemandResponse {
         string field = 1;
         double run_value = 2; // 復歸參數
         double stop_value = 3; // 卸載參數
+        string desc = 4;
     }
 
     message TimingField {
