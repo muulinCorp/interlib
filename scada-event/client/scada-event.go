@@ -45,7 +45,7 @@ type ScadaEventWarnClient[T any] interface {
 	CloseWarning(ctx context.Context, service string, keys ...string) error
 	ExtendWarning(ctx context.Context, service string, keys ...string) error
 	ReadWarnings(ctx context.Context, service string, account string, keys ...string) error
-	GetRealtime(ctx context.Context, service string) ([]*realtimeResp[T], error)
+	GetRealtime(ctx context.Context, service string) ([]*RealtimeResp[T], error)
 }
 
 func NewScadaEventClient[T any](address string) ScadaEventWarnClient[T] {
@@ -168,14 +168,14 @@ type readerInfo struct {
 	Account string
 	Time    time.Time
 }
-type realtimeResp[T any] struct {
+type RealtimeResp[T any] struct {
 	Key        string
 	CreateTime time.Time
 	Data       T
 	Readers    []*readerInfo
 }
 
-func (impl *scadaEventClientImpl[T]) GetRealtime(ctx context.Context, service string) ([]*realtimeResp[T], error) {
+func (impl *scadaEventClientImpl[T]) GetRealtime(ctx context.Context, service string) ([]*RealtimeResp[T], error) {
 	grpc, err := grpc_tool.NewConnection(impl.address)
 	if err != nil {
 		return nil, err
@@ -188,7 +188,7 @@ func (impl *scadaEventClientImpl[T]) GetRealtime(ctx context.Context, service st
 	if err != nil {
 		return nil, err
 	}
-	realtime := make([]*realtimeResp[T], len(resp.Warnings))
+	realtime := make([]*RealtimeResp[T], len(resp.Warnings))
 	for i, entry := range resp.Warnings {
 		var realtimeObj T
 		err = impl.unmarshalFunc(entry.Detail, &realtimeObj)
@@ -202,7 +202,7 @@ func (impl *scadaEventClientImpl[T]) GetRealtime(ctx context.Context, service st
 				Time:    time.Unix(reader.Timestamp, 0),
 			}
 		}
-		realtime[i] = &realtimeResp[T]{
+		realtime[i] = &RealtimeResp[T]{
 			Key:        entry.Key,
 			Data:       realtimeObj,
 			CreateTime: time.Unix(entry.CreateTime, 0),
