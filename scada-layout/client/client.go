@@ -196,7 +196,6 @@ func (impl *clientImpl) GetAlarmFields(ctx context.Context) ([]*pb.GetAlarmField
 }
 
 func (impl *clientImpl) GetSmartDefrost(ctx context.Context) (SmartDefrostLayout, error) {
-
 	grpc, err := grpc_tool.NewConnection(impl.address)
 	if err != nil {
 		return nil, err
