@@ -8,14 +8,14 @@ import (
 	"github.com/muulinCorp/interlib/report/pb"
 )
 
-type timeValue struct {
+type TimeValue struct {
 	Time  time.Time
 	Value float64
 }
 
 type ReportClient interface {
 	QueryFieldsValueByLastInterval(ctx context.Context, interval time.Duration, fields []string) (map[string][]float64, error)
-	QueryFieldsTimeValueByLastInterval(ctx context.Context, interval time.Duration, fields []string) (map[string][]*timeValue, error)
+	QueryFieldsTimeValueByLastInterval(ctx context.Context, interval time.Duration, fields []string) (map[string][]*TimeValue, error)
 }
 
 func NewReportClient(address string) ReportClient {
@@ -54,7 +54,7 @@ func (impl *reportClientImpl) QueryFieldsValueByLastInterval(ctx context.Context
 	return fieldsInfo, nil
 }
 
-func (impl *reportClientImpl) QueryFieldsTimeValueByLastInterval(ctx context.Context, interval time.Duration, fields []string) (map[string][]*timeValue, error) {
+func (impl *reportClientImpl) QueryFieldsTimeValueByLastInterval(ctx context.Context, interval time.Duration, fields []string) (map[string][]*TimeValue, error) {
 	grpc, err := grpc_tool.NewConnection(impl.address)
 	if err != nil {
 		return nil, err
@@ -73,11 +73,11 @@ func (impl *reportClientImpl) QueryFieldsTimeValueByLastInterval(ctx context.Con
 		return nil, err
 	}
 
-	fieldsInfo := make(map[string][]*timeValue)
+	fieldsInfo := make(map[string][]*TimeValue)
 	for _, entry := range resp.FieldsInfo {
-		values := make([]*timeValue, len(entry.Values))
+		values := make([]*TimeValue, len(entry.Values))
 		for i, value := range entry.Values {
-			values[i] = &timeValue{
+			values[i] = &TimeValue{
 				Time:  time.Unix(value.Timestamp, 0),
 				Value: value.Value,
 			}
