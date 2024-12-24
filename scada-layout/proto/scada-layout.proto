@@ -189,6 +189,12 @@ message GetScenarioResponse {
     }
 }
 
+enum UnitType {
+    Normal = 0;
+    ValueTrans = 1;
+    BitTrans = 2;
+}
+
 message GetAlarmFieldsResponse {
     repeated FieldDetail fields = 1;
 
@@ -197,6 +203,7 @@ message GetAlarmFieldsResponse {
         string desc = 2;
         repeated Element elements = 3;
         Limit limit = 4;
+        UnitType unitType = 5;
         map<int32, string> trans = 10;
     }
 
