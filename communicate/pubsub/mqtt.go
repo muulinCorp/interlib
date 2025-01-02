@@ -11,23 +11,33 @@ import (
 	"github.com/pkg/errors"
 )
 
-func NewMqttSource(routineTopic, changeDataTopic, connErrTopic, writeDataTopic string) (Source, error) {
+type mqttSourceOpt func(*mqttSource)
+
+func MqttSourceWithTopics(topic ...string) mqttSourceOpt {
+	return func(s *mqttSource) {
+		s.conf.AddTopics(topic...)
+	}
+}
+
+func NewMqttSource(opts ...mqttSourceOpt) (Source, error) {
 	mqttConf, err := config.GetConfigFromEnvWithoutTopic()
 	if err != nil {
 		return nil, err
 	}
-	mqttConf.AddTopics(routineTopic, changeDataTopic, connErrTopic, writeDataTopic)
-	return &mqttSource{
-		routineTopic:    routineTopic,
-		changeDataTopic: changeDataTopic,
-		connErrTopic:    connErrTopic,
-		writeDataTopic:  writeDataTopic,
-		conf:            mqttConf,
-		routineTrans:    &routineTrans{},
-		dataChangeTrans: &dataChangeTrans{},
-		connErrTrans:    &connectErrTrans{},
-		dataWriteTrans:  &dataWriteTrans{},
-	}, nil
+	mqttSource :=
+		&mqttSource{
+			conf:            mqttConf,
+			routineTrans:    &routineTrans{},
+			dataChangeTrans: &dataChangeTrans{},
+			connErrTrans:    &connectErrTrans{},
+			dataWriteTrans:  &dataWriteTrans{},
+		}
+
+	for _, opt := range opts {
+		opt(mqttSource)
+	}
+
+	return mqttSource, nil
 }
 
 type mqttSource struct {
@@ -51,6 +61,9 @@ func (m *mqttSource) SetLog(l log.Logger) {
 }
 
 func (m *mqttSource) AddRoutineDataSubscriber(s SubscriberRoutineData) {
+	if m.routineTopic == "" {
+		panic("routineTopic is empty")
+	}
 	m.routineTrans.addSubscriber(s)
 }
 
