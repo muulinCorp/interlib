@@ -13,9 +13,31 @@ import (
 
 type mqttSourceOpt func(*mqttSource)
 
-func MqttSourceWithTopics(topic ...string) mqttSourceOpt {
+func MqttSourceWithRoutineTopic(topic string) mqttSourceOpt {
 	return func(s *mqttSource) {
-		s.conf.AddTopics(topic...)
+		s.routineTopic = topic
+		s.conf.Topics = append(s.conf.Topics, topic)
+	}
+}
+
+func MqttSourceWithChangeDataTopic(topic string) mqttSourceOpt {
+	return func(s *mqttSource) {
+		s.changeDataTopic = topic
+		s.conf.Topics = append(s.conf.Topics, topic)
+	}
+}
+
+func MqttSourceWithConnErrTopic(topic string) mqttSourceOpt {
+	return func(s *mqttSource) {
+		s.connErrTopic = topic
+		s.conf.Topics = append(s.conf.Topics, topic)
+	}
+}
+
+func MqttSourceWithDataWriteTopic(topic string) mqttSourceOpt {
+	return func(s *mqttSource) {
+		s.writeDataTopic = topic
+		s.conf.Topics = append(s.conf.Topics, topic)
 	}
 }
 
@@ -72,10 +94,16 @@ func (m *mqttSource) RemoveRoutineDataSubscriber(s SubscriberRoutineData) {
 }
 
 func (m *mqttSource) AddConnectErrSubscriber(s SubscriberConnectErr) {
+	if m.connErrTopic == "" {
+		panic("ConnectErrTopic is empty")
+	}
 	m.connErrTrans.addSubscriber(s)
 }
 
 func (m *mqttSource) AddDataChangeSubscriber(s SubscriberDataChange) {
+	if m.changeDataTopic == "" {
+		panic("changeDataTopic is empty")
+	}
 	m.dataChangeTrans.addSubscriber(s)
 }
 
@@ -85,6 +113,9 @@ func (m *mqttSource) RemoveDataChangeSubscriber(s SubscriberDataChange) {
 }
 
 func (m *mqttSource) AddDataWriteSubscriber(s SubscriberDataWrite) {
+	if m.writeDataTopic == "" {
+		panic("writeDataTopic is empty")
+	}
 	m.dataWriteTrans.addSubscriber(s)
 }
 
@@ -95,12 +126,21 @@ func (m *mqttSource) RemoveDataWriteSubscriber(s SubscriberDataWrite) {
 
 func (m *mqttSource) Run(ctx context.Context) {
 	var err error
-	m.mqttServ, err = mqtt.NewMqttSubOnlyServ(m.conf, map[string]trans.Trans{
-		m.routineTopic:    m.routineTrans,
-		m.changeDataTopic: m.dataChangeTrans,
-		m.connErrTopic:    m.connErrTrans,
-		m.writeDataTopic:  m.dataWriteTrans,
-	})
+	tsmap := make(map[string]trans.Trans)
+	if m.routineTopic != "" {
+		tsmap[m.routineTopic] = m.routineTrans
+	}
+	if m.changeDataTopic != "" {
+		tsmap[m.changeDataTopic] = m.dataChangeTrans
+	}
+	if m.connErrTopic != "" {
+		tsmap[m.connErrTopic] = m.connErrTrans
+	}
+	if m.writeDataTopic != "" {
+		tsmap[m.writeDataTopic] = m.dataWriteTrans
+	}
+
+	m.mqttServ, err = mqtt.NewMqttSubOnlyServ(m.conf, tsmap)
 	if err != nil {
 		panic(err)
 	}
