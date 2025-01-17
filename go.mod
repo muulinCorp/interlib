@@ -5,7 +5,7 @@ go 1.21.7
 require (
 	github.com/94peter/api-toolkit v1.4.0
 	github.com/94peter/log v1.0.5
-	github.com/94peter/microservice v0.2.5-dev
+	github.com/94peter/microservice v0.2.6-dev
 	github.com/94peter/morm v1.0.1
 	github.com/94peter/mqtt v1.3.2
 	github.com/gin-gonic/gin v1.9.1
