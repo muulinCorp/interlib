@@ -1,6 +1,7 @@
 package client
 
 import (
+	"bytes"
 	"errors"
 
 	"github.com/muulinCorp/interlib/communicate/pb"
@@ -13,6 +14,7 @@ var (
 
 type SensorReader interface {
 	GetValue(name string) (float64, error)
+	ToString() string
 }
 
 func NewSensorReader(sensors []*pb.GetSensorsResponse_Sensor) SensorReader {
@@ -36,4 +38,13 @@ func (impl *sensorReaderImpl) GetValue(name string) (float64, error) {
 		}
 	}
 	return 0, ErrNotFount
+}
+
+func (impl *sensorReaderImpl) ToString() string {
+	var buffer bytes.Buffer
+	for _, s := range impl.sensors {
+		buffer.WriteString(s.String() + "\n")
+	}
+	return buffer.String()
+
 }
