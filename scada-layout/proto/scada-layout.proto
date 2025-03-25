@@ -107,6 +107,7 @@ message GetSmartDefrostResponse {
         string forced_def = 18;
         string err_code = 19;
         string err_code1 = 20;
+        string timestamp = 21;
     }
 }
 
@@ -204,7 +205,7 @@ message GetAlarmFieldsResponse {
         repeated Element elements = 3;
         Limit limit = 4;
         UnitType unitType = 5;
-        map<int32, string> trans = 10;
+        map<int32, string> trans = 6;
     }
 
     message Element {
