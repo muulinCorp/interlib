@@ -29,6 +29,7 @@ type ScadaEventServiceClient interface {
 	ReadWarnings(ctx context.Context, in *ReadWarningsReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetRealtime(ctx context.Context, in *GetRealtimeReq, opts ...grpc.CallOption) (*GetRealtimeResp, error)
 	CreateEvent(ctx context.Context, in *CreateEventReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreateSystemNotice(ctx context.Context, in *CreateSystemNoticeReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type scadaEventServiceClient struct {
@@ -93,6 +94,15 @@ func (c *scadaEventServiceClient) CreateEvent(ctx context.Context, in *CreateEve
 	return out, nil
 }
 
+func (c *scadaEventServiceClient) CreateSystemNotice(ctx context.Context, in *CreateSystemNoticeReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/scada_layout.ScadaEventService/createSystemNotice", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ScadaEventServiceServer is the server API for ScadaEventService service.
 // All implementations must embed UnimplementedScadaEventServiceServer
 // for forward compatibility
@@ -103,6 +113,7 @@ type ScadaEventServiceServer interface {
 	ReadWarnings(context.Context, *ReadWarningsReq) (*emptypb.Empty, error)
 	GetRealtime(context.Context, *GetRealtimeReq) (*GetRealtimeResp, error)
 	CreateEvent(context.Context, *CreateEventReq) (*emptypb.Empty, error)
+	CreateSystemNotice(context.Context, *CreateSystemNoticeReq) (*emptypb.Empty, error)
 	mustEmbedUnimplementedScadaEventServiceServer()
 }
 
@@ -127,6 +138,9 @@ func (UnimplementedScadaEventServiceServer) GetRealtime(context.Context, *GetRea
 }
 func (UnimplementedScadaEventServiceServer) CreateEvent(context.Context, *CreateEventReq) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateEvent not implemented")
+}
+func (UnimplementedScadaEventServiceServer) CreateSystemNotice(context.Context, *CreateSystemNoticeReq) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateSystemNotice not implemented")
 }
 func (UnimplementedScadaEventServiceServer) mustEmbedUnimplementedScadaEventServiceServer() {}
 
@@ -249,6 +263,24 @@ func _ScadaEventService_CreateEvent_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ScadaEventService_CreateSystemNotice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateSystemNoticeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ScadaEventServiceServer).CreateSystemNotice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/scada_layout.ScadaEventService/createSystemNotice",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ScadaEventServiceServer).CreateSystemNotice(ctx, req.(*CreateSystemNoticeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ScadaEventService_ServiceDesc is the grpc.ServiceDesc for ScadaEventService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -279,6 +311,10 @@ var ScadaEventService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "createEvent",
 			Handler:    _ScadaEventService_CreateEvent_Handler,
+		},
+		{
+			MethodName: "createSystemNotice",
+			Handler:    _ScadaEventService_CreateSystemNotice_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

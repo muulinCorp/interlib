@@ -11,6 +11,7 @@ import (
 
 type ScadaBasicEventClient interface {
 	CreateEvent(ctx context.Context, service, typ, summary, detail string) error
+	CreateSystemNotice(ctx context.Context, service, typ, summary, detail string, retain bool, values []byte) error
 }
 
 func NewScadaBasicEventClient(address string) ScadaBasicEventClient {
@@ -36,6 +37,25 @@ func (impl *scadaBasicEventClientImpl) CreateEvent(ctx context.Context, service,
 		Type:      typ,
 		Summarize: summary,
 		Detail:    detail,
+	})
+	return err
+}
+
+func (impl *scadaBasicEventClientImpl) CreateSystemNotice(ctx context.Context, service, typ, summary, detail string, retain bool, values []byte) error {
+	grpc, err := grpc_tool.NewConnection(impl.address)
+	if err != nil {
+		return err
+	}
+	defer grpc.Close()
+
+	clt := pb.NewScadaEventServiceClient(grpc)
+	_, err = clt.CreateSystemNotice(ctx, &pb.CreateSystemNoticeReq{
+		Service:   service,
+		Type:      typ,
+		Summarize: summary,
+		Detail:    detail,
+		Retain:    retain,
+		Values:    values,
 	})
 	return err
 }
