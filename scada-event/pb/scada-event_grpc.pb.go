@@ -42,7 +42,7 @@ func NewScadaEventServiceClient(cc grpc.ClientConnInterface) ScadaEventServiceCl
 
 func (c *scadaEventServiceClient) CreateWarning(ctx context.Context, in *CreateWarningsReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/scada_layout.ScadaEventService/createWarning", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/scada_event.ScadaEventService/createWarning", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (c *scadaEventServiceClient) CreateWarning(ctx context.Context, in *CreateW
 
 func (c *scadaEventServiceClient) CloseWarning(ctx context.Context, in *CloseWarningReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/scada_layout.ScadaEventService/closeWarning", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/scada_event.ScadaEventService/closeWarning", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (c *scadaEventServiceClient) CloseWarning(ctx context.Context, in *CloseWar
 
 func (c *scadaEventServiceClient) ExtendWarning(ctx context.Context, in *ExtendWarningReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/scada_layout.ScadaEventService/extendWarning", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/scada_event.ScadaEventService/extendWarning", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func (c *scadaEventServiceClient) ExtendWarning(ctx context.Context, in *ExtendW
 
 func (c *scadaEventServiceClient) ReadWarnings(ctx context.Context, in *ReadWarningsReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/scada_layout.ScadaEventService/readWarnings", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/scada_event.ScadaEventService/readWarnings", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func (c *scadaEventServiceClient) ReadWarnings(ctx context.Context, in *ReadWarn
 
 func (c *scadaEventServiceClient) GetRealtime(ctx context.Context, in *GetRealtimeReq, opts ...grpc.CallOption) (*GetRealtimeResp, error) {
 	out := new(GetRealtimeResp)
-	err := c.cc.Invoke(ctx, "/scada_layout.ScadaEventService/getRealtime", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/scada_event.ScadaEventService/getRealtime", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func (c *scadaEventServiceClient) GetRealtime(ctx context.Context, in *GetRealti
 
 func (c *scadaEventServiceClient) CreateEvent(ctx context.Context, in *CreateEventReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/scada_layout.ScadaEventService/createEvent", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/scada_event.ScadaEventService/createEvent", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +96,7 @@ func (c *scadaEventServiceClient) CreateEvent(ctx context.Context, in *CreateEve
 
 func (c *scadaEventServiceClient) CreateSystemNotice(ctx context.Context, in *CreateSystemNoticeReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/scada_layout.ScadaEventService/createSystemNotice", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/scada_event.ScadaEventService/createSystemNotice", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -165,7 +165,7 @@ func _ScadaEventService_CreateWarning_Handler(srv interface{}, ctx context.Conte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/scada_layout.ScadaEventService/createWarning",
+		FullMethod: "/scada_event.ScadaEventService/createWarning",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ScadaEventServiceServer).CreateWarning(ctx, req.(*CreateWarningsReq))
@@ -183,7 +183,7 @@ func _ScadaEventService_CloseWarning_Handler(srv interface{}, ctx context.Contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/scada_layout.ScadaEventService/closeWarning",
+		FullMethod: "/scada_event.ScadaEventService/closeWarning",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ScadaEventServiceServer).CloseWarning(ctx, req.(*CloseWarningReq))
@@ -201,7 +201,7 @@ func _ScadaEventService_ExtendWarning_Handler(srv interface{}, ctx context.Conte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/scada_layout.ScadaEventService/extendWarning",
+		FullMethod: "/scada_event.ScadaEventService/extendWarning",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ScadaEventServiceServer).ExtendWarning(ctx, req.(*ExtendWarningReq))
@@ -219,7 +219,7 @@ func _ScadaEventService_ReadWarnings_Handler(srv interface{}, ctx context.Contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/scada_layout.ScadaEventService/readWarnings",
+		FullMethod: "/scada_event.ScadaEventService/readWarnings",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ScadaEventServiceServer).ReadWarnings(ctx, req.(*ReadWarningsReq))
@@ -237,7 +237,7 @@ func _ScadaEventService_GetRealtime_Handler(srv interface{}, ctx context.Context
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/scada_layout.ScadaEventService/getRealtime",
+		FullMethod: "/scada_event.ScadaEventService/getRealtime",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ScadaEventServiceServer).GetRealtime(ctx, req.(*GetRealtimeReq))
@@ -255,7 +255,7 @@ func _ScadaEventService_CreateEvent_Handler(srv interface{}, ctx context.Context
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/scada_layout.ScadaEventService/createEvent",
+		FullMethod: "/scada_event.ScadaEventService/createEvent",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ScadaEventServiceServer).CreateEvent(ctx, req.(*CreateEventReq))
@@ -273,7 +273,7 @@ func _ScadaEventService_CreateSystemNotice_Handler(srv interface{}, ctx context.
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/scada_layout.ScadaEventService/createSystemNotice",
+		FullMethod: "/scada_event.ScadaEventService/createSystemNotice",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ScadaEventServiceServer).CreateSystemNotice(ctx, req.(*CreateSystemNoticeReq))
@@ -285,7 +285,7 @@ func _ScadaEventService_CreateSystemNotice_Handler(srv interface{}, ctx context.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ScadaEventService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "scada_layout.ScadaEventService",
+	ServiceName: "scada_event.ScadaEventService",
 	HandlerType: (*ScadaEventServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
