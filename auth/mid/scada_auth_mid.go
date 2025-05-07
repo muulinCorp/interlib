@@ -2,7 +2,6 @@ package mid
 
 import (
 	"context"
-	"net/http"
 	"strings"
 	"time"
 
@@ -67,22 +66,20 @@ func (am *scadaAuthMiddle) Handler() gin.HandlerFunc {
 			}
 			timeout, cancel := context.WithTimeout(c, 3*time.Second)
 			defer cancel()
-			user, err := am.authSDK.GetTokenInfo(timeout, &pb.GetTokenInfoRequest{
-				Host: host, Token: authToken[7:],
+			user, err := am.authSDK.GetScadaTokenInfo(timeout,&pb.GetScadaTokenInfoRequest{
+				Host: host, Token: authToken[7:], Method: c.Request.Method, ApiPath: c.Request.URL.Path,
 			})
 			if err != nil {
 				status, ok := status.FromError(err)
-				if !ok || status.Code() != codes.Unauthenticated {
-					am.GinApiErrorHandler(c, types.NewErrorWaper(types.ErrAuthGrpcConnectFail, err.Error()))
+				apiError, found := types.StatusErrToApiErr[err]
+
+				if !ok || status.Code() == codes.Internal || !found {
+					am.GinApiErrorHandler(c, types.NewErrorWaper(types.ErrInternalError, err.Error()))
 					c.Abort()
 					return
 				}
-				am.GinApiErrorHandler(c, types.NewErrorWaper(types.ErrTokenTimeout, err.Error()))
-				c.Abort()
-				return
-			}
-			if user.StatusCode != http.StatusOK {
-				am.GinApiErrorHandler(c, types.NewErrorWaper(types.ErrAuthGrpcConnectFail, user.Message))
+
+				am.GinApiErrorHandler(c, types.NewErrorWaper(apiError, err.Error()))
 				c.Abort()
 				return
 			}
@@ -93,7 +90,7 @@ func (am *scadaAuthMiddle) Handler() gin.HandlerFunc {
 				return
 			}
 
-			auth.SetReqUserToGin(c, auth.NewReqUser(host, user.Sub, user.Account, user.Name, user.Roles, user.Useage))
+			auth.SetReqUserToGin(c, auth.NewReqUser(host, user.Id, user.Account, user.Name, user.Roles, user.Usage))
 		}
 		c.Next()
 	}

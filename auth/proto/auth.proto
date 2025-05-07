@@ -19,6 +19,21 @@ message GetTokenInfoResponse {
   string useage = 9;
 }
 
+message GetScadaTokenInfoRequest {
+  string host = 1;
+  string token = 2;
+  string method = 3;
+  string apiPath = 4;
+}
+
+message GetScadaTokenInfoResponse {
+  string id = 1;
+  string account = 2;
+  string name = 3;
+  repeated string roles = 4;
+  string usage = 5;
+}
+
 message GetAccountRequest {
   string id = 1;
 }
@@ -70,6 +85,8 @@ message GetUserInfoResponse {
 service AuthService {
   // 取得使用者資訊
   rpc GetTokenInfo(GetTokenInfoRequest) returns (GetTokenInfoResponse) {};
+  // 取得Scada使用者資訊 (包括role的permission驗證)
+  rpc GetScadaTokenInfo(GetScadaTokenInfoRequest) returns (GetScadaTokenInfoResponse) {};
   // 取得帳號
   rpc GetAccount(GetAccountRequest) returns (GetAccountResponse) {};
   // 帳號是否存在

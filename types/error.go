@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	apiErr "github.com/94peter/api-toolkit/errors"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 var (
@@ -12,6 +14,7 @@ var (
 	ErrRequestGetFail      = apiErr.New(http.StatusBadGateway, "request fail")
 	ErrAuthGrpcConnectFail = apiErr.New(http.StatusServiceUnavailable, "json encdoe fail")
 	ErrPathNotFound        = apiErr.New(http.StatusNotFound, "path not found")
+	ErrInternalError       = apiErr.New(http.StatusInternalServerError, "internal error")
 )
 
 var (
@@ -29,4 +32,15 @@ var (
 
 func NewErrorWaper(err apiErr.ApiError, detail string) apiErr.ApiError {
 	return apiErr.PkgError(err.GetStatus(), fmt.Errorf("%s:%s", err.Error(), detail))
+}
+
+var (
+	StatusErrHostNotMatch = status.Error(codes.PermissionDenied, "host not match")
+	StatusErrInvalidToken = status.Error(codes.Unauthenticated, "invalid token")
+	StatusErrNoApiPerm = status.Error(codes.PermissionDenied, "no api permission")
+)
+var StatusErrToApiErr = map[error]apiErr.ApiError{
+	StatusErrHostNotMatch: ErrHostNotMatch,
+	StatusErrInvalidToken: ErrInvalidToken,
+	StatusErrNoApiPerm:    ErrNoPermission,
 }

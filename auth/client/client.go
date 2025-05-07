@@ -9,6 +9,7 @@ import (
 
 type AuthClient interface {
 	GetTokenInfo(ctx context.Context, resp *pb.GetTokenInfoRequest) (*pb.GetTokenInfoResponse, error)
+	GetScadaTokenInfo(ctx context.Context, req *pb.GetScadaTokenInfoRequest) (*pb.GetScadaTokenInfoResponse, error)
 	GetAccount(ctx context.Context, id string) (string, error)
 	AccountExist(ctx context.Context, acc string) (bool, error)
 	CreateInvitation(ctx context.Context, email, name, channel string) (string, error)
@@ -35,6 +36,17 @@ func (impl *authClientImpl) GetTokenInfo(ctx context.Context, req *pb.GetTokenIn
 	clt := pb.NewAuthServiceClient(grpc)
 
 	return clt.GetTokenInfo(ctx, req)
+}
+
+func (impl *authClientImpl) GetScadaTokenInfo(ctx context.Context, req *pb.GetScadaTokenInfoRequest) (*pb.GetScadaTokenInfoResponse, error) {
+	grpc, err := grpc_tool.NewConnection(impl.address)
+	if err != nil {
+		return nil, err
+	}
+	defer grpc.Close()
+	clt := pb.NewAuthServiceClient(grpc)
+
+	return clt.GetScadaTokenInfo(ctx, req)
 }
 
 func (impl *authClientImpl) GetAccount(ctx context.Context, id string) (string, error) {
