@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 option go_package = "scada-event/pb";
-package scada_layout;
+package scada_event;
 
 import "google/protobuf/empty.proto";
 
@@ -67,6 +67,15 @@ message CreateEventReq {
     string detail = 4;
 }
 
+message CreateSystemNoticeReq {
+    string service = 1;
+    string type = 2;
+    bytes values = 3;
+    bool retain = 4;
+    string summarize = 5;
+    string detail = 6;
+}
+
 service ScadaEventService {
     rpc createWarning(CreateWarningsReq) returns (google.protobuf.Empty) {}
     rpc closeWarning(CloseWarningReq) returns (google.protobuf.Empty) {}
@@ -74,4 +83,5 @@ service ScadaEventService {
     rpc readWarnings(ReadWarningsReq) returns (google.protobuf.Empty) {}
     rpc getRealtime(GetRealtimeReq) returns (GetRealtimeResp) {}
     rpc createEvent(CreateEventReq) returns (google.protobuf.Empty) {}
+    rpc createSystemNotice(CreateSystemNoticeReq) returns (google.protobuf.Empty) {}
 }
