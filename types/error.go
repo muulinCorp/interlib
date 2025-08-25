@@ -31,16 +31,16 @@ var (
 // error key for sensor: XXX180~199
 
 func NewErrorWaper(err apiErr.ApiError, detail string) apiErr.ApiError {
-	return apiErr.PkgError(err.GetStatus(), fmt.Errorf("%s:%s", err.Error(), detail))
+	return apiErr.PkgError(err.GetStatus(), fmt.Errorf("%s : %s", err.Error(), detail))
 }
 
 var (
 	StatusErrHostNotMatch = status.Error(codes.PermissionDenied, "host not match")
 	StatusErrInvalidToken = status.Error(codes.Unauthenticated, "invalid token")
-	StatusErrNoApiPerm = status.Error(codes.PermissionDenied, "no api permission")
+	StatusErrNoApiPerm    = status.Error(codes.PermissionDenied, "no api permission")
 )
-var StatusErrToApiErr = map[error]apiErr.ApiError{
-	StatusErrHostNotMatch: ErrHostNotMatch,
-	StatusErrInvalidToken: ErrInvalidToken,
-	StatusErrNoApiPerm:    ErrNoPermission,
+
+var StatusErrToApiErr = map[codes.Code]int{
+	codes.PermissionDenied: http.StatusForbidden,
+	codes.Unauthenticated:  http.StatusUnauthorized,
 }
