@@ -71,15 +71,20 @@ func (am *scadaAuthMiddle) Handler() gin.HandlerFunc {
 			})
 			if err != nil {
 				status, ok := status.FromError(err)
-				apiError, found := types.StatusErrToApiErr[err]
-
-				if !ok || status.Code() == codes.Internal || !found {
+				if !ok {
 					am.GinApiErrorHandler(c, types.NewErrorWaper(types.ErrInternalError, err.Error()))
 					c.Abort()
 					return
 				}
 
-				am.GinApiErrorHandler(c, types.NewErrorWaper(apiError, err.Error()))
+				respCode, found := types.StatusErrToApiErr[status.Code()]
+				if status.Code() == codes.Internal || !found {
+					am.GinApiErrorHandler(c, types.NewErrorWaper(types.ErrInternalError, err.Error()))
+					c.Abort()
+					return
+				}
+
+				am.GinApiErrorHandler(c, types.NewErrorWaper(errors.New(respCode, "known Auth error"), err.Error()))
 				c.Abort()
 				return
 			}
