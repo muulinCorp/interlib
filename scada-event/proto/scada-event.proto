@@ -9,6 +9,7 @@ import "google/protobuf/empty.proto";
 message fieldInfo {
     string name = 1;
     string field = 2;
+    bool soundOn = 3;
 }
 message CreateWarningsReq {
     
