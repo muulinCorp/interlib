@@ -206,6 +206,7 @@ message GetAlarmFieldsResponse {
         Limit limit = 4;
         UnitType unitType = 5;
         map<int32, string> trans = 6;
+        bool soundOn = 7;
     }
 
     message Element {
