@@ -5,14 +5,30 @@ package scada_layout;
 
 import "google/protobuf/empty.proto";
 
+// implement by scada-layout
 service ScadaLayoutService {
-    rpc getFieldsTags(FieldList) returns (GetFieldsTagsResponse) {};
-    rpc getReportFields(FieldList) returns (GetReportFieldsResponse) {};
-    rpc getFieldsWithId(GetFieldListRequest) returns (GetFieldListResponse) {};
-    rpc getSmartDefrost(google.protobuf.Empty) returns (GetSmartDefrostResponse) {};
-    rpc getReport(google.protobuf.Empty) returns (GetReportResponse) {};
+    // 
+    rpc GetFieldsTags(FieldList) returns (GetFieldsTagsResponse) {};
+    
+    // 
+    rpc GetReportFields(FieldList) returns (GetReportFieldsResponse) {};
+    
+    //
+    rpc GetFieldsWithId(GetFieldListRequest) returns (GetFieldListResponse) {};
+    
+    //
+    rpc GetSmartDefrost(google.protobuf.Empty) returns (GetSmartDefrostResponse) {};
+    
+    //
+    rpc GetReport(google.protobuf.Empty) returns (GetReportResponse) {};
+    
+    //
     rpc GetScenario(google.protobuf.Empty) returns (GetScenarioResponse) {};
+    
+    // currently only used by alarm(cache)
     rpc GetAlarmFields(google.protobuf.Empty) returns (GetAlarmFieldsResponse) {};
+    
+    //
     rpc GetElectricityDemand(google.protobuf.Empty) returns (GetElectricityDemandResponse) {};
 }
 
@@ -27,13 +43,13 @@ message GetFieldsTagsResponse {
         repeated IdWithName groups = 3;
         repeated IdWithName floors = 4;
         string unit = 5;
-        string sensorType = 6;
+        string sensor_type = 6;
         string name = 7;
         repeated string scheduled_temp_groups = 8;
-        bool isEletricMeter = 9;
+        bool is_eletric_meter = 9;
         repeated string scheduled_defrost_groups = 10;
     }
-    repeated FieldTag fieldTags = 1;
+    repeated FieldTag field_tags = 1;
 
     message IdWithName {
         string id = 1;
@@ -49,13 +65,13 @@ message GetReportFieldsResponse {
         repeated string groups = 3;
         repeated string floors = 4;
         string unit = 5;
-        string sensorType = 6;
+        string sensor_type = 6;
         string name = 7;
-        string displayType = 8;
-        uint32 displayDp = 9;
+        string display_type = 8;
+        uint32 display_dp = 9;
         map<int32, string> trans = 10;
     }
-    string projectName = 1;
+    string project_name = 1;
     repeated Field fields = 2;
 }
 
@@ -64,8 +80,8 @@ message GetFieldListRequest {
     RequestType type = 2;
 
     enum RequestType {
-        Tv = 0;
-        Floor = 1;
+        TV = 0;
+        FLOOR = 1;
     }
 }
 
@@ -90,7 +106,7 @@ message GetSmartDefrostResponse {
     message ServerSettingField {
         string state = 1;
         string execute = 2;
-        string processID = 3;
+        string process_id = 3;
         string waiting = 4;
         string def_delay_time = 5;
         string def_time = 6;
@@ -118,9 +134,9 @@ message GetReportResponse {
     PdfInputDetail pdf_input = 3;
     ExcelIntervalDetail excel_input = 4;
     bool show_company_logo = 5;
-    uint32 select_fields_Limit = 6;
+    uint32 select_fields_limit = 6;
     repeated DefaultChart default_charts = 7;
-    string Project_Name = 8;
+    string project_name = 8;
 
     message ReportSettingDetail {
         bool enable = 1;
@@ -163,9 +179,9 @@ message GetReportResponse {
         }
 
         enum DisplayType {
-            accumulation = 0;
-            realtime = 1;
-            state = 2;
+            ACCUMULATION = 0;
+            REALTIME = 1;
+            STATE = 2;
         }
     }
 }
@@ -192,9 +208,9 @@ message GetScenarioResponse {
 }
 
 enum UnitType {
-    Normal = 0;
-    ValueTrans = 1;
-    BitTrans = 2;
+    NORMAL = 0;
+    VALUE_TRANS = 1;
+    BIT_TRANS = 2;
 }
 
 message GetAlarmFieldsResponse {
@@ -205,9 +221,11 @@ message GetAlarmFieldsResponse {
         string desc = 2;
         repeated Element elements = 3;
         Limit limit = 4;
-        UnitType unitType = 5;
+        UnitType unit_type = 5;
         map<int32, string> trans = 6;
-        bool soundOn = 7;
+        bool sound_on = 7;
+        // only need to 
+        string front_end_type = 8;
     }
 
     message Element {
@@ -275,11 +293,11 @@ message GetElectricityDemandResponse {
     }
 
     message TimingField {
-        string Year = 1;
-        string Month = 2;
-        string Day = 3;
-        string Hour = 4;
-        string Minute = 5;
-        string Second = 6;
+        string year = 1;
+        string month = 2;
+        string day = 3;
+        string hour = 4;
+        string minute = 5;
+        string second = 6;
     }
 }
