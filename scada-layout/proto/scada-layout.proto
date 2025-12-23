@@ -224,7 +224,6 @@ message GetAlarmFieldsResponse {
         UnitType unit_type = 5;
         map<int32, string> trans = 6;
         bool sound_on = 7;
-        // only need to 
         string front_end_type = 8;
     }
 

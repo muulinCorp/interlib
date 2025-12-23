@@ -85,6 +85,7 @@ type scadaEventClientImpl[T any] struct {
 type FieldInfo struct {
 	Name  string
 	Field string
+	SoundOn bool
 }
 
 func NewCreateWarn[T any](key string, name string, field *FieldInfo, data T, detail map[string]any) *CreateWarn[T] {
@@ -129,7 +130,11 @@ func (impl *scadaEventClientImpl[T]) CreateWarning(ctx context.Context, service 
 		req.Warnings[i] = &pb.CreateWarningsReq_Warning{
 			Key:    warn.Key,
 			Name:   warn.Name,
-			Field:  &pb.FieldInfo{Name: warn.Field.Name, Field: warn.Field.Field},
+			Field:  &pb.FieldInfo{
+				Name:    warn.Field.Name,
+				Field:   warn.Field.Field,
+				SoundOn: warn.Field.SoundOn,
+			},
 			Data:   data,
 			Detail: detail,
 		}
