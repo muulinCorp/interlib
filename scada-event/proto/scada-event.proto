@@ -6,17 +6,17 @@ package scada_event;
 import "google/protobuf/empty.proto";
 
 
-message fieldInfo {
+message FieldInfo {
     string name = 1;
     string field = 2;
-    bool soundOn = 3;
+    bool sound_on = 3;
 }
 message CreateWarningsReq {
     
     message Warning { 
         string key = 1;
         string name = 2;
-        fieldInfo field = 3;
+        FieldInfo field = 3;
         bytes data = 4;
         bytes detail = 5;
     }
@@ -42,8 +42,8 @@ message GetRealtimeResp {
     message Warning { 
         string key = 1;
         string name = 2;
-        fieldInfo field = 3;
-        int64 createTime = 4;
+        FieldInfo field = 3;
+        int64 create_time = 4;
         bytes detail = 5;
         repeated ReaderInfo readers = 6;
     }
@@ -78,11 +78,11 @@ message CreateSystemNoticeReq {
 }
 
 service ScadaEventService {
-    rpc createWarning(CreateWarningsReq) returns (google.protobuf.Empty) {}
-    rpc closeWarning(CloseWarningReq) returns (google.protobuf.Empty) {}
-    rpc extendWarning(ExtendWarningReq) returns (google.protobuf.Empty) {}
-    rpc readWarnings(ReadWarningsReq) returns (google.protobuf.Empty) {}
-    rpc getRealtime(GetRealtimeReq) returns (GetRealtimeResp) {}
-    rpc createEvent(CreateEventReq) returns (google.protobuf.Empty) {}
-    rpc createSystemNotice(CreateSystemNoticeReq) returns (google.protobuf.Empty) {}
+    rpc CreateWarning(CreateWarningsReq) returns (google.protobuf.Empty) {}
+    rpc CloseWarning(CloseWarningReq) returns (google.protobuf.Empty) {}
+    rpc ExtendWarning(ExtendWarningReq) returns (google.protobuf.Empty) {}
+    rpc ReadWarnings(ReadWarningsReq) returns (google.protobuf.Empty) {}
+    rpc GetRealtime(GetRealtimeReq) returns (GetRealtimeResp) {}
+    rpc CreateEvent(CreateEventReq) returns (google.protobuf.Empty) {}
+    rpc CreateSystemNotice(CreateSystemNoticeReq) returns (google.protobuf.Empty) {}
 }
