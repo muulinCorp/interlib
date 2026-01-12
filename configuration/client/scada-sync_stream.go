@@ -13,6 +13,7 @@ import (
 type ScadaSyncStreamClient interface {
 	grpc_tool.AutoReConnInter
 	StartListenSyncStream(context.Context, *pb.SyncConfigReq, chan *pb.SyncConfigResp, chan string)
+	StopListenSyncStream() error
 }
 
 type scadaSyncStreamImpl struct {
@@ -27,12 +28,21 @@ func NewScadaSyncStreamClient(address string) ScadaSyncStreamClient {
 	}
 }
 
+func (i *scadaSyncStreamImpl) StopListenSyncStream() error {
+	err := i.stream.CloseSend()
+	if err != nil {
+		return err
+	}
+	return i.AutoReConn.Close()
+}
+
 func (i *scadaSyncStreamImpl) StartListenSyncStream(
 	ctx context.Context, req *pb.SyncConfigReq,
 	respMsg chan *pb.SyncConfigResp, errMsg chan string,
 ) {
 	var err error
 	p := func(grpcClt grpc_tool.Connection) error {
+		defer grpcClt.Close()
 		service := pb.NewScadaSyncServiceClient(grpcClt)
 		i.stream, err = service.SyncConfigStream(context.Background(), req)
 		if err != nil {
