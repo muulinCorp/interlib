@@ -78,10 +78,16 @@ message GetReportFieldsResponse {
 message GetFieldListRequest {
     string id = 1;
     RequestType type = 2;
+    FieldType field_type = 3;
 
     enum RequestType {
         TV = 0;
         FLOOR = 1;
+    }
+    enum FieldType {
+        ALL = 0;
+        GET = 1;
+        SET = 2;
     }
 }
 
